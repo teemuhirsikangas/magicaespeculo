@@ -40,7 +40,7 @@ garage_room = round(float(garage_room),1)
 storage_pin = 24
 storage_humid, storage_room = Adafruit_DHT.read_retry(sensor,storage_pin)
 storage_humid = round(float(storage_humid),1)
-storage_room = round(float(garage_room),1)
+storage_room = round(float(storage_room),1)
 
 url = 'http://numberpi.local:3333/garage/temperature'
 payload = {'garage_floor': garage_floor, 'garage_floor2': garage_floor2, 'storage_floor': storage_floor, 'garage_humid': garage_humid, 'garage_room': garage_room, 'storage_humid': storage_humid, 'storage_room': storage_room}
