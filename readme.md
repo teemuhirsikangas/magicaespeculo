@@ -1,5 +1,5 @@
 # Magicae Speculo (Magic Mirror)
-For hardware/mirror construction, see [here](http://speculo.hirsikangas.fi/dyi/magicae-speculo-magic-mirror-with-homeautomation/)
+For hardware/mirror frame construction, see [here](http://speculo.hirsikangas.fi/dyi/magicae-speculo-magic-mirror-with-homeautomation/)
 
 My version of **Magic Mirror** which contains
 - Temperature + humidity logging (house and garage)
@@ -32,7 +32,7 @@ This project outgrew a bit from the original design, so db schemas etc needs ref
 
 -------------------------------------------------------------
 ### Backend
-Raspberry pi 2/3 Jessie
+Raspberry Pi 3 Jessie
 
 node.js:
 ```
@@ -145,7 +145,7 @@ Autoconnect to wifi if connection goes down
 -------------------------------------------------------------
 # Ground Heat Pump
 
-Raspberry pi 1 b+ Wheezy mounted to ground heatpump with [ThermIQ](http://www.thermiq.net/) data logger
+Raspberry Pi 1 b+ Wheezy mounted to ground heatpump with [ThermIQ](http://www.thermiq.net/) data logger
 #### Configure
 [ThermIQ](http://www.thermiq.net/product/thermiq-2/?lang=en) data logger is using sqlite3 db ([how install ThermIQ on raspberry Wheezy](http://www.thermiq.net/wp-conteny/uploads/ThermIQ-installation-for-Raspberry-PI.pdf))
 
@@ -175,8 +175,7 @@ Install Python requests package
 
 `sudo pip install requests==2.5.3` (later versions doesn't work with wheezy's python 2.7)
 
-You might be required to install if above gives errors about ssl:
-(`sudo pip install requests[security]`)
+You might be required to install if above gives errors about ssl: `sudo pip install requests[security]`
 -------------------------------------------------------------
 # Power meter
 Raspberry Zero with photoresistor (LDR) reading the flashing LED from household power meter (1000 imp/kwh)
@@ -248,7 +247,7 @@ Edit `send_garage_temp.py`  to match your sensors and wiring and change the back
 ```
 -------------------------------------------------------------
 # House temperature / humidity
-Raspberry pi 2 + 1wire + DHT22 (the same Raspberry Pi that the backend)
+Raspberry Pi 2 + 1wire + DHT22 (the same Raspberry Pi which is the backend)
 
 Copy files to
 1. `/home/pi/magicaespeculo/scripts/send_temp.py` -sends temperature/humidity values every 60secs to backend (Json)
@@ -292,5 +291,4 @@ MIT
 
 Author [Teemu Hirsikangas](http://teemu.hirsikangas.fi)
 
-More info
 The whole project documented in http://speculo.hirsikangas.fi/dyi/magicae-speculo-magic-mirror-with-homeautomation/
