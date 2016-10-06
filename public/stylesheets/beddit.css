@@ -1,0 +1,25 @@
+#beddit {
+    z-index: 100;
+    position: absolute;
+    left: 0px;
+    top: 550px;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    right: 21px;
+    bottom: 4px;
+    width:  300px;
+    height: 370px;
+    color: white;
+}
+
+#lastnight {
+    position: absolute;
+    left: 55px;
+    top: 2px;
+}
+
+#chart {
+    position: absolute;
+    left: 0px;
+    top: 40px;
+}

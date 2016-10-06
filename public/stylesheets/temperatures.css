@@ -1,0 +1,117 @@
+#housetempcontainer {
+    //height: 150px;
+    //width: 150px;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+
+#housetempimage {
+    position: absolute;
+    right: 0px;
+    bottom: 4px;
+    width: 240px;
+    height: 170px;
+} 
+
+#housetempimage:hover {
+    cursor: pointer;
+}  
+
+img {
+    width: 100%;
+    height: 100%;
+}
+
+#room {
+    z-index: 100;
+    position: absolute;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    left: 65px;
+    bottom: 32px;
+}
+
+#out {
+    z-index: 100;
+    position: absolute;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    left: -40px;
+    bottom: 35px;
+}
+
+#humid {
+    z-index: 100;
+    position: absolute;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    left: 65px;
+    bottom: 60px;}
+#floor {
+    z-index: 100;
+    position: absolute;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    left: 65px;
+    bottom: 2px;
+}
+
+#garage {
+    color: white;
+    font-size: 10px;
+    font-weight: bold;    
+}
+
+#garage_floor {
+    z-index: 100;
+    position: absolute;
+    right: 39px;
+    bottom: 0px;
+}
+#garage_floor2 {
+    z-index: 100;
+    position: absolute;
+    right: 39px;
+    bottom: 18px;
+}
+#garage_room {
+    z-index: 100;
+    position: absolute;
+    right: 39px;
+    bottom: 36px;
+}
+#garage_humid {
+    z-index: 100;
+    position: absolute;
+    right: 38px;
+    bottom: 56px;
+}
+#storage_floor {
+    z-index: 100;
+    position: absolute;
+    right: 4px;
+    bottom: 0px;
+}
+#storage_floor2 {
+    z-index: 100;
+    position: absolute;
+    right: 4px;
+    bottom: 18px;
+}
+#storage_room {
+    z-index: 100;
+    position: absolute;
+    right: 4px;
+    bottom: 36px;
+}
+#storage_humid {
+    z-index: 100;
+    position: absolute;
+    right: 4px;
+    bottom: 56px;
+}

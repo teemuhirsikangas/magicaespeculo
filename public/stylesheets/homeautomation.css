@@ -1,0 +1,208 @@
+#groundheatpumpyesterday {
+    position: absolute;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    left: 0;
+    bottom: 270px;
+    #width: 175px;
+    #height: 250px;
+    font-weight: bold;
+    #background-color: #333333;
+    line-height: 90%;
+}
+
+
+#groundheatpump {
+    position: absolute;
+    left: 0px;
+    bottom: 4px;
+    width: 159px;
+    height: 258px;
+}   
+
+
+#ghpbrinetemp {
+    z-index: 100;
+    position: absolute;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    right: 160px;
+    bottom: 50px;
+}
+
+#T_BRINE_IN {
+    position: absolute;
+    bottom: 100px;
+}
+#T_BRINE_UT {
+    position: absolute;
+    bottom: 30px;
+}
+
+#gphsupplytemp {
+    z-index: 100;
+    position: absolute;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    left: 130px;
+    bottom: 40px;
+
+}
+
+#T_FRAM {
+    position: absolute;
+    bottom: 90px;
+}
+#T_RETUR {
+    position: absolute;
+    bottom: 35px;
+}
+
+#gphwamrwatertemp {
+    z-index: 100;
+    position: absolute;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    left: 64px;
+    bottom: 205px;
+}
+#pressurepipetemp {
+    z-index: 100;
+    position: absolute;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    left: 65px;
+    bottom: 135px;
+}
+
+#gphwarmwaterstatus {
+    z-index: 100;
+    position: absolute;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    left: 110px;
+    bottom: 200px;
+}
+
+#gphcompressorstatus {
+    z-index: 100;
+    position: absolute;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    left: 62px;
+    bottom: 100px;
+}
+#gphsupplypumpstatus {
+    z-index: 100;
+    position: absolute;
+    color: white;
+    font-size: 10px;
+    font-weight: bold;
+    left: 125px;
+    bottom: 55px;
+    width: 17px;
+
+}
+
+#SPIN_KOMPR {
+    position: absolute;
+    left: 65px;
+    bottom: 100px;
+}
+
+#KOMPR {
+    position: absolute;
+    left: 65px;
+    bottom: 100px;
+}
+
+#SPIN_KOMPR img {
+    animation-name: spin; 
+    animation-duration: 3s; 
+    animation-iteration-count: infinite; 
+    animation-timing-function: linear;
+}
+/*
+@-moz-keyframes spin {
+    from { -moz-transform: rotate(0deg); }
+    to { -moz-transform: rotate(360deg); }
+}
+@-webkit-keyframes spin {
+    from { -webkit-transform: rotate(0deg); }
+    to { -webkit-transform: rotate(360deg); }
+}
+@keyframes spin {
+    from {transform:rotate(0deg);}
+    to {transform:rotate(360deg);}
+}
+*/
+
+#gphbrinestatus {
+    z-index: 100;
+    position: absolute;
+    color: white;
+    text-align: center;
+    font-size: 10px;
+    font-weight: bold;
+    left: 13px;
+    bottom: 134px;
+}
+
+#TS_P {
+    z-index: 100;
+    position: absolute;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    left: 30px;
+    bottom: 190px;
+}
+
+#TS_P img {
+    width: 22%;
+}
+
+#T_UTE {
+    z-index: 100;
+    position: absolute;
+    color: white;
+    font-size: 50px;
+    font-weight: bold;
+    right: 120px;
+    top: 0px;
+}
+
+#TID {
+    z-index: 100;
+    position: absolute;
+    color: white;
+    left: 60px;
+    bottom: 4px;
+}
+#INTEGR_DIV {
+    z-index: 100;
+    position: absolute;
+    color: white;
+    left: 65px;
+    bottom: 83px;
+}
+#HGW_VV {
+    z-index: 100;
+    position: absolute;
+    color: white;
+    left: 75px;
+    bottom: 67px;
+}
+
+#homeautomation {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 215px;
+}
+

@@ -1,0 +1,20 @@
+#!/bin/sh
+# /etc/init.d/powermeter
+
+case "$1" in
+	start)
+		echo "Starting power meter monitor..."
+		python /home/pi/magicaespeculo/scripts/send_powermeter.py &
+		;;
+	stop)
+		echo "Stopping power meter monitor..."
+		kill `ps -ef | grep send_powermeter.py | grep -v grep | awk '{print $2}'`
+		killall gpio-irq
+		;;
+	*)
+		echo "Usage: /etc/init.d/powermeter (start|stop)"
+		exit 1
+		;;
+esac
+
+exit 0

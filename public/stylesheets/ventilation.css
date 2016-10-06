@@ -1,0 +1,93 @@
+#ventilation {
+    z-index: 100;
+    position: absolute;
+    right: 5px;
+    top: 650px;
+    font: 20px "Lucida Grande", Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    right: 10px; /*TODO -40*/
+    bottom: 4px;
+    width:  250px;
+    height: 170px;
+    color: white;
+}
+
+#supply {
+    position: absolute;
+    left: 162px;
+    bottom: 32px;
+}
+#exhaust {
+    position: absolute;
+    left: 162px;
+    bottom: 104px;
+}
+#waste {
+    position: absolute;
+    right: 210px;
+    bottom: 104px;
+}
+
+#outdoor {
+    position: absolute;
+    right: 210px;
+    bottom: 32px;
+}
+
+#supply_label {
+    position: absolute;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;;
+    font-weight: bold;
+    left: 162px;
+    bottom: 57px;
+}
+#exhaust_label {
+    position: absolute;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;;
+    font-weight: bold;
+    left: 162px;
+    bottom: 129px;
+}
+#waste_label {
+    position: absolute;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;;
+    font-weight: bold;
+    right: 215px;
+    bottom: 129px;
+}
+
+#outdoor_label {
+    position: absolute;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;;
+    font-weight: bold;
+    right: 215px;
+    bottom: 57px;
+}
+
+#ventilationmisc {
+    position: absolute;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    left: -20px;
+    bottom: -55px;
+    font-weight: bold;
+    text-align: center;
+    overflow-x: hidden;
+}
+
+#ventilationmisc table{
+    border-collapse: collapse;
+    border-spacing: 0;  
+    text-align: center;
+    border-style: hidden;
+}
+/*
+#ventilationmisc td, th{
+    padding: 4px;
+    border-left:solid white 1px;
+    border-right:solid white 1px;
+}
+*/
+#ventilation img {
+    width: 80%;
+    height: 100%;
+}

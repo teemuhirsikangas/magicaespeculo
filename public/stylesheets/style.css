@@ -1,0 +1,154 @@
+body {
+  padding: 30px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background: #000000;
+  color: white;
+}
+
+h2 {
+	margin: 0 0 .5em 0;
+	text-align: right;
+}
+
+h1 {
+	margin:0 0 0 0;
+	font: 50px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+p {
+	font: 18px "Lucida Grande", Helvetica, Arial, sans-serif;	
+	right: 0;
+	margin: 0 0 0 0;
+}
+
+h1#date {
+	color: #C0C0C0;
+}
+
+a {
+  color: #00B7FF;
+}
+
+#time :first-child{
+ 	position:relative;
+    top:-17px;
+ 	font-size: 50%;
+	color: #C0C0C0;
+}
+/*
+Fix for wiggling spinner when using awesomefont (happens on some browsers)
+*/
+.fix .fa-spin {
+    -webkit-transform-origin: 50% calc(50% - .5px);
+    -moz-transform-origin: 50% calc(50% - .5px);
+    transform-origin: 50% calc(50% - .5px);
+}
+
+#calendar {
+	position: absolute;
+	left: 0px;
+	top: 150px;
+    font-weight: bold;
+}
+
+#calendar table {
+    border-collapse: separate;
+    border-spacing: 7px 0px;
+    //padding: 0px;
+    //text-align: center;
+}
+
+#calendar th {
+	border-collapse: separate;
+    border-spacing: 7px 0px;
+	//background-color: green;
+	text-align: left;
+	//color: #C0C0C0;
+    padding: 0px;
+	color: grey;
+    border-left: none;
+    border-right: none;
+}
+
+#calendartwo {
+	position: absolute;
+	left: 0px;
+	top: 350px;
+    font-weight: bold;
+}
+
+#calendartwo table {
+    border-collapse: separate;
+    border-spacing: 7px 0px;
+    //padding: 0px;
+    //text-align: center;
+    padding: 0px;
+}
+
+#calendartwo th {
+	border-collapse: separate;
+    border-spacing: 7px 0px;
+	//background-color: green;
+	text-align: left;
+	//color: #C0C0C0;
+	color: grey;
+    padding: 0px;
+    border-left: none;
+    border-right: none;
+}
+
+#calendartwo td {
+    padding: 0px;
+
+}
+#weatherforecast {
+	position: absolute;
+    font: 18px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+#weatherforecast canvas {
+    width: 40px;
+}
+
+#weatherforecast td {
+    //padding: 0px;
+    text-align: center;
+}
+
+#forecasticons canvas {
+	position: absolute;
+    right: 100px;
+    top: 300px;
+    //text-align: right;
+    width: 50px;
+}
+
+#weatherforecast {
+	position: fixed;
+    right: 0;
+    top: 500;
+}
+
+#weather {
+	position: fixed;
+    top: 0;
+    right: 0;
+}
+
+#clock {
+	position: fixed;
+    top: 0;
+    left: 0;
+}
+
+/*
+table {border-collapse: collapse;}
+td    {padding: 0px;}
+tr    {padding: 0px;}
+th    {padding: 0px;}
+*/
+fieldset {
+	border:0;
+	padding:0; margin:0;
+}
+

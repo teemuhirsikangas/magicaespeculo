@@ -1,0 +1,46 @@
+#chartdiv {
+	z-index: 100;
+    position: absolute;
+    left: 400px;
+	top: 100px;
+	width	: 70%;
+	height	: 800px;
+	background-color: #FFFFFF;
+	margin-left: 32px;
+	margin-top: 20px;
+	margin-right: 20px;
+	margin-bottom: 20px;
+	font-family: "Lato", Arial;
+	font-size: 14px;
+	line-height:16px;
+}					
+
+@import url(http://fonts.googleapis.com/css?family=Lato:300);
+
+#chartdiv.body {
+
+}
+
+#chartdiv.hr{
+   border: 1px solid #FFFFFF;
+}
+
+#chartdiv.a:link{
+	color:#0055CC;
+}
+#chartdiv.a:visited{
+	color:#990099;
+}
+#chartdiv.a:hover{
+	color:#CC0000;
+}
+
+#chartdiv.th{
+	background-color:#FFFFFF;
+ 	font-weight:bold;
+}
+
+#chartdiv.td{
+	background-color:#ecf7fe;
+ 	text-align:center;
+}

@@ -1,0 +1,45 @@
+#electricity {
+    z-index: 100;
+    position: absolute;
+    left: 300px;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    bottom: 0px;
+    width:  600px;
+    height: 25px;
+    color: white;
+}
+
+#power_icon {
+    position: absolute;
+    bottom: 0px;
+}
+
+
+#kwh {
+    position: absolute;
+    bottom: 0px;
+    left: 20px;
+}
+
+#kwh:hover {
+    cursor: pointer;
+}
+
+#watts_icon {
+    position: absolute;
+    bottom: 0px;   
+    left: 150px;    
+}
+
+#watts {
+    position: absolute;
+    bottom: 0px;   
+    left: 170px;
+}
+
+#kwh_yesterday {
+    position: absolute;
+    bottom: 0px;   
+    left: 280px;
+}

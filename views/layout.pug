@@ -1,0 +1,48 @@
+doctype html
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='stylesheet', href='/stylesheets/ventilation.css')
+    link(rel='stylesheet', href='/stylesheets/homeautomation.css')    
+    link(rel='stylesheet', href='/stylesheets/fire.css')
+    link(rel='stylesheet', href='/stylesheets/beddit.css')
+    link(rel='stylesheet', href='/stylesheets/electricity.css')
+    link(rel='stylesheet', href='/stylesheets/temperatures.css')
+    link(rel='stylesheet', href='/stylesheets/amschart.css')
+    //script(type='text/javascript')(src='//ajax.googleapis.com/ajax/libs/jquery/2.2.3/jquery.min.js')
+    //script(type='text/javascript')(src='//cdnjs.cloudflare.com/ajax/libs/jquery.simpleWeather/3.1.0/jquery.simpleWeather.min.js')
+    //script(type='text/javascript')(src='//cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment-with-locales.min.js')
+    //link(rel='stylesheet', href='//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css')
+    //3rd party - using locale files instead
+    link(rel='stylesheet', href='/Resource/font-awesome-4.6.3/css/font-awesome.min.css')
+    script(src='/Resource/jquery-2.2.4.min.js')
+    script(src='/Resource/jquery.simpleWeather.min.js')
+    script(src='/Resource/moment-with-locales.min.js')
+    script(src='/Resource/skycons.min.js')
+    script(src='/Resource/Chart.min.js')
+    //3rd party CDN files
+    script(type='text/javascript', src='//www.amcharts.com/lib/3/amcharts.js')
+    script(type='text/javascript', src='//www.amcharts.com/lib/3/serial.js')
+    script(type='text/javascript', src='//www.amcharts.com/lib/3/plugins/export/export.min.js')
+    script(type='text/javascript', src='//www.amcharts.com/lib/3/themes/light.js')
+    link(rel='stylesheet', href='//www.amcharts.com/lib/3/plugins/export/export.css')
+
+
+    //own
+    script(src='/javascripts/config.js')
+    script(src='/javascripts/date.js')
+    script(src='/javascripts/weather.js')
+    script(src='/javascripts/temperatures.js')
+    script(src='/javascripts/calendar.js')
+    script(src='/javascripts/groundheatpump.js')
+    script(src='/javascripts/ventilation.js')
+    script(src='/javascripts/reload.js')
+    script(src='/javascripts/beddit.js')
+    script(src='/javascripts/electricity.js')
+    script(src='/locales/fi.js')
+    script(src='/locales/en.js')
+    
+  body
+    block content
+  
