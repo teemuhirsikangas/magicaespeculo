@@ -1,0 +1,5 @@
+node_modules/
+data/key.json
+data/beddit_key.json
+data/homeautomation.db
+public/javascripts/config.js
