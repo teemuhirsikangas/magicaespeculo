@@ -95,9 +95,6 @@ Save status to enable autostart after reboot:
 
 You can now access the Speculo web page from http://localhost:3333 or http://[hostname].local:/3333
 
-use guestmode to not include calendar http://localhost:3333/guestmode
-use weathermiode to show only dates and weather http://localhost:3333/weathermode
-
 Use the `config.js` to enable/disable features with `show: true` or `show: false`
 
 Note: data loggers needs to be configured to send the data to backend, otherwise only Calendars and weather forecast works
