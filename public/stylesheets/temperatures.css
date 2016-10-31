@@ -6,6 +6,19 @@
     bottom: 0;
 }
 
+#house {
+    position: absolute;
+    z-index: 100;
+    width: 160px;
+    height: 90px;
+    bottom: 0px;
+    color: white;
+}
+
+#house:hover {
+    cursor: pointer;
+}  
+
 #housetempimage {
     position: absolute;
     right: 0px;
@@ -14,9 +27,6 @@
     height: 170px;
 } 
 
-#housetempimage:hover {
-    cursor: pointer;
-}  
 
 img {
     width: 100%;
@@ -62,10 +72,20 @@ img {
 }
 
 #garage {
+    position: absolute;
     color: white;
+    z-index: 100;
     font-size: 10px;
     font-weight: bold;    
+    right: 2px;
+    bottom: 2px;
+    width: 70px;
+    height: 70px;
 }
+
+#garage:hover {
+    cursor: pointer;
+}  
 
 #garage_floor {
     z-index: 100;

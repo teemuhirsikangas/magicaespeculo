@@ -19,9 +19,13 @@ var electricityData = function () {
         try {
 
             $("#watts").html('<i class="fa fa-tachometer" aria-hidden="true"></i> ' + electricityDataMinute[0].pulsecount * 60 / 1000 + ' kW');
+            checkIfDataIsStale(electricityDataMinute[0].timestamp);
 
         } catch (e) {
-            if (e) {
+            
+            if (e instanceof noNewDataException) {
+                document.getElementById("kwh").style.color = "#ff0000";
+            } else {
                 $("#kwh").html("-");
             }
         }

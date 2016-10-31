@@ -21,7 +21,7 @@ router.get('/', function (req, res, next) {
 /* GET last pulsecount electricity. */
 router.get('/now', function (req, res, next) {
 
-    db.all('SELECT pulsecount FROM ELECTRICITY_LOG ORDER BY timestamp DESC limit 1', function (err, row) {
+    db.all('SELECT timestamp, pulsecount FROM ELECTRICITY_LOG ORDER BY timestamp DESC limit 1', function (err, row) {
         if (err !== null) {
             res.json(err);
         } else {

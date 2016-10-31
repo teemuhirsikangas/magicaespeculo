@@ -11,9 +11,17 @@ var data = function () {
             $("#room").html(data[0].room + '&deg;');
             $("#out").html(data[0].out + '&deg;');
             $("#humid").html(data[0].humid + '&#37;');
+            
+            checkIfDataIsStale(data[0].timestamp);
+
         } catch (e) {
 
-            if (e) {
+            if (e instanceof noNewDataException) {
+                document.getElementById("floor").style.color = "#ff0000";
+                document.getElementById("room").style.color = "#ff0000";
+                document.getElementById("out").style.color = "#ff0000";
+                document.getElementById("humid").style.color = "#ff0000";
+            } else {
                 $("#floor").html("-");
                 $("#room").html("-");
                 $("#out").html("-");
@@ -24,6 +32,7 @@ var data = function () {
 
     $.getJSON('/garage/temperature', function (garagedata) {
         try {
+
             $("#garage_floor").html(garagedata[0].garage_floor + '&deg;');
             $("#garage_floor2").html(garagedata[0].garage_floor2 + '&deg;');
             $("#garage_room").html(garagedata[0].garage_room + '&deg;');
@@ -32,9 +41,13 @@ var data = function () {
             $("#storage_room").html(garagedata[0].storage_room + '&deg;');
             $("#storage_humid").html(garagedata[0].storage_humid);
 
+            checkIfDataIsStale(garagedata[0].timestamp);
+
         } catch (e) {
 
-            if (e) {
+            if (e instanceof noNewDataException) {
+                document.getElementById("garage").style.color = "#ff0000";
+            } else {
                 $("#garage_floor").html("-");
                 $("#garage_floor2").html("-");
                 $("#garage_room").html("-");
@@ -57,6 +70,8 @@ var temperatureDataChart = function () {
     }
 
     $.getJSON('/homeautomation/temperature/hourly', function (temperatureData) {
+
+
 
         try {
             var chartData = populateTempChartData(temperatureData),
@@ -199,7 +214,12 @@ function populateTempChartData(data) {
 
 $(document).ready(function () {
 
-    var d = document.getElementById("housetempimage");
+    var d = document.getElementById("house");
+    d.onclick = function () {
+        temperatureDataChart();
+    };
+
+    var d = document.getElementById("garage");
     d.onclick = function () {
         temperatureDataChart();
     };

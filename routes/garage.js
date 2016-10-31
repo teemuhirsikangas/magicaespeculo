@@ -30,6 +30,19 @@ router.get('/temperature', function (req, res, next) {
     });
 });
 
+/* GET temperature values for start of hour */
+router.get('/temperature/hourly', function (req, res, next) {
+
+    db.all('SELECT strftime("%Y-%m-%d %H", timestamp/1000, "unixepoch", "localtime") as date, garage_floor, garage_floor2, garage_room, garage_humid, storage_floor, storage_room, storage_humid FROM GARAGE_TEMP GROUP BY date ORDER BY date ASC', function (err, row) {
+        if (err !== null) {
+            res.json(err);
+        } else {
+            //console.log(row);
+            res.status(200).json(row);
+        }
+    });
+});
+
 
 /*
  * POST to add temperature data
