@@ -33,7 +33,7 @@ router.get('/temperature', function (req, res, next) {
 /* GET daily temperature values for start of hour */
 router.get('/temperature/hourly', function (req, res, next) {
 
-    db.all('SELECT strftime("%Y-%m-%d %H",timestamp) as date, room, floor, out, humid FROM temperature GROUP BY date ORDER BY date ASC', function (err, row) {
+    db.all('SELECT strftime("%Y-%m-%d %H:00:00",timestamp) as date, room, floor, out, humid FROM temperature GROUP BY date ORDER BY date ASC', function (err, row) {
         if (err !== null) {
             res.json(err);
         } else {

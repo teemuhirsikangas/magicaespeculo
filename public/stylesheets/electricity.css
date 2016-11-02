@@ -38,6 +38,10 @@
     left: 170px;
 }
 
+#watts:hover {
+    cursor: pointer;
+}  
+
 #kwh_yesterday {
     position: absolute;
     bottom: 0px;   
