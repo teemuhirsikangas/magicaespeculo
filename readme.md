@@ -277,7 +277,6 @@ http://codepen.io/dazulu/pen/fGFyj
 
 #### IDEAS/TODO:
 ```
-BACKUP db data once a day
 Robomow lawn mower schedule integration to calendar or directly via Bluetooth LE connection
 BUTTON: change mirror pages to hide calendar/reload page/shutdown
 Add welcome text other info which requires attention?
@@ -285,6 +284,9 @@ sd-card optimization from wear and tear
 Create graphics/histogram for temperature/ground heat pump statistics (done for electricity and temperature loggin)
 Add ventilation machine integration (Enervent Pingvin)
 ```
+
+Changes:
+17.10.2016 - Added backup script
 
 License
 MIT
