@@ -8,7 +8,7 @@ My version of **Magic Mirror** which contains
 - Weather forecast
 - Ground heat pump monitoring ([Thermia](http://www.thermia.com/products/thermia-diplomat-optimum.asp)) 
 - Home power comsumption monitoring
-- TODO: Ventilation monitoring
+- Ventilation monitoring
 
 ![alt tag](http://i.imgur.com/D7GbPsj.png)
 ![alt tag](http://i.imgur.com/92U34gG.gif)
@@ -21,7 +21,7 @@ For hardware part list, mirror frame construction, etc see the whole project [he
 * **Home automation**:  
     1. Ground heat pump: [ThermIQ](http://www.thermiq.net/product/thermiq-2/?lang=en) data logger connected to [Thermia Diplomat](http://www.thermia.com/products/thermia-diplomat-optimum.asp) ground heat pump   (Raspberry Pi 1 b+)
     2. Power consumption logging to monitor electricity usage (Raspberry Pi Zero)
-    3. TODO: [RS-485 to USB adapter](http://www.ebay.com/itm/USB-to-RS485-TTL-Serial-Converter-Adapter-FTDI-interface-FT232RL-75176-Module-Ne-/161264238508?hash=item258c18ffac:g:c5gAAOSwT~9Wj4nl) connected to Ventilation unit [Enervent Pingvin](https://www.enervent.com/tuote/pingvin/)
+    3. Ventilation: [RS-485 to USB adapter](http://www.ebay.com/itm/USB-to-RS485-TTL-Serial-Converter-Adapter-FTDI-interface-FT232RL-75176-Module-Ne-/161264238508?hash=item258c18ffac:g:c5gAAOSwT~9Wj4nl) connected to Ventilation unit [Enervent Pingvin](https://www.enervent.com/tuote/pingvin/) using modbus (rs-485) protocol
     4. Garage temperature / humidity logging (Raspberry Pi Zero)
 
 **Note:** This project is designed to be run on private network at home, so no much time spend on security aspects!
@@ -174,7 +174,6 @@ Install Python requests package
 `sudo python get-pip.py`
 
 `sudo pip install requests==2.5.3` (later versions doesn't work with wheezy's python 2.7)
-
 You might be required to install if above gives errors about ssl: `sudo pip install requests[security]`
 -------------------------------------------------------------
 # Power meter
@@ -259,7 +258,30 @@ Copy files to
 ```
 -------------------------------------------------------------
 # Ventilation
-TODO:
+
+`sudo apt-get install python-pip`
+`sudo pip install minimalmodbus`
+
+
+Uses minimalmodbus library to read modbus register values from Enervent Pingvin ventilation unit.
+Ventilaton unit is in slave mode (when using freeway modbus port) and the script acts as master to read register values
+
+Enervent slave configuration:
+
+  -Plug RJ4P4C wire into Enervent motherboard plug named "Freeway" (not OP1 or OP2)
+  -Baud rate 19200, 8bit, No Parity, 1 Stopbit (8N1)
+  -Slave adress 1
+  -Plug  Data A (+) (red) and Data B (-) (green) wires into modbus adapter. (ground (black) and +5VDC (Yellow) not needed)
+Enervent modbus Register list can be found from [here](http://ala-paavola.fi/jaakko/lib/exe/fetch.php?media=eda_modbus_rekisterilista_2011-02-16.pdf) (Finnish only)
+
+Copy files to
+1. `/home/pi/magicaespeculo/scripts/send_ventilation.py` -sends ventilation values every 60secs to backend (Json)
+
+`sudo crontab -e`
+```
+#send data every minute
+*/1 * * * * sudo python /home/pi/magicaespeculo/scripts/send_ventilation.py > /dev/null 2>&1
+```
 
 ##  external sources
 
@@ -282,11 +304,11 @@ BUTTON: change mirror pages to hide calendar/reload page/shutdown
 Add welcome text other info which requires attention?
 sd-card optimization from wear and tear
 Create graphics/histogram for temperature/ground heat pump statistics (done for electricity and temperature loggin)
-Add ventilation machine integration (Enervent Pingvin)
 ```
 
 Changes:
 17.10.2016 - Added backup script
+1.2.2017 - Added Enervent Ventilation unit
 
 License
 MIT

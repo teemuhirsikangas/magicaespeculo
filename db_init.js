@@ -118,48 +118,32 @@ module.exports.init = function () {
         });
 
     // Database initialization for ventilation
-    db.get("SELECT name FROM sqlite_master WHERE type='table' AND name='VENTILATION_TEMP'", function (err, rows) {
+    db.get("SELECT name FROM sqlite_master WHERE type='table' AND name='VENTILATION'", function (err, rows) {
         if (err !== null) {
             console.log(err);
         } else if (rows === undefined) {
-            db.run('CREATE TABLE "VENTILATION_TEMP" ' +
+            db.run('CREATE TABLE "VENTILATION" ' +
                    '("timestamp" integer primary key,' +
-                   '"outdoor" REAL,' +
-                   '"supply" REAL,' +
-                   '"exhaust" REAL,' +
-                   '"waste" REAL);', function (err) {
+                   '"fresh" integer,' +
+                   '"supply_hr" integer,' +
+                   '"supply" integer,' +
+                   '"waste" integer,' +
+                   '"exhaust" integer,' +
+                   '"exhaust_humidity" integer,' +
+                   '"hr_effiency_in" integer,' +
+                   '"hr_efficiency_out" integer,' +
+                   '"humidity_48h" integer,' +
+                   '"control_state" integer,' +
+                   '"heating_status" integer);', function (err) {
                 if (err !== null) {
                     console.log(err);
                 } else {
-                    console.log("SQL Table 'VENTILATION_TEMP' initialized.");
+                    console.log("SQL Table 'VENTILATION' initialized.");
                 }
             });
         } else {
-            console.log("SQL Table 'VENTILATION_TEMP' already initialized.");
+            console.log("SQL Table 'VENTILATION' already initialized.");
         }
-    });
-
-    // Database initialization for ventilation miscs
-    db.get("SELECT name FROM sqlite_master WHERE type='table' AND name='VENTILATION_MISC'", function (err, rows) {
-          if (err !== null) {
-            console.log(err);
-          } else if (rows === undefined) {
-              db.run('CREATE TABLE "VENTILATION_MISC" ' +
-                     '("timestamp" integer primary key,' +
-                     '"humidity" INTEGER,' +
-                     '"humidity48hmean" INTEGER,' +
-                     '"input" REAL,' +
-                     '"output" REAL,' +
-                     '"power" REAL);', function (err) {
-                  if (err !== null) {
-                      console.log(err);
-                  } else {
-                      console.log("SQL Table 'VENTILATION_MISC' initialized.");
-                  }
-              });
-          } else {
-              console.log("SQL Table 'VENTILATION_MISC' already initialized.");
-          }
     });
 
     // Database initialization for electricity logging

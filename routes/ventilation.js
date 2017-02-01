@@ -6,9 +6,9 @@ var sqlite3 = require('sqlite3').verbose();
 var db = new sqlite3.Database('./data/homeautomation.db');
 
 /* GET last values ventilation temp. */
-router.get('/temperature', function (req, res, next) {
+router.get('/', function (req, res, next) {
 
-    db.all('SELECT * FROM VENTILATION_TEMP ORDER BY timestamp DESC LIMIT 1', function (err, row) {
+    db.all('SELECT * FROM VENTILATION ORDER BY timestamp DESC LIMIT 1', function (err, row) {
         if (err !== null) {
             res.json(err);
         } else {
@@ -21,52 +21,23 @@ router.get('/temperature', function (req, res, next) {
 /*
  * POST to add ventilation temperature data
  */
-router.post('/temperature', function (req, res) {
+router.post('/', function (req, res) {
 
-    var outdoor = req.body.outdoor,
+    var fresh = req.body.fresh,
+        supply_hr = req.body.supply_hr,
         supply = req.body.supply,
-        exhaust = req.body.exhaust,
         waste = req.body.waste,
+        exhaust = req.body.exhaust,
+        exhaust_humidity = req.body.exhaust_humidity,
+        hr_effiency_in = req.body.hr_effiency_in,
+        hr_efficiency_out = req.body.hr_efficiency_out,
+        humidity_48h = req.body.humidity_48h,
+        control_state = req.body.control_state,
+        heating_status = req.body.heating_status,
         timestamp = new Date().getTime(),
-        sqlRequest = "INSERT INTO 'VENTILATION_TEMP' (timestamp, outdoor, supply, exhaust, waste) " +
-                     "VALUES('" + timestamp + "', '" + outdoor + "','" + supply + "','" + exhaust + "','" + waste + "')";
+        sqlRequest = "INSERT INTO 'VENTILATION' (timestamp, fresh, supply_hr, supply, waste, exhaust, exhaust_humidity, hr_effiency_in, hr_efficiency_out, humidity_48h, control_state, heating_status) " +
+                     "VALUES('" + timestamp + "', '" + fresh + "','" + supply_hr + "','" + supply + "','" + waste + "','" + exhaust + "','" + exhaust_humidity + "','" + hr_effiency_in + "','"+ hr_efficiency_out + "','" + humidity_48h + "','" + control_state + "','" + heating_status + "')";
     db.run(sqlRequest, function(err) {
-        if (err !== null) {
-            res.json(err);
-        } else {
-            res.json(201);
-        }
-    });
-});
-
-
-/* GET last values misc temp. */
-router.get('/misc', function (req, res, next) {
-
-    db.all('SELECT * FROM VENTILATION_MISC ORDER BY timestamp DESC LIMIT 1', function (err, row) {
-        if (err !== null) {
-            res.json(err);
-        } else {
-            res.status(200).json(row);
-        }
-    });
-});
-
-/*
- * POST to add ventilation misc data
- */
-router.post('/misc', function (req, res) {
-
-    var humidity = req.body.humidity,
-        humidity48hmean = req.body.humidity48hmean,
-        input = req.body.input,
-        output = req.body.output,
-        power = req.body.power,
-        //datetime = req.body.datetime;
-        timestamp = new Date().getTime(),
-        sqlRequest = "INSERT INTO 'VENTILATION_MISC' (timestamp, humidity, humidity48hmean, input, output, power) " +
-                   "VALUES('" + timestamp + "', '" + humidity + "','" + humidity48hmean + "','" + input + "','" + output + "','" + power + "')";
-    db.run(sqlRequest, function (err) {
         if (err !== null) {
             res.json(err);
         } else {

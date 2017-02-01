@@ -21,14 +21,46 @@ var texts = {
 };
 
 var ventilationtext = {
-    "outside" : "outside",
+    "fresh" : "fresh air",
     "supply" : "supply",
-    "exhaust" : "exhaust",
+    "supply_hr" : "supply air temp after heat recovery", 
     "waste" : "waste",
-    "humid" : "humid.",
-    "pwr" : "pwr",
-    "input" : "input η",
-    "output" : "output η"
+    "exhaust" : "exhaust",
+    "exhaust_humidity" : "exhaust humid.",
+    "humidity_48h" : "humid 48h",
+    "hr_effiency_in" : "input η",
+    "hr_efficiency_out" : "output η",
+    control_state : { 
+        0 : "Normal",
+        1 : "Max cooling",
+        2 : "Max Heating",
+        4 : "Emergency stop",
+        8 : "stop",
+        16 : "Away",
+        32 : "Away for long",
+        46 : "Heat boosting",
+        128 : "CO2 boosting",
+        256 : "Rh boosting",
+        512 : "Boosting",
+        1024 : "Over pressure",
+        2048 : "Cooking vent.",
+        4096 : "Vacuuming",
+        8192 : "SLP cooling",
+        16384 : "Summer night cooling",
+        32768 : "EXT de-frosting"
+    },
+    heating_status : {
+        0: "None",
+        1: "Cooling",
+        2: "Heat Recovery",
+        4: "Heating",
+        5: "delay",
+        6: "Summer night cooling",
+        7: "starting up",
+        8: "Stopped",
+        9: "Heat recovery cleaning",
+        10: "EXT de-frosting"
+    }
 };
 
 var electricitytext = {

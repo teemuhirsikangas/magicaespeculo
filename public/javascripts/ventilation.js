@@ -6,63 +6,75 @@ var ventilationData = function () {
         $("#ventilation").append("<img id='img_vent' src ='/images/ventilation2.png'>");
     }
 
-    $.getJSON('/ventilation/temperature', function (ventilationData) {
+    $.getJSON('/ventilation/', function (ventilationData) {
         try {
-            $("#outdoor_label").html(ventilationtext.outside);
-            $("#outdoor").html(ventilationData[0].outdoor + '&deg;');
-            $("#supply_label").html(ventilationtext.supply);
+            $("#fresh_label").html(ventilationtext.fresh);
+            $("#fresh").html(ventilationData[0].fresh + '&deg;');
+            //$("#supply_hr").html(ventilationData[0].supply_hr);
+            $("#supply_label").html(ventilationtext.supply );
             $("#supply").html(ventilationData[0].supply + '&deg;');
-            $("#exhaust_label").html(ventilationtext.exhaust);
-            $("#exhaust").html(ventilationData[0].exhaust + '&deg;');
             $("#waste_label").html(ventilationtext.waste);
             $("#waste").html(ventilationData[0].waste + '&deg;');
+            $("#exhaust_label").html(ventilationtext.exhaust);
+            $("#exhaust").html(ventilationData[0].exhaust + '&deg;');
+            $("#exhaust_humidity").html('&nbsp;' + ventilationData[0].exhaust_humidity + '&#37;');
+            $("#hr_effiency_in").html("η:" + ventilationData[0].hr_effiency_in);
+            $("#hr_efficiency_out").html("η:" + ventilationData[0].hr_efficiency_out);
+            $("#humidity_48h").html("(" + ventilationData[0].humidity_48h + ")");
+            $("#control_state").html(convertEnerventControStateMessages(ventilationData[0].control_state));    
+            $("#heating_status").html(ventilationtext.heating_status[ventilationData[0].heating_status]);
+            
+            checkIfDataIsStale(ventilationData[0].timestamp);
 
         } catch (e) {
-            if (e) {
-                $("#outdoor_label").html(ventilationtext.outside);
-                $("#outdoor").html('- &deg;');
-                $("#supply_label").html(ventilationtext.supply);
-                $("#supply").html('- &deg;');
-                $("#exhaust_label").html(ventilationtext.exhaust);
-                $("#exhaust").html('- &deg;');
-                $("#waste_label").html(ventilationtext.waste);
-                $("#waste").html('- &deg;');
+
+            if (e instanceof NoNewDataException) {
+                //todo, paint all values red with single call
+                document.getElementById("fresh").style.color = "#ff0000";
+                document.getElementById("supply").style.color = "#ff0000";
+                document.getElementById("waste").style.color = "#ff0000";
+                document.getElementById("exhaust").style.color = "#ff0000";
+                document.getElementById("exhaust_humidity").style.color = "#ff0000";
+                document.getElementById("hr_effiency_in").style.color = "#ff0000";
+                document.getElementById("hr_efficiency_out").style.color = "#ff0000";
+                document.getElementById("humidity_48h").style.color = "#ff0000";
+                document.getElementById("control_state").style.color = "#ff0000";
+                document.getElementById("heating_status").style.color = "#ff0000";
+                document.getElementById("supply_hr").style.color = "#ff0000";
+            } else {
+                $("#fresh").html("-");
+                //$("#supply_hr").html("-");
+                $("#supply").html("-");
+                $("#waste").html("-");
+                $("#exhaust").html("-");
+                $("#exhaust_humidity").html("-");
+                $("#hr_effiency_in").html("-");
+                $("#hr_efficiency_out").html("-");
+                $("#humidity_48h").html("-");
+                $("#control_state").html("-");
+                $("#heating_status").html("-");
             }
         }
     });
 };
 
-var ventilationMiscData = function () {
+function convertEnerventControStateMessages(value) {
+ 
+    const orgValue = parseInt(value, 10);
+    const maxLenght = orgValue.toString(2).length;
+    var message = "",
+        binBaseValue = 0,
+        position = 0;
 
-    $.getJSON('/ventilation/misc', function (ventilationMiscData) {
-        try {
-            $("#humidity_label").html(ventilationtext.humid);
-            $("#power_label").html(ventilationtext.pwr);
-            $("#input_label").html(ventilationtext.input);
-            $("#output_label").html(ventilationtext.output);
-            humid = ventilationMiscData[0].humidity + '&#37; (' + ventilationMiscData[0].humidity48hmean + ')'
-            $("#humidity").html(humid);
-            //$("#humidity48hmean_label").html();
-            //$("#humidity48hmean").html(ventilationMiscData[0].humidity48hmean + '&#37;');
-            $("#input").html(ventilationMiscData[0].input);
-            $("#output").html(ventilationMiscData[0].output);
-            $("#power").html(ventilationMiscData[0].power);
-            //console.log(data);
-        } catch (e) {
-            if (e) {
-                $("#humidity_label").html(ventilationtext.humid);
-                $("#power_label").html(ventilationtext.pwr);
-                $("#input_label").html(ventilationtext.input);
-                $("#output_label").html(ventilationtext.output);
-                $("#humidity").html("-");
-                //$("#humidity48hmean_label").html();
-                //$("#humidity48hmean").html(ventilationMiscData[0].humidity48hmean + '&#37;');
-                $("#input").html("-");
-                $("#output").html("-");
-                $("#power").html("-");
-            }
+    for (var i = maxLenght - 1; i >= 0; i--) { 
+        console.log("joo" + i);
+        binBaseValue = 1 << position;
+        position = position + 1;
+        if (orgValue.toString(2).charAt( i ) == 1) {
+            message = message + " " + ventilationtext.control_state[binBaseValue] + ",";
         }
-    });
+    }
+    return message.substring(0, message.length - 1);
 };
 
 $(document).ready(function () {
@@ -71,8 +83,5 @@ $(document).ready(function () {
         ventilationData();
         //every 60secs
         setInterval(ventilationData, 60000);
-        //every 60 secs
-        ventilationMiscData();
-        setInterval(ventilationMiscData, 60000);
     }
 });

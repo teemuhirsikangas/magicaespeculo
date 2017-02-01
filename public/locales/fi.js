@@ -21,14 +21,46 @@ var texts = {
 };
 
 var ventilationtext = {
-    "outside" : "ulko",
-    "supply" : "tulo",
-    "exhaust" : "poisto",
-    "waste" : "jäte",
-    "humid" : "kosteus",
-    "pwr" : "teho",
-    "input" : "sisälle η", //LTO sisälle 
-    "output" : "ulos η"  //LTO ulos
+    "fresh" : "Raitisilma",
+    "supply" : "Tuloilma",
+    "supply_hr" : "tuloilma LTO jälkeen", 
+    "waste" : "jäteilma",
+    "exhaust" : "poistoilma",
+    "exhaust_humidity" : "poistoilma kosteus",
+    "humidity_48h" : "kosteus 48h",
+    "hr_effiency_in" : "LTO tulo η",
+    "hr_efficiency_out" : "LTO poisto η",
+    control_state : { 
+        0 : "Normaali",
+        1 : "Max jäähdytys",
+        2 : "Max lämmitys,",
+        4 : "Hätäseis",
+        8 : "Seis",
+        16 : "Poissa",
+        32 : "Pitkään poissa",
+        46 : "Lämpötila tehostus",
+        128 : "CO2 tehostus",
+        256 : "Rh tehostus",
+        512 : "Tehostus",
+        1024 : "Ylipaineistus",
+        2048 : "Liesituuletin",
+        4096 : "keskuspölynimuri",
+        8192 : "SLP jäähdytys",
+        16384 : "kesäyöviilennys",
+        32768 : "EXT sulatus"
+    },
+    heating_status : {
+        0: "Ei Lämpöätilasäätöä",
+        1: "Jäähdytys",
+        2: "LTO",
+        4: "Lämmitys",
+        5: "porrasviive tila",
+        6: "kesäyöviilennys",
+        7: "Käynnistys",
+        8: "Seis",
+        9: "LTO puhdistus",
+        10: "EXT yksikön sulatus"
+    }
 };
 
 var electricitytext = {
