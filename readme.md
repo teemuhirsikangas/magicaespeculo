@@ -260,6 +260,7 @@ Copy files to
 # Ventilation
 
 `sudo apt-get install python-pip`
+
 `sudo pip install minimalmodbus`
 
 
@@ -267,11 +268,12 @@ Uses minimalmodbus library to read modbus register values from Enervent Pingvin 
 Ventilaton unit is in slave mode (when using freeway modbus port) and the script acts as master to read register values
 
 Enervent slave configuration:
-
-  -Plug RJ4P4C wire into Enervent motherboard plug named "Freeway" (not OP1 or OP2)
-  -Baud rate 19200, 8bit, No Parity, 1 Stopbit (8N1)
-  -Slave adress 1
-  -Plug  Data A (+) (red) and Data B (-) (green) wires into modbus adapter. (ground (black) and +5VDC (Yellow) not needed)
+```
+Plug RJ4P4C wire into Enervent motherboard plug named "Freeway" (not OP1 or OP2)
+Baud rate 19200, 8bit, No Parity, 1 Stopbit (8N1)
+Slave adress 1
+Plug  Data A (+) (red) and Data B (-) (green) wires into modbus adapter. (ground (black) and +5VDC (Yellow) not needed)
+```
 Enervent modbus Register list can be found from [here](http://ala-paavola.fi/jaakko/lib/exe/fetch.php?media=eda_modbus_rekisterilista_2011-02-16.pdf) (Finnish only)
 
 Copy files to
