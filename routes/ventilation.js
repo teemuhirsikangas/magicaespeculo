@@ -46,4 +46,19 @@ router.post('/', function (req, res) {
     });
 });
 
+
+/* GET daily ventilation values for start of hour */
+router.get('/hourly', function (req, res, next) {
+
+    db.all('SELECT strftime("%Y-%m-%d %H:00:00",timestamp/1000, "unixepoch", "localtime") as date, fresh, supply, waste, exhaust, exhaust_humidity, hr_effiency_in, hr_efficiency_out FROM VENTILATION GROUP BY date ORDER BY date ASC', function (err, row) {
+        if (err !== null) {
+            res.json(err);
+        } else {
+            //console.log(row);
+            res.status(200).json(row);
+        }
+    });
+});
+
+
 module.exports = router;

@@ -80,6 +80,11 @@ function convertEnerventControStateMessages(value) {
 $(document).ready(function () {
 
     if (config.ventilation.show) {
+
+    var d = document.getElementById("ventilation");
+    d.onclick = function () {
+        generateChart('/ventilation/hourly');
+    };
         ventilationData();
         //every 60secs
         setInterval(ventilationData, 60000);

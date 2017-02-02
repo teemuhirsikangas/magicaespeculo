@@ -9,6 +9,10 @@
     color: white;
 }
 
+#ventilation:hover {
+    cursor: pointer;
+}  
+
 #supply_label {
     position: absolute;
     right: 5px;
