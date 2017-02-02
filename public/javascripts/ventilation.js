@@ -21,7 +21,7 @@ var ventilationData = function () {
             $("#hr_effiency_in").html("η:" + ventilationData[0].hr_effiency_in);
             $("#hr_efficiency_out").html("η:" + ventilationData[0].hr_efficiency_out);
             $("#humidity_48h").html("(" + ventilationData[0].humidity_48h + ")");
-            $("#control_state").html(convertEnerventControStateMessages(ventilationData[0].control_state));    
+            $("#control_state").html(convertEnerventControlStateMessages(ventilationData[0].control_state));    
             $("#heating_status").html(ventilationtext.heating_status[ventilationData[0].heating_status]);
             
             checkIfDataIsStale(ventilationData[0].timestamp);
@@ -58,7 +58,7 @@ var ventilationData = function () {
     });
 };
 
-function convertEnerventControStateMessages(value) {
+function convertEnerventControlStateMessages(value) {
  
     const orgValue = parseInt(value, 10);
     const maxLenght = orgValue.toString(2).length;
@@ -67,7 +67,6 @@ function convertEnerventControStateMessages(value) {
         position = 0;
 
     for (var i = maxLenght - 1; i >= 0; i--) { 
-        console.log("joo" + i);
         binBaseValue = 1 << position;
         position = position + 1;
         if (orgValue.toString(2).charAt( i ) == 1) {
