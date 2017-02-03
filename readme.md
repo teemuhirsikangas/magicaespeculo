@@ -10,7 +10,7 @@ My version of **Magic Mirror** which contains
 - Home power comsumption monitoring
 - Ventilation monitoring
 
-![alt tag](http://i.imgur.com/D7GbPsj.png)
+![alt tag](http://i.imgur.com/YNLKgJT.png)
 ![alt tag](http://i.imgur.com/92U34gG.gif)
 ![alt tag](http://i.imgur.com/dcNKFjz.png)
 
@@ -309,7 +309,9 @@ Create graphics/histogram for temperature/ground heat pump statistics (done for 
 ```
 
 Changes:
+
 17.10.2016 - Added backup script
+
 1.2.2017 - Added Enervent Ventilation unit
 
 License
