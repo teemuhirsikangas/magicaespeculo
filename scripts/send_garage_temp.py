@@ -8,7 +8,7 @@ import Adafruit_DHT
 #1wire pin = 4
 garage_floor_fn='/sys/bus/w1/devices/28-041661c17dff/w1_slave'
 garage_floor2_fn='/sys/bus/w1/devices/28-031661e0c2ff/w1_slave'
-storage_floor_fn='/sys/bus/w1/devices/28-0000071e6d8a/w1_slave'
+storage_floor_fn='/sys/bus/w1/devices/28-031661e9a8ff/w1_slave'
 
 def get1wiretemp(file_name):
         file_object=open(file_name,'r')
