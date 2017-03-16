@@ -94,6 +94,12 @@ var rawdata = function () {
 $(document).ready(function () {
 
     if(config.groundheatpump.show) {
+        
+        var d = document.getElementById("groundheatpump");
+        d.onclick = function () {
+             window.open(config.groundheatpump.domain,'_blank');
+        };
+
         daydata(); 
         //every 10 minutes
         setInterval(daydata, 600000);

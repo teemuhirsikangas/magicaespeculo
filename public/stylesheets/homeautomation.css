@@ -19,6 +19,9 @@
     height: 258px;
 }   
 
+#groundheatpump:hover {
+    cursor: pointer;
+}  
 
 #ghpbrinetemp {
     z-index: 100;
