@@ -179,7 +179,7 @@ You might be required to install if above gives errors about ssl: `sudo pip inst
 # Power meter
 Raspberry Zero with photoresistor (LDR) reading the flashing LED from household power meter (1000 imp/kwh)
 
-TODO: PIC HERE from wiring
+![alt tag](http://i.imgur.com/rdK37ud.png)
 
 Copy files to
 1. `/home/pi/magicaespeculo/scripts/wlan-monitor.sh` (change wlan0 if using different interface name, check ifconfig)
@@ -207,7 +207,7 @@ Autoconnect to wifi if connection goes down
 Raspberry Zero with DS18B20 x3 and DHT22 x2
 
 #### Hardware
-TODO: PIC HERE from wiring
+![alt tag](http://i.imgur.com/WBTJp5J.png)
 #### Setup 1Wire sw:
 Add the following line to `/boot/config.txt`
 ```
@@ -313,6 +313,8 @@ Changes:
 17.10.2016 - Added backup script
 
 1.2.2017 - Added Enervent Ventilation unit
+
+15.3.2017 - Added Wiring diagrams and updated dependencies
 
 License
 MIT
