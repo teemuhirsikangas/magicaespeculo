@@ -6,6 +6,9 @@
 DEVICE="backupmachine"
 ADDRESS=`avahi-resolve -n "$DEVICE.local" | cut -f 2`
 #echo $ADDRESS
+#do backup on all the changed files on this folder
+BACKUPDIR=/path/to/backup/`date +%Y.%m.%d`
 #force no host key checking, as the ip might change, might have secyrity problems if not using local network, beware.
 #rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no" /sourse_folder username@$ADDRESS:/destination/folder/here
-rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no" /home/pi username@$ADDRESS:/SHARE/backup
+rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no" /home/pi username@$ADDRESS:/SHARE/backup --backup --backup-dir $BACKUPDIR
+
