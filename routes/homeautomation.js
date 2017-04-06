@@ -12,7 +12,7 @@ router.get('/', function (req, res, next) {
         if (err !== null) {
             res.json(err);
         } else {
-            res.json(200, row);
+            res.status(200).json(row);
         }
     });
 });
@@ -187,5 +187,68 @@ router.get('/datastoreraw', function (req, res, next) {
         }
     });
 });
+
+////////////////////////////////////////Technicalroom///////////////////////////////////////////////////////////
+
+
+router.get('/technicalroom', function (req, res, next) {
+
+    db.all('SELECT * FROM TECHNICAL_ROOM ORDER BY timestamp', function (err, row) {
+        if (err !== null) {
+            res.json(err);
+        } else {
+            //console.log(row);
+            res.status(200).json(row);
+        }
+    });
+});
+
+/* GET last values homeautomation listing. */
+router.get('/technicalroom/lastvalues', function (req, res, next) {
+
+    db.all('SELECT * FROM TECHNICAL_ROOM ORDER BY timestamp DESC LIMIT 1', function (err, row) {
+        if (err !== null) {
+           res.json(err);
+        } else {
+            res.status(200).json(row);
+        }
+    });
+});
+
+/* GET temperature/humid values for start of hour */
+router.get('/technicalroom/hourly', function (req, res, next) {
+
+    db.all('SELECT strftime("%Y-%m-%d %H:00:00", timestamp/1000, "unixepoch", "localtime") as date, technical_room technical_humid FROM TECHNICAL_ROOM GROUP BY date ORDER BY date ASC', function (err, row) {
+        if (err !== null) {
+            res.json(err);
+        } else {
+            //console.log(row);
+            res.status(200).json(row);
+        }
+    });
+});
+
+
+/*
+ * POST to add temperature data
+ */
+router.post('/technicalroom', function (req, res) {
+    //timestamp = req.body.timestamp;
+    var technical_room = req.body.technical_room,
+        technical_humid = req.body.technical_humid,
+        timestamp = new Date().getTime(),
+        sqlRequest = "INSERT INTO 'TECHNICAL_ROOM' (timestamp, technical_room, technical_humid) " +
+                 "VALUES('" + timestamp + "', '" + technical_room + "','" + technical_humid + "')"
+
+    db.run(sqlRequest, function (err) {
+        if (err !== null) {
+            res.json(err);
+        } else {
+            res.json(201);
+        }
+    });
+    //res.render('index', req.body);
+});
+
 
 module.exports = router;

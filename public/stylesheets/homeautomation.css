@@ -209,3 +209,21 @@
     width: 215px;
 }
 
+
+#technical_room {
+    position: absolute;
+    color: white;
+    left: 0px;
+    bottom: 20px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+#technical_humid {
+    position: absolute;
+    color: white;
+    left: 0px;
+    bottom: 5px;
+    font-size: 12px;
+    font-weight: bold;
+}

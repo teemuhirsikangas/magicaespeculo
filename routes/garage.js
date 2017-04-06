@@ -13,7 +13,7 @@ router.get('/', function (req, res, next) {
             res.json(err);
         } else {
             //console.log(row);
-            res.json(200, row);
+            res.status(200).json(row);
         }
     });
 });

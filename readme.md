@@ -163,6 +163,8 @@ Edit scripts to match your backend address
 */1 * * * * sudo python /home/pi/magicaespeculo/scripts/send_homeautomation_raw_values.py > /dev/null 2>&1
 #send data once a day at 9.00 am
 0 9 * * * sudo python /home/pi/magicaespeculo/scripts/send_homeautomation_yesterday_avarages.py > /dev/null 2>&1
+#needed in case another usb serial converted:
+@reboot sudo /home/pi/ThermIq_usbxDevice.sh 2>&1
 ```
 
 Install Python requests package 
@@ -283,7 +285,10 @@ Copy files to
 ```
 #send data every minute
 */1 * * * * sudo python /home/pi/magicaespeculo/scripts/send_ventilation.py > /dev/null 2>&1
+*/1 * * * * sudo python /home/pi/magicaespeculo/scripts/send_technicalroom_temp.py > /dev/null 2>&1
 ```
+
+Install dht22 libs if technicalroom_temp.py is used
 
 ##  external sources
 

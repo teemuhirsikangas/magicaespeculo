@@ -166,6 +166,26 @@ module.exports.init = function () {
         }
     });
 
+        // Database initialization
+    db.get("SELECT name FROM sqlite_master WHERE type='table' AND name='TECHNICAL_ROOM'", function (err, rows) {
+        if (err !== null) {
+            console.log(err);
+        } else if (rows === undefined) {
+              db.run('CREATE TABLE "TECHNICAL_ROOM" ' +
+                     '("timestamp" integer primary key, ' +
+                     '"technical_room" VARCHAR(255), ' +
+                     '"technical_humid" VARCHAR(255));', function (err) {
+                  if (err !== null) {
+                      console.log(err);
+                  } else {
+                    console.log("SQL Table 'TECHNICAL_ROOM' initialized.");
+                  }
+            });
+        } else {
+            console.log("SQL Table 'TECHNICAL_ROOM' already initialized.");
+        }
+    });
+
 db.close();
 
 };

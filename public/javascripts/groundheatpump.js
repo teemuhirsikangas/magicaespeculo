@@ -89,6 +89,29 @@ var rawdata = function () {
         //$("#COMPR_STARTS").html(rawdata[0].COMPR_STARTS); //no need
         //$("#HGW_VV").html(rawdata[0].HGW_VV); //not in this ground heap pump mode,
     });
+
+    $.getJSON('/homeautomation/technicalroom/lastvalues', function (data) {
+
+        try {
+
+        $("#technical_room").html(data[0].technical_room + '&deg;');
+        $("#technical_humid").html(data[0].technical_humid + '&#37;');
+
+
+        checkIfDataIsStale(data[0].timestamp);
+
+        } catch (e) {
+
+            if (e instanceof NoNewDataException) {
+                document.getElementById("technical_room").style.color = "#ff0000";
+                document.getElementById("technical_humid").style.color = "#ff0000";
+            } else {
+                //$("#technical_room").html("-");
+                //$("#technical_humid").html("-");
+            }
+        }
+    });
+
 };
 
 $(document).ready(function () {
