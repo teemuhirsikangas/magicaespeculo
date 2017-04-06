@@ -118,10 +118,15 @@ $(document).ready(function () {
 
     if(config.groundheatpump.show) {
         
-        var d = document.getElementById("groundheatpump");
+        var d = document.getElementById("groundheatpumpyesterday");
         d.onclick = function () {
              window.open(config.groundheatpump.domain,'_blank');
         };
+
+        var d = document.getElementById("technical_room");
+        d.onclick = function () {
+        generateChart('/homeautomation/technicalroom/hourly');
+    };
 
         daydata(); 
         //every 10 minutes

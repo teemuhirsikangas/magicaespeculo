@@ -10,6 +10,9 @@
     line-height: 90%;
 }
 
+#groundheatpumpyesterday:hover {
+    cursor: pointer;
+}  
 
 #groundheatpump {
     position: absolute;
@@ -19,9 +22,7 @@
     height: 258px;
 }   
 
-#groundheatpump:hover {
-    cursor: pointer;
-}  
+
 
 #ghpbrinetemp {
     z-index: 100;
@@ -213,15 +214,21 @@
 #technical_room {
     position: absolute;
     color: white;
+    z-index: 100;
     left: 0px;
     bottom: 20px;
     font-size: 12px;
     font-weight: bold;
 }
 
+#technical_room:hover {
+    cursor: pointer;
+}  
+
 #technical_humid {
     position: absolute;
     color: white;
+    z-index: 100;
     left: 0px;
     bottom: 5px;
     font-size: 12px;
