@@ -9,6 +9,7 @@ My version of **Magic Mirror** which contains
 - Ground heat pump monitoring ([Thermia](http://www.thermia.com/products/thermia-diplomat-optimum.asp)) 
 - Home power comsumption monitoring
 - Ventilation monitoring
+- Solar energy/pv system: [Enphase](https://enphase.com/) [Envoy-s](https://enphase.com/en-us/products-and-services/envoy) data logging from local network, directly from Envoy-s. Feature added 07/2017
 
 ![alt tag](http://i.imgur.com/YNLKgJT.png)
 ![alt tag](http://i.imgur.com/92U34gG.gif)
@@ -290,6 +291,20 @@ Copy files to
 
 Install dht22 libs if technicalroom_temp.py is used
 
+-------------------------------------------------------------
+# Solar production metering with Enphase Envoy-s
+
+Copy files to
+1. `/home/pi/magicaespeculo/scripts/send_envoy.py` -sends solar production values every 60secs to backend (Json)
+2. Change username/password from the file and local envoy-s url in case multiple envoy's on the same network
+
+`sudo crontab -e`
+```
+#send data every minute
+*/1 * * * * sudo python /home/pi/magicaespeculo/scripts/send_envoy.py > /dev/null 2>&1
+```
+
+
 ##  external sources
 
 Gear image `images/gear_inv_5prv.png` modified from here: (included but not used)
@@ -310,7 +325,6 @@ Robomow lawn mower schedule integration to calendar or directly via Bluetooth LE
 BUTTON: change mirror pages to hide calendar/reload page/shutdown
 Add welcome text other info which requires attention?
 sd-card optimization from wear and tear
-Create graphics/histogram for temperature/ground heat pump statistics (done for electricity and temperature loggin)
 ```
 
 Changes:
@@ -320,6 +334,8 @@ Changes:
 1.2.2017 - Added Enervent Ventilation unit
 
 15.3.2017 - Added Wiring diagrams and updated dependencies
+
+07.07.2017 - Added Enphase Envoy-s data for solar production
 
 License
 MIT
