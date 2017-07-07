@@ -19,7 +19,7 @@
 #kwh {
     position: absolute;
     bottom: 0px;
-    left: 20px;
+    left: 120px;
 }
 
 #kwh:hover {
@@ -29,13 +29,13 @@
 #watts_icon {
     position: absolute;
     bottom: 0px;   
-    left: 150px;    
+    left: 100px;    
 }
 
 #watts {
     position: absolute;
     bottom: 0px;   
-    left: 170px;
+    left: 20px;
 }
 
 #watts:hover {
@@ -45,5 +45,5 @@
 #kwh_yesterday {
     position: absolute;
     bottom: 0px;   
-    left: 280px;
+    left: 240px;
 }

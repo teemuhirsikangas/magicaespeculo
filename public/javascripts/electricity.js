@@ -18,7 +18,7 @@ var electricityData = function () {
     $.getJSON('/electricity/now', function (electricityDataMinute) {
         try {
 
-            $("#watts").html('<i class="fa fa-tachometer" aria-hidden="true"></i> ' + electricityDataMinute[0].pulsecount * 60 / 1000 + ' kW');
+            $("#watts").html('<i class="fa fa-bolt" aria-hidden="true"></i> ' + electricityDataMinute[0].pulsecount * 60 / 1000 + ' kW');
             checkIfDataIsStale(electricityDataMinute[0].timestamp);
 
         } catch (e) {
