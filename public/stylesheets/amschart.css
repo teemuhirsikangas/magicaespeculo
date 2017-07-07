@@ -1,8 +1,8 @@
 #chartdiv {
 	z-index: 100;
     position: absolute;
-    left: 400px;
-	top: 100px;
+    left: 100px;
+	top: 500px;
 	width	: 70%;
 	height	: 800px;
 	background-color: #FFFFFF;
