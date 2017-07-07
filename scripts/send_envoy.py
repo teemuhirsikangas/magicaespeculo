@@ -10,9 +10,12 @@ import time
 #script for querying solar production data from Emphase Envoy-s on local network
 
 EnvoyBaseURl = 'http://envoy.local'
-envoyUrl = EnvoyBaseURl + '/api/v1/production/inverters'
 envoyPWD = '006468' #last 6 digits of your envoy serial number
 envoyuser = 'envoy'
+
+headers = {
+    'cache-control': 'max-age=0, no-cache'
+}
 
 #payload = {}
 entry1List = []
@@ -22,7 +25,7 @@ producingList = []
 
 #inverterstatus
 envoyUrl1 = EnvoyBaseURl + '/inventory.json'
-resp1 = requests.get(envoyUrl1,auth=HTTPDigestAuth(envoyuser,envoyPWD))
+resp1 = requests.get(envoyUrl1,auth=HTTPDigestAuth(envoyuser,envoyPWD), headers=headers)
 if resp1.status_code == requests.codes.ok:
 	json_data1 = resp1.json()
 	#print (json_data1)
@@ -40,10 +43,13 @@ if resp1.status_code == requests.codes.ok:
 else:
 	print(resp.status_code)
 
+#envoy local caches the results sometimes so adding sleep just in case
+
 #print(producingList)
 
 #per panel wattage + add production status
-resp = requests.get(envoyUrl,auth=HTTPDigestAuth(envoyuser,envoyPWD))
+envoyUrl = EnvoyBaseURl + '/api/v1/production/inverters'
+resp = requests.get(envoyUrl,auth=HTTPDigestAuth(envoyuser,envoyPWD), headers=headers)
 if resp.status_code == requests.codes.ok:
 	json_data = resp.json()
 	#print (json_data)
@@ -77,7 +83,7 @@ else:
 #per panel wattage
 envoyUrl2 = EnvoyBaseURl + '/production.json'
 
-resp2 = requests.get(envoyUrl2,auth=HTTPDigestAuth(envoyuser,envoyPWD))
+resp2 = requests.get(envoyUrl2,auth=HTTPDigestAuth(envoyuser,envoyPWD), headers=headers)
 if resp2.status_code == requests.codes.ok:
 	json_data2 = resp2.json()
 	#print (json_data2)
@@ -89,11 +95,9 @@ if resp2.status_code == requests.codes.ok:
 else:
 	print(resp.status_code)
 
-
-
 #historydata
 envoyUrl3 = EnvoyBaseURl + '/api/v1/production/'
-resp3 = requests.get(envoyUrl3,auth=HTTPDigestAuth(envoyuser,envoyPWD))
+resp3 = requests.get(envoyUrl3,auth=HTTPDigestAuth(envoyuser,envoyPWD), headers=headers)
 if resp3.status_code == requests.codes.ok:
 	json_data3 = resp3.json()
 	#print (json_data3)
