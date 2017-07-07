@@ -5,7 +5,7 @@ function checkIfDataIsStale(lastTimestamp) {
     var lastEntryDate = moment(lastTimestamp),
         currentDate = moment(new Date()),
         diff = currentDate.diff(lastEntryDate, 'minutes');
-    if (diff >= 10) {
+    if (diff >= 16) {
         console.log("no new data since: " + lastEntryDate.format("YYYY-MM-DD HH:mm"));
         throw new NoNewDataException(diff);
     }
