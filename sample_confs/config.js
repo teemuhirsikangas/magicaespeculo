@@ -41,5 +41,9 @@ var config = {
         updateinterval : 600000,
         styleid : "calendar",
         styleid2 : "calendartwo"
+    },
+        envoy : { //Emphase envoy solar Inverter
+        show : false, //enable-disable
+        publicUrl : 'https://' //your public profile url for Enphase envoy
     }
 };

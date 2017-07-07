@@ -1,0 +1,93 @@
+#envoy {
+    z-index: 100;
+    position: absolute;
+    left: 300px;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    bottom: 25px;
+    width:  600px;
+    height: 200px;
+    color: white;
+}
+
+
+#whLifetime {
+    position: absolute;
+    bottom: 0px;   
+    left: 480px;
+}
+
+#whLifetime:hover {
+    cursor: pointer;
+}
+
+#wattHoursSevenDays {
+    position: absolute;
+    bottom: 0px;   
+    left: 360px;
+}
+
+#wattHoursSevenDays:hover {
+    cursor: pointer;
+}
+
+#wattHoursToday {
+    position: absolute;
+    bottom: 0px;   
+    left: 120px;
+}
+#wattHoursYesterday {
+    position: absolute;
+    bottom: 0px;   
+    left: 240px;   
+}
+
+#wNow {
+    position: absolute;
+    bottom: 0px;   
+    left: 20px;
+}
+#readingTime {
+    position: absolute;
+    left: 20px;
+    top: 15px;
+}
+#timestamp {
+    position: absolute;
+}
+#inverters {
+    position: absolute;
+    left: 150px;
+    top: 15px;
+}
+#serialNumber {
+    position: absolute;
+}
+#lastReportWatts {
+    position: absolute;
+}
+#maxReportWatts {
+    position: absolute;
+}
+#lastReportDate {
+    position: absolute;
+}
+#producing {
+    position: absolute;
+}
+
+#envoyChart {
+    position: absolute;
+    top: 30px;
+    left: 2px;
+    background-color: black;
+}
+
+/*overwrite highcharts style
+*/
+.highcharts-background {
+    fill: #000000 !important;
+  /*  stroke: #ffffff;
+    stroke-width: 2px;
+*/
+}

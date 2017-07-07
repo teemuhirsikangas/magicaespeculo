@@ -186,6 +186,53 @@ module.exports.init = function () {
         }
     });
 
+    db.get("SELECT name FROM sqlite_master WHERE type='table' AND name='ENVOY_STATUS_REPORTS'", function (err, rows) {
+        if (err !== null) {
+            console.log(err);
+        } else if (rows === undefined) {
+              db.run('CREATE TABLE "ENVOY_STATUS_REPORTS" ' +
+                     '("timestamp" INTEGER PRIMARY KEY, ' +
+                     '"readingTime" INTEGER, ' +
+                     '"wNow" INTEGER NOT NULL DEFAULT 0, ' +
+                     '"wattHoursToday" INTEGER NOT NULL DEFAULT 0, ' +
+                     '"wattHoursSevenDays" INTEGER NOT NULL DEFAULT 0, ' +
+                     '"whLifetime" INTEGER NOT NULL DEFAULT 0);', function (err) {
+                  if (err !== null) {
+                      console.log(err);
+                  } else {
+                    console.log("SQL Table 'ENVOY_STATUS_REPORTS' initialized.");
+                  }
+            });
+        } else {
+            console.log("SQL Table 'ENVOY_STATUS_REPORTS' already initialized.");
+        }
+    });
+
+        // Database initialization Enphase ENVOY-S data
+    db.get("SELECT name FROM sqlite_master WHERE type='table' AND name='ENVOY_INVERTER_STATUS'", function (err, rows) {
+        if (err !== null) {
+            console.log(err);
+        } else if (rows === undefined) {
+              db.run('CREATE TABLE "ENVOY_INVERTER_STATUS" ' +
+                     '("id" INTEGER PRIMARY KEY AUTOINCREMENT, ' +
+                     '"timestamp" INTEGER, ' +
+                     '"serialNumber" INTEGER NOT NULL DEFAULT 0, ' +
+                     '"lastReportWatts" INTEGER NOT NULL DEFAULT 0, ' +
+                     '"maxReportWatts" INTEGER NOT NULL DEFAULT 0, ' +
+                     '"lastReportDate" INTEGER, ' +
+                     '"producing" INTEGER NOT NULL DEFAULT 0);', function (err) {
+                  if (err !== null) {
+                      console.log(err);
+                  } else {
+                    console.log("SQL Table 'ENVOY_INVERTER_STATUS' initialized.");
+                  }
+            });
+        } else {
+            console.log("SQL Table 'ENVOY_INVERTER_STATUS' already initialized.");
+        }
+    });
+
+
 db.close();
 
 };
