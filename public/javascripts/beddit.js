@@ -3,6 +3,9 @@ var bedditdata = function () {
 
     $.getJSON('/beddit/', function (data) {
         try {
+            $("#icon").html('<i class="fa fa-bed fa-3x" aria-hidden="true"></i>');
+     //beddit api is no longer public and they have made some changes, will disable this for now
+     /*
             var start = moment(data[0].start_timestamp * 1000).format("YYYY-MM-DD HH:mm"),
                 end = moment(data[0].end_timestamp * 1000).format("YYYY-MM-DD HH:mm"),
                 //for loopt all dates, and and to bar
@@ -39,31 +42,15 @@ var bedditdata = function () {
             }
 
             //console.log(data[0].end_timestamp);
-            /*
-              "start_timestamp" : 1371472503.646541,
-              "end_timestamp" : 1371492826.623422,
-              "date" : "2012-05-30",
-
-              properties:
-                "score_sleep_latency" : 5,
-                "score_sleep_efficiency" : -20,
-                resting_heart_rate
-                average_respiration_rate
-                sleep_latency //missing if not slept
-                away_episode_count //away
-                total_snoring_episode_duration //snoring
-                stage_duration_S //total sleeptime       
-            */
-            $("#icon").html('<i class="fa fa-bed fa-3x" aria-hidden="true"></i>');
             $("#chart").html('<canvas id="myChart" height="200" width="150"> </canvas>');
             var ctx = $("#myChart");
             // Chart options
             Chart.defaults.global.legend.display = false;
         //Chart.defaults.global.tooltips.enabled = false;
-/*        Chart.defaults.global.scaleLabel = function (label) {
-         return label.label.toString()+"jees";
-        };
-*/
+        //Chart.defaults.global.scaleLabel = function (label) {
+        // return label.label.toString()+"jees";
+        //};
+
             var myChart = new Chart(ctx, {
                 type: 'horizontalBar',
                 options: {
@@ -120,7 +107,9 @@ var bedditdata = function () {
                 }
 
             });
-            var totalSleepTime = data[data.length - 1].properties.stage_duration_S / 3600,
+            */
+            //var totalSleepTime = data[data.length - 1].properties.stage_duration_S / 3600,
+            var totalSleepTime = data[data.length - 1].properties.primary_sleep_period_total_sleep_duration / 3600,
                 hours = Math.floor(totalSleepTime),
                 minutes = Math.round(totalSleepTime * 60 % 60),
                 hearRate = data[data.length - 1].properties.resting_heart_rate.toFixed(1),

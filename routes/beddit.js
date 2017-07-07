@@ -14,11 +14,14 @@ router.get('/:id/:maxResults/:maxDays', function (req, res, next) {
 
 router.get('/', function (req, res) {
 
-    getBedditData(res, 2, 4);
+    getBedditData(res, 2, 2);
 
 });
 
 var getBedditData = function (res, maxResults, days) {
+
+    var currentDate = new Date();
+    currentDate.setDate(currentDate.getDate() + 1);
 
     var beddit = new Beddit(),
         today = new Date(),
@@ -26,10 +29,12 @@ var getBedditData = function (res, maxResults, days) {
         maxDays = new Date(today.getTime() - msecPerDay * days),
         start_date = maxDays.toISOString().split('T')[0],
         end_date = today.toISOString().split('T')[0],
+        tomorrow = currentDate.toISOString().split('T')[0],
         //check paramenters from here: https://github.com/beddit/beddit-api/blob/master/3_2-SleepResources.md
         //var queryparams = { 'updated_after': maxDays.getTime(), 'limit': maxResults  };
         key = require('../data/beddit_key.json'),
-        queryparams = { 'start_date': start_date, 'end_date': end_date, 'limit': maxResults, 'reverse' : "no" };
+        queryparams = { 'start_date': start_date, 'end_date': tomorrow, 'limit': maxResults, 'reverse' : "no" };
+        console.log(end_date);
     beddit
         //.login(username, pw)
         .login(key.username, key.password)
