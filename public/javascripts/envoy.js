@@ -7,13 +7,13 @@ var envoyData = function () {
                 var inverters = Data[1].inverters;
                 var d = moment(new Date(Data[0].readingTime * 1000));
 
-                $("#readingTime").html('<i class="fa fa-clock-o" aria-hidden="true"></i>' + d.locale(config.locale).format('LT'));
+                $("#readingTime").html('<i class="fa fa-clock-o" aria-hidden="true"></i> ' + d.locale(config.locale).format('LT'));
                 
 
                 $("#wNow").html('<i class="fa fa-bolt" aria-hidden="true"></i> ' + Data[0].wNow /1000 + ' kW');
-                $("#wattHoursToday").html('<i class="fa fa-plug" aria-hidden="true"></i> ' + Data[0].wattHoursToday / 1000 + ' kW');
-                $("#wattHoursSevenDays").html('<i class="fa fa-plug" aria-hidden="true"></i> ' + Data[0].wattHoursSevenDays / 1000 + ' kW'); //1 decimal
-                $("#whLifetime").html('<i class="fa fa-calendar" aria-hidden="true"></i> ' + Data[0].whLifetime / 1000 + ' kW'); //1 decimal
+                $("#wattHoursToday").html('<i class="fa fa-plug" aria-hidden="true"></i> ' + Data[0].wattHoursToday / 1000 + ' kWh');
+                $("#wattHoursSevenDays").html('<i class="fa fa-plug" aria-hidden="true"></i> ' + (Data[0].wattHoursSevenDays / 1000).toFixed(1) + ' kWh'); //1 decimal
+                $("#whLifetime").html('<i class="fa fa-calendar" aria-hidden="true"></i> ' + Math.round(Data[0].whLifetime / 1000) + ' kWh'); //1 decimal
 
                 var table = document.createElement("table");
                 const columnCount = inverters.length;
@@ -56,7 +56,7 @@ var envoyDataYesterday = function () {
         try {
 
             const lastValue = Data.length -1;
-            $("#wattHoursYesterday").html(electricitytext.yesterday + Data[lastValue].wattHoursToday / 1000 + ' kWh');
+            $("#wattHoursYesterday").html(electricitytext.yesterday + (Data[lastValue].wattHoursToday / 1000).toFixed(2) + ' kWh');
 
         } catch (e) {
 
