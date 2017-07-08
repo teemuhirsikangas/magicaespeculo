@@ -50,7 +50,7 @@ var ventilationtext = {
         32768 : "EXT sulatus"
     },
     heating_status : {
-        0: "Ei Lämpöätilasäätöä",
+        0: "LTO pois",
         1: "Jäähdytys",
         2: "LTO",
         4: "Lämmitys",

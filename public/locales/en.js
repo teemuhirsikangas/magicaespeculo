@@ -50,7 +50,7 @@ var ventilationtext = {
         32768 : "EXT de-frosting"
     },
     heating_status : {
-        0: "None",
+        0: "No Heat Recovery",
         1: "Cooling",
         2: "Heat Recovery",
         4: "Heating",
@@ -64,7 +64,7 @@ var ventilationtext = {
 };
 
 var electricitytext = {
-    "yesterday" : "Yesterday: "
+    "yesterday" : "y-day: "
 };
 
 var days = ["na", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
