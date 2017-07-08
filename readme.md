@@ -11,7 +11,7 @@ My version of **Magic Mirror** which contains
 - Ventilation monitoring
 - Solar energy/pv system: [Enphase](https://enphase.com/) [Envoy-s](https://enphase.com/en-us/products-and-services/envoy) data logging from local network, directly from Envoy-s. Feature added 07/2017
 
-![alt tag](http://i.imgur.com/80RZWyA.png)
+![alt tag](http://i.imgur.com/h9gx3G3.png)
 ![alt tag](http://i.imgur.com/92U34gG.gif)
 ![alt tag](http://i.imgur.com/dcNKFjz.png)
 
