@@ -24,7 +24,7 @@ var electricityData = function () {
         } catch (e) {
             
             if (e instanceof NoNewDataException) {
-                document.getElementById("kwh").style.color = "#ff0000";
+                document.getElementById("watts").style.color = "#ff0000";
             } else {
                 $("#kwh").html("-");
             }
@@ -44,7 +44,7 @@ var electricityDataYesterday = function () {
         } catch (e) {
 
             if (e) {
-                $("#kwh").html("-");
+                $("#watts").html("-");
             }
         }
     });

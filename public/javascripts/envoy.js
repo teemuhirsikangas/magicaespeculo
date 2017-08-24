@@ -41,7 +41,9 @@ var envoyData = function () {
 
         } catch (e) {
             if (e instanceof NoNewDataException) {
-                document.getElementById("envoy").style.color = "#ff0000";
+                document.getElementById("wNow").style.color = "#ff0000";
+                document.getElementById("inverters").style.color = "#ff0000";
+                document.getElementById("readingTime").style.color = "#ff0000";
             } else {
                 $("#wNow").html("-");
             }
