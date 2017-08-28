@@ -1,0 +1,5 @@
+#mqtt username and pw and addr of MQTT broker
+#copy this file to config.py
+username = "xxxx"
+password = "yyyy"
+MQTT_ADDRESS = "192.168.100.3"
