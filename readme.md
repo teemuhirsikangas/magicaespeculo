@@ -117,6 +117,9 @@ Scripts to run on startup:
 `nano ~/.config/lxsession/LXDE-pi/autostart`
 ```
 //@xscreensaver -no-splash  //comment this out to disable screens saver
+@xset s noblank
+@xset s off
+@xset -dpms 
 @iceweasel http://[hostname of backend].local:3333      #e.g. http://numberpi.local:3333
 @unclutter -idle 0.1 -root                              #hides mouse cursor if no movement
 @/usr/bin/python /home/pi/magicaspeculo/scripts/pir.py          #starts infrared sensor to turn of monitor to save energy
