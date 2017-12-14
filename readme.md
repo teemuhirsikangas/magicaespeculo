@@ -17,7 +17,7 @@ My version of **Magic Mirror** which contains
 
 For hardware part list, mirror frame construction, etc see the whole project [here](http://speculo.hirsikangas.fi/dyi/magicae-speculo-magic-mirror-with-homeautomation/)
 
-* **Backend**: Raspberry Pi 2 with Rasbian Wheezy/Jessie, hosts the web backend and database with REST endpoints, and room temperature logger) [Node.JS](https://nodejs.org/en/) [Express](http://expressjs.com/) [pug](http://jade-lang.com/)  [SQLite3](https://www.sqlite.org/)
+* **Backend**: Raspberry Pi 3 with Rasbian stretch, hosts the web backend and database with REST endpoints, and room temperature logger) [Node.JS](https://nodejs.org/en/) [Express](http://expressjs.com/) [pug](http://jade-lang.com/)  [SQLite3](https://www.sqlite.org/)
 * **MIRROR**: Raspberry Pi 3 mounted back of the mirror with PIR detection to turn of monitor to conserve energy
 * **Home automation**:  
     1. Ground heat pump: [ThermIQ](http://www.thermiq.net/product/thermiq-2/?lang=en) data logger connected to [Thermia Diplomat](http://www.thermia.com/products/thermia-diplomat-optimum.asp) ground heat pump   (Raspberry Pi 1 b+)
@@ -29,18 +29,16 @@ For hardware part list, mirror frame construction, etc see the whole project [he
 This project outgrew a bit from the original design, so db schemas etc needs refactoring :)
 
 # INSTALL 
-`git clone git@github.com:teemuhirsikangas/magicaespeculo.git`
+`git clone https://github.com/teemuhirsikangas/magicaespeculo.git`
 
 -------------------------------------------------------------
 ### Backend
-Raspberry Pi 3 Jessie
+Raspberry Pi 3 Stretch
 
 node.js:
 ```
-sh wget https://nodejs.org/dist/latest/node-v6.7.0-linux-armv7l.tar.gz
-tar -xvf node-v6.7.0-linux-armv7l.tar.gz
-cd node-v6.7.0-linux-armv7l/
-sudo cp -R * /usr/local/
+curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+sudo apt-get install -y nodejs
 ```
 
 SQLite3:
@@ -112,31 +110,18 @@ Change display orientation (use 1 or 3):
 ```
 For hiding cursor: `sudo apt-get install unclutter`
 
-Install browser:`sudo apt-get install iceweasel`
-(Run Iceweasel in Fullscreen: Once installed, go to Tools > Add-ons > Extensions. Select/find MA Full screen
+Install browser:`sudo apt-get install firefox-esr`
+(Run Firefox in Fullscreen: Once installed, go to Tools > Add-ons > Extensions. Select/find MA Full screen
 
 Scripts to run on startup:
 `nano ~/.config/lxsession/LXDE-pi/autostart`
 ```
-//@xset s off         # don't activate screensaver (works on Wheezy)
-//@xset -dpms         # disable DPMS (Energy Star) features. (works on Wheezy)
-//@xset s noblank     # don't blank the video device (works on Wheezy)
-//@midori -e Fullscreen -a http://numberpi.local:3333   #(optional if midori is preferred kiosk mode browser)
+//@xscreensaver -no-splash  //comment this out to disable screens saver
 @iceweasel http://[hostname of backend].local:3333      #e.g. http://numberpi.local:3333
 @unclutter -idle 0.1 -root                              #hides mouse cursor if no movement
 @/usr/bin/python /home/pi/magicaspeculo/scripts/pir.py          #starts infrared sensor to turn of monitor to save energy
 ```
-Prevent monitor from sleeping (Jessie):
-`sudo nano /etc/lightdm/lightdm.conf`
 
-In that file, look for:
-```
-[SeatDefault]
-```
-and insert this line below
-```
-sh xserver-command=X -s 0 dpms
-```
 #### cronjobs
 Autoconnect to wifi if connection goes down
 `sudo crontab -e`
@@ -146,7 +131,7 @@ Autoconnect to wifi if connection goes down
 -------------------------------------------------------------
 # Ground Heat Pump
 
-Raspberry Pi 1 b+ Wheezy mounted to ground heatpump with [ThermIQ](http://www.thermiq.net/) data logger
+Raspberry Pi 2 b+ Wheezy mounted to ground heatpump with [ThermIQ](http://www.thermiq.net/) data logger
 #### Configure
 [ThermIQ](http://www.thermiq.net/product/thermiq-2/?lang=en) data logger is using sqlite3 db ([how install ThermIQ on raspberry Wheezy](http://www.thermiq.net/wp-conteny/uploads/ThermIQ-installation-for-Raspberry-PI.pdf))
 
