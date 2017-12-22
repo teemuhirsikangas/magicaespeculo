@@ -118,7 +118,7 @@ var bedditdata = function () {
 
         } catch (e) {
             if (e) {
-                $("#floor").html("-");
+                $("#lastnight").html("");
             }
         }
     });
