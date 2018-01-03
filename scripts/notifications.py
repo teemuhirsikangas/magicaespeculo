@@ -19,7 +19,6 @@ def send_IFTT_msg(url, value1, value2, value3):
 	#print(url)
 	#print(payload)
 	r = requests.post(url, data = payload)	
-
 	#todo: if other than http 200, use alternative notification method
 	#print(r)
 
@@ -58,9 +57,32 @@ def on_message(client, userdata, msg):
 
 		if(str(door_status) == "1"):
 			#print("ovi kiinni")
-			door_closed = "Etuovi: Kiinni, "
+			door_closed = "Front door: close, "
 		else:
-			door_closed = "Etuovi: Auki, "
+			door_closed = "Front door: Open, "
+
+		if 'too_long' in list:		
+			too_long = list['too_long']
+			if(str(too_long) == "1"):
+				door_closed = door_closed + ">10s,"
+				#disable notifications for this for now
+			print(" push notification disabled for now")
+			return	
+		vbatt = "3v3: " + str(list['vbatt'])
+		#millis = list['millis']
+		millis = time
+		if(ALARM):
+			send_IFTT_msg(IFTTT_DOOR_URL, door_closed, millis, vbatt)
+
+	if(msg.topic == "home/garage/door"):
+		
+		door_status = list['door_closed']
+
+		if(str(door_status) == "1"):
+			#print("ovi kiinni")
+			door_closed = "Garage: Close, "
+		else:
+			door_closed = "Garage: Open, "
 
 		if 'too_long' in list:		
 			too_long = list['too_long']
