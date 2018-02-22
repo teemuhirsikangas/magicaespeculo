@@ -9,6 +9,17 @@ function checkIfDataIsStale(lastTimestamp) {
         console.log("no new data since: " + lastEntryDate.format("YYYY-MM-DD HH:mm"));
         throw new NoNewDataException(diff);
     }
+}
+
+function checkIfDataIsStalefrom(lastTimestamp, staleValue) {
+
+    var lastEntryDate = moment(lastTimestamp),
+        currentDate = moment(new Date()),
+        diff = currentDate.diff(lastEntryDate, 'minutes');
+    if (diff >= staleValue) {
+        console.log("no new data since: " + lastEntryDate.format("YYYY-MM-DD HH:mm"));
+        throw new NoNewDataException(diff);
+    }
 
 }
 

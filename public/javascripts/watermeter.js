@@ -3,12 +3,13 @@ var watermeterData = function () {
 
     $.getJSON('/watermeter/today', function (watermeterData) {
         try {
-            //show water used today
-            //$("#kwh").html(watermeterData[0].pulsecount/1000 + ' kWh');   
+               
             $("#liters_today").html('<i class="fa fa-tint" aria-hidden="true"></i>  ' + watermeterData[0].liters  + ' l');
-
+            checkIfDataIsStalefrom(watermeterData[0].timestamp, 180);
         } catch (e) {
-            if (e) {
+            if (e instanceof NoNewDataException) {
+                document.getElementById("liters_today").style.color = "#ff0000";
+            } else {
                 $("#liters_today").html("-");
             }
         }

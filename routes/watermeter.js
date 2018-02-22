@@ -65,7 +65,7 @@ router.get('/today', function (req, res, next) {
     starttime.setHours(0,0,0,0);
     var endtime = new Date();
     endtime.setHours(24,0,0,0);
-    db.all('SELECT SUM(litercount) as liters FROM WATERMETER WHERE timestamp BETWEEN ' + starttime.getTime() + ' AND ' + endtime.getTime(), function (err, row) {
+    db.all('SELECT timestamp, SUM(litercount) as liters FROM WATERMETER WHERE timestamp BETWEEN ' + starttime.getTime() + ' AND ' + endtime.getTime(), function (err, row) {
         if (err !== null) {
             res.json(err);
         } else {
