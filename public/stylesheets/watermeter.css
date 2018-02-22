@@ -1,0 +1,49 @@
+#watermeter {
+    z-index: 100;
+    position: absolute;
+    right: 0px;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    bottom: 370px;
+    width:  150px;
+    height: 25px;
+    color: white;
+}
+
+#water_icon {
+    position: absolute;
+    bottom: 0px;
+}
+
+#liters_today {
+    position: absolute;
+    bottom: -1px;   
+    left: 0px;
+    font: 18px "Lucida Grande", Helvetica, Arial, sans-serif;
+    font-weight: bold;
+}
+
+#liters_today:hover {
+    cursor: pointer;
+}
+
+#liters_yesterday {
+    position: absolute;
+    bottom: 0px;
+    left: 58px;
+}
+
+#liters_yesterday:hover {
+    cursor: pointer;
+}
+
+
+#liters_thirtydayavarage {
+    position: absolute;
+    bottom: 0px;   
+    left: 100px;
+}
+
+#liters_thirtydayavarage:hover {
+    cursor: pointer;
+}

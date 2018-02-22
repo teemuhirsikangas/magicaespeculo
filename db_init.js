@@ -1,11 +1,11 @@
-"use strict";
+'use strict';
 var sqlite3 = require('sqlite3').verbose();
 var db = new sqlite3.Database('./data/homeautomation.db');
 
 module.exports.init = function () {
 
 // Database initialization for homeautomation
-    'use strict';
+    
     db.get("SELECT name FROM sqlite_master WHERE type='table' AND name='temperature'", function (err, rows) {
         if (err !== null) {
             console.log(err);
@@ -229,6 +229,25 @@ module.exports.init = function () {
             });
         } else {
             console.log("SQL Table 'ENVOY_INVERTER_STATUS' already initialized.");
+        }
+    });
+
+    // Database initialization for watermeter logging
+    db.get("SELECT name FROM sqlite_master WHERE type='table' AND name='WATERMETER'", function (err, rows) {
+        if (err !== null) {
+            console.log(err);
+        } else if (rows === undefined) {
+            db.run('CREATE TABLE "WATERMETER" ' +
+                    '("timestamp" INTEGER primary key,' +
+                    '"litercount" INTEGER NOT NULL DEFAULT 0);', function (err) {
+                if (err !== null) {
+                    console.log(err);
+                } else {
+                    console.log("SQL Table 'WATERMETER' initialized.");
+                }
+            });
+        } else {
+            console.log("SQL Table 'WATERMETER' already initialized.");
         }
     });
 

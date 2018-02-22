@@ -45,5 +45,8 @@ var config = {
         envoy : { //Emphase envoy solar Inverter
         show : false, //enable-disable
         publicUrl : 'https://' //your public profile url for Enphase envoy
+    },
+    watermeter : {
+        show : true, //enable-disable
     }
 };

@@ -16,6 +16,7 @@ var bedditdata = require('./routes/beddit');
 var electricitydata = require('./routes/electricity');
 var garagedata = require('./routes/garage');
 var envoydata = require('./routes/envoy');
+var waterdata = require('./routes/watermeter');
 var pug = require('pug');
 
 var app = express();
@@ -42,6 +43,7 @@ app.use('/beddit', bedditdata);
 app.use('/electricity', electricitydata);
 app.use('/garage', garagedata);
 app.use('/envoy', envoydata);
+app.use('/watermeter', waterdata);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
