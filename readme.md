@@ -10,6 +10,7 @@ My version of **Magic Mirror** which contains
 - Home power comsumption monitoring
 - Ventilation monitoring
 - Solar energy/pv system: [Enphase](https://enphase.com/) [Envoy-s](https://enphase.com/en-us/products-and-services/envoy) data logging from local network, directly from Envoy-s. Feature added 07/2017
+- Water consumption logging. Water meter analog dial is measured by ESP8266 sensor, which send the data via MQTT. ESP8266 codes here [TODO]. Added 02/2018
 
 ![alt tag](http://i.imgur.com/h9gx3G3.png)
 ![alt tag](http://i.imgur.com/92U34gG.gif)
@@ -324,6 +325,8 @@ Changes:
 15.3.2017 - Added Wiring diagrams and updated dependencies
 
 07.07.2017 - Added Enphase Envoy-s data for solar production
+
+22.02.2017 - Added watermeter DB and placeholder for UI
 
 License
 MIT
