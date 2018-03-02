@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -7,6 +7,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var sqlite3 = require('sqlite3').verbose();
 var db = require('./db_init.js').init();
+var mqtt = require('./mqtt/mqtt.js');
 
 var routes = require('./routes/index');
 var measurementdata = require('./routes/homeautomation');
@@ -18,8 +19,13 @@ var garagedata = require('./routes/garage');
 var envoydata = require('./routes/envoy');
 var waterdata = require('./routes/watermeter');
 var pug = require('pug');
+const config = require('./config');
 
 var app = express();
+
+if (config.mqtt.enabled === true) {
+    mqtt.init();
+}
 
 app.locals.moment = require('moment');
 

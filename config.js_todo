@@ -1,0 +1,14 @@
+'use strict';
+// rename me to config.js
+
+const config = { 
+    mqtt: {
+        enabed: true,
+        username: 'xxx',
+        password: '2222',
+        host: 'http://192.168.100.3'
+    }
+
+}
+
+module.exports = config;
