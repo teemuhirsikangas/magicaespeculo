@@ -4,21 +4,20 @@
     right: 0px;
     font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
     font-weight: bold;
-    bottom: 370px;
-    width:  150px;
+    bottom: 380px;
+    width:  200px;
     height: 25px;
     color: white;
 }
 
-#water_icon {
-    position: absolute;
-    bottom: 0px;
+.fa-tint {
+    color: #87CEFA;
 }
 
 #liters_today {
     position: absolute;
-    bottom: -1px;   
-    left: 0px;
+    bottom: -3px;   
+    right: 100px;
     font: 18px "Lucida Grande", Helvetica, Arial, sans-serif;
     font-weight: bold;
 }
@@ -30,7 +29,7 @@
 #liters_yesterday {
     position: absolute;
     bottom: 0px;
-    left: 58px;
+    left: 105px;
 }
 
 #liters_yesterday:hover {
@@ -41,7 +40,7 @@
 #liters_thirtydayavarage {
     position: absolute;
     bottom: 0px;   
-    left: 100px;
+    right: 10px;
 }
 
 #liters_thirtydayavarage:hover {

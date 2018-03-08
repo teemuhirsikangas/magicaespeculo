@@ -17,6 +17,19 @@ router.get('/', function (req, res, next) {
     });
 });
 
+/* GET minute liter values for start of minute */
+router.get('/minutes', function (req, res, next) {
+
+    db.all('SELECT strftime("%Y-%m-%d %H:%M:00", timestamp/1000, "unixepoch", "localtime") as date, sum(litercount) as liters FROM WATERMETER GROUP BY date ORDER BY date ASC', function (err, row) {
+        if (err !== null) {
+            res.json(err);
+        } else {
+            //console.log(row);
+            res.status(200).json(row);
+        }
+    });
+});
+
 
 /* GET hourly liter values for start of hour */
 router.get('/hourly', function (req, res, next) {
@@ -65,7 +78,7 @@ router.get('/today', function (req, res, next) {
     starttime.setHours(0,0,0,0);
     var endtime = new Date();
     endtime.setHours(24,0,0,0);
-    db.all('SELECT timestamp, SUM(litercount) as liters FROM WATERMETER WHERE timestamp BETWEEN ' + starttime.getTime() + ' AND ' + endtime.getTime(), function (err, row) {
+    db.all('SELECT timestamp, COUNT(litercount) as liters FROM WATERMETER WHERE timestamp BETWEEN ' + starttime.getTime() + ' AND ' + endtime.getTime(), function (err, row) {
         if (err !== null) {
             res.json(err);
         } else {
@@ -83,10 +96,11 @@ router.get('/yesterday', function (req, res, next) {
     today.setHours(24,0,0,0);
     var endOfYesterday = new Date(today.getTime() - msecPerDay);
 
-    db.all('SELECT SUM(litercount) as liters FROM WATERMETER WHERE timestamp BETWEEN ' + startOfYesterday.getTime() + ' AND ' + endOfYesterday.getTime(), function (err, row) {
+    db.all('SELECT COUNT(litercount) as liters FROM WATERMETER WHERE timestamp BETWEEN ' + startOfYesterday.getTime() + ' AND ' + endOfYesterday.getTime(), function (err, row) {
         if (err !== null) {
             res.json(err);
         } else {
+            console.log(row);
             res.status(200).json(row);
         }
     });

@@ -57,7 +57,7 @@ function generateChart(path) {
 
             var categoryAxis = chart.categoryAxis;
             categoryAxis.parseDates = true; // as our data is date-based, we set parseDates to true
-            categoryAxis.minPeriod = "hh"; // our data is daily, so we set minPeriod to DD
+            categoryAxis.minPeriod = "mm"; // our data is daily, so we set minPeriod to DD, mm=minute, hh=hour
             categoryAxis.dashLength = 1;
             categoryAxis.gridAlpha = 0.15;
             categoryAxis.axisColor = "#DADADA";
