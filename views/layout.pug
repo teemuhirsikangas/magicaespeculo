@@ -2,6 +2,7 @@ doctype html
 html
   head
     title= title
+    link(rel="stylesheet" href='/bootstrap/dist/css/bootstrap.min.css')
     link(rel='stylesheet', href='/stylesheets/style.css')
     link(rel='stylesheet', href='/stylesheets/ventilation.css')
     link(rel='stylesheet', href='/stylesheets/homeautomation.css')    
@@ -13,6 +14,8 @@ html
     link(rel='stylesheet', href='/stylesheets/envoy.css')
     link(rel='stylesheet', href='/stylesheets/watermeter.css')
     link(rel='stylesheet', href='/stylesheets/highcharts.css')
+    link(rel='stylesheet', href='/stylesheets/realtimenotifications.css')
+
     //6.0.3 version -^
     //script(type='text/javascript')(src='//ajax.googleapis.com/ajax/libs/jquery/2.2.3/jquery.min.js')
     //script(type='text/javascript')(src='//cdnjs.cloudflare.com/ajax/libs/jquery.simpleWeather/3.1.0/jquery.simpleWeather.min.js')
@@ -35,7 +38,9 @@ html
     script(type='text/javascript', src='//www.amcharts.com/lib/3/themes/light.js')
     link(rel='stylesheet', href='//www.amcharts.com/lib/3/plugins/export/export.css')
 
-
+    //from node_modules
+    script(src='/socket.io/socket.io.js')
+    script(src='/bootstrap/dist/js/bootstrap.min.js')
     //own
     script(src='/javascripts/config.js')
     script(src='/javascripts/utils.js')
@@ -50,6 +55,7 @@ html
     script(src='/javascripts/electricity.js')
     script(src='/javascripts/envoy.js')
     script(src='/javascripts/watermeter.js')
+    script(src='/javascripts/socketIO.js')
     script(src='/locales/fi.js')
     //script(src='/locales/en.js')
     

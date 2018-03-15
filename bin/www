@@ -7,7 +7,7 @@
 var app = require('../app');
 var debug = require('debug')('magicaspeculo:server');
 var http = require('http');
-
+var socketApi = require('../mqtt/mqtt.js').socketApi;
 /**
  * Get port from environment and store in Express.
  */
@@ -20,6 +20,10 @@ app.set('port', port);
  */
 
 var server = http.createServer(app);
+
+//attach socket.io
+var io = socketApi.io;
+io.attach(server);
 
 /**
  * Listen on provided port, on all network interfaces.

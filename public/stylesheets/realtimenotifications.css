@@ -1,0 +1,82 @@
+#realtimenotifications {
+    z-index: 100;
+    position: absolute;
+    right: 0px;
+    font: 16px "Lucida Grande", Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    bottom: 500px;
+    width:  200px;
+    height: 200px;
+    color: white;
+}
+
+#alarm {
+
+}
+
+#alarmText {
+    position: absolute;
+    top: 0px;
+    left: 25px;
+}
+
+#alarmStatus {
+    position: absolute;
+    top: 0px;
+    right: 5px;
+}
+
+#waterleak {
+
+}
+#waterleakText {
+    position: absolute;
+    top: 25px;
+    left: 25px;
+}
+#waterleakStatus {
+    position: absolute;
+    top: 25px;
+    right: 5px;
+}
+
+  /* #garagedoor {
+    position: absolute;
+    width:  300px;
+    height: 25px;
+    top: 0px;
+    left: 0px;
+
+    font-weight: bold;
+}  */
+#garagestatus {
+    position: absolute;
+    top: 50px;
+    right: 5px;
+}
+
+#garagetext {
+    position: absolute;
+    top: 50px;   
+    left: 0px;
+
+}
+
+#frontdoor
+
+#frontdoortext {
+    position: absolute;
+    top: 75px;
+    left: 0px;
+}
+
+#frontdoorstatus {
+    position: absolute;
+    top: 75px;
+    right: 5px;
+}
+
+#alarmStatus:hover {
+    cursor: pointer;
+}
+

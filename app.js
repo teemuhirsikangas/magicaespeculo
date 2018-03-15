@@ -33,6 +33,10 @@ app.locals.moment = require('moment');
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
+// expose node_modules to front end js
+// might be security problems if mirror is in public internet, as it exposes all
+// -> expose only modules needed
+app.use(express.static(__dirname + '/node_modules'));  
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));

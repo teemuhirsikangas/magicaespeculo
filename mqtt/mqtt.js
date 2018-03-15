@@ -3,8 +3,66 @@ const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('./data/homeautomation.db');
 const mqtt = require('mqtt');
 const config = require('../config');
+var socket_io = require('socket.io');
+var io = socket_io();
+var socketApi = {};
 
-module.exports.init = function () {
+socketApi.io = io;
+
+io.on('connection', function(socket){
+    console.log('A user connected');
+
+    // Front end mqtt client, just for front end clients
+    const options = {
+        //clientId: config.mqtt.clientId || 'mqtt_nodejsjoo',
+        username: config.mqtt.username,
+        password: config.mqtt.password,
+        keepalive: 0,
+        clean: true
+    }
+    socket.mqttClient = {};
+    socket.mqttClient = mqtt.connect(config.mqtt.host, options);
+
+    socket.mqttClient.on('message', function (topic, message) {
+        console.log('Topic ' + topic + ' Message' + message.toString());
+        socket.emit('mqtt', {'topic'  : topic, 'payload' : JSON.parse(message)});
+      });
+
+    //MQTT connected
+    socket.mqttClient.on('connect', function () {
+        console.log('mqtt client connected');
+        socket.mqttClient.subscribe('home/#')
+    });
+
+    //MQTT closed
+    socket.mqttClient.on('close', function () {
+        console.log('mqtt client closed');
+    });
+
+    //  //subscribe new topic
+    // socket.on('subscribe', function (data) {
+    //     console.log('Subscribing to '+data.topic);
+    //     socket.mqttClient.subscribe(data.topic);
+    // });
+
+    //socket disconnect     
+    socket.on('disconnect', function () {
+        console.log('disconnecting:', socket.id);
+        socket.mqttClient.end();
+        //delete socket;
+    });
+    //send MQTT mesage from front-end socket.emit
+    socket.on('mqtt', function (data) {
+        socket.mqttClient.publish(data.topic, `${data.payload}`);
+    });
+});
+
+socketApi.garageDoorNotification = function(message) {
+    io.sockets.emit('garagedoor', {msg: `Hello World! ${message}`});
+}
+
+// Backend only mqtt client, for DB storing
+const init = function () {
 
     const options = {
         clean: false,
@@ -17,71 +75,21 @@ module.exports.init = function () {
 
     client.on('connect', (connack) => {
         if (connack.sessionPresent) {
-            console.log('Already subscribed, nop');
+            //console.log('Already subscribed, nop');
           } else {
-            console.log('First session.');
+            //console.log('First session.');
             client.subscribe('home/#', { qos: 1 })
           }
-      })
+      });
 
       client.on('message', (topic, message) => {
+        //special cases for db storage
         switch (topic) {
-          case 'home/engineroom/watermeter':
+            case 'home/engineroom/watermeter':
             return handleWaterMeter(message);
-          case 'home/garage/door':
-            return handleGarageDoor(message);
-          case 'home/lobby/door':
-            return handleFrontDoor(message);
-          case 'home/engineroom/waterleak':
-            return handleEngineRoomWaterLeak(message);
-
         }
-        console.log('No handler for topic %s', topic)
-      })
-
+        });
 };
-
-function handleEngineRoomWaterLeak(message) {
-    console.log(`water leak report consumed ${message}`)    
-    const waterMessage = JSON.parse(message);
-    const timestamp = new Date().getTime();
-    waterMessage.state;
-    waterMessage.time;
-    //Todo:
-    console.log(waterMessage);
-    // 1 = LEAK
-    // 0 = ok
-    // payload = { 'time' : epoch_time, 'state' : state }
-}
-
-function handleGarageDoor(message) {
-    console.log(`Garage door report consumed ${message}`)    
-    const door = JSON.parse(message);
-    const timestamp = new Date().getTime();
-    //Todo: socket.io
-    // vbatt >3 OK 2.9< amber, 2.8 RED
-    if (door.door_closed === 1) {
-        //door.vbatt;
-        console.log(`Garage door closed: ${door}`);
-    } else {
-        console.log(`Garage door Open: ${door}`);
-    }
-}
-
-function handleFrontDoor(message) {
-    console.log(`Front door report consumed ${message}`)    
-    const door = JSON.parse(message);
-    const timestamp = new Date().getTime();
-    //Todo: socket.io
-    // vbatt >3 OK 2.9< amber, 2.8 RED
-    if (door.door_closed === 1) {
-        //door.vbatt;
-        console.log(`Garage door closed: ${door}`);
-    } else {
-        console.log(`Garage door Open: ${door}`);
-    }
-}
-
 function handleWaterMeter (message) {
 
     console.log(`one liter of water consumed ${message}`)    
@@ -90,7 +98,7 @@ function handleWaterMeter (message) {
 
     const sqlRequest = "INSERT INTO 'WATERMETER' (timestamp, litercount) " +
                  "VALUES('" + timestamp + "','" + litercount.water + "')";
-    //console.log(sqlRequest);             
+
     db.run(sqlRequest, function (err) {
         if (err !== null) {
             console.log('Could not store WaterMeter data', err);
@@ -99,3 +107,8 @@ function handleWaterMeter (message) {
     });
 
   }
+
+module.exports =  {
+    init,
+    socketApi
+}
