@@ -1,5 +1,5 @@
 # Magicae Speculo (Magic Mirror)
-For hardware/mirror frame construction, see [here](http://speculo.hirsikangas.fi/dyi/magicae-speculo-magic-mirror-with-homeautomation/)
+For hardware/mirror frame construction, see [here](https://speculo.hirsikangas.fi/dyi/magicae-speculo-magic-mirror-with-homeautomation/)
 
 My version of **Magic Mirror** which contains
 - Temperature + humidity logging (house and garage)
@@ -17,7 +17,7 @@ My version of **Magic Mirror** which contains
 ![alt tag](http://i.imgur.com/92U34gG.gif)
 ![alt tag](http://i.imgur.com/dcNKFjz.png)
 
-For hardware part list, mirror frame construction, etc see the whole project [here](http://speculo.hirsikangas.fi/dyi/magicae-speculo-magic-mirror-with-homeautomation/)
+For hardware part list, mirror frame construction, etc see the whole project [here](https://speculo.hirsikangas.fi/dyi/magicae-speculo-magic-mirror-with-homeautomation/)
 
 * **Backend**: Raspberry Pi 3 with Rasbian stretch, hosts the web backend and database with REST endpoints, and room temperature logger) [Node.JS](https://nodejs.org/en/) [Express](http://expressjs.com/) [pug](http://jade-lang.com/)  [SQLite3](https://www.sqlite.org/)
 * **MIRROR**: Raspberry Pi 3 mounted back of the mirror with PIR detection to turn of monitor to conserve energy
@@ -166,7 +166,9 @@ Install Python requests package
 
 `sudo python get-pip.py`
 
-`sudo pip install requests==2.5.3` (later versions doesn't work with wheezy's python 2.7)
+`sudo pip install requests==2.5.3`
+
+(later versions doesn't work with wheezy's python 2.7)
 You might be required to install if above gives errors about ssl: `sudo pip install requests[security]`
 -------------------------------------------------------------
 # Power meter

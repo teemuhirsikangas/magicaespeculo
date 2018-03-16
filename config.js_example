@@ -6,7 +6,8 @@ const config = {
         enabed: true,
         username: 'xxx',
         password: '2222',
-        host: 'http://192.168.100.3'
+        host: 'http://192.168.100.3',
+        clientId: 'mqtt_nodejs-testdev'
     }
 
 }
