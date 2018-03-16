@@ -4,6 +4,7 @@ var watermeterData = function () {
     $.getJSON('/watermeter/today', function (watermeterData) {
         try {
             $("#liters_today").html('<i class="fa fa-tint fa-lg" aria-hidden="true"></i>  ' + watermeterData[0].liters  + ' l');
+            document.getElementById("liters_today").style.color = "#FFFFFF";
             checkIfDataIsStalefrom(watermeterData[0].timestamp, 180);
         } catch (e) {
             if (e instanceof NoNewDataException) {
@@ -68,8 +69,8 @@ $(document).ready(function () {
 
     if (config.watermeter.show) {
         watermeterData();
-        //every 60secs
-        setInterval(watermeterData, 60000);
+        //every 1h to check stale data, as realtime update are triggered by mqtt messages
+        setInterval(watermeterData, 3600000);
 
         watermeterDataYesterday();
         //every 6hours

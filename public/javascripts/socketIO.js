@@ -18,12 +18,15 @@ var latestWaterLeakReport;
         let batteryIcon;
         switch (msg.topic) {
             case 'home/engineroom/watermeter':
+                // get latest values from db to screen
+                watermeterData();
 
               break;
             case 'home/garage/door':
 
                 battery = msg.payload.vbatt;
                 batteryIcon = `<i class="fa fa-battery-full" aria-hidden="true" style="color:green"></i>`;
+
                 if (battery < 3.3 && battery > 3) {
                     batteryIcon = `<i class="fa fa-battery-half" aria-hidden="true" style="color:orange"></i>`;
                 } else if (battery <= 3) {
@@ -45,6 +48,7 @@ var latestWaterLeakReport;
 
                 battery = msg.payload.vbatt;
                 batteryIcon = `<i class="fa fa-battery-full" aria-hidden="true" style="color:green"></i>`;
+
                 if (battery < 3.3 && battery > 3) {
                     batteryIcon = `<i class="fa fa-battery-half" aria-hidden="true" style="color:orange"></i>`;
                 } else if (battery <= 3) {
@@ -68,6 +72,7 @@ var latestWaterLeakReport;
                 alarmStatus = msg.payload.time;
                 // Store the report time
                 latestWaterLeakReport = msg.payload.time;
+
                 if (msg.payload.state === 0) {
                     $('#waterleakStatus').removeClass('badge-danger').removeClass('badge badge-warning').addClass('badge badge-success');
                 } else {
@@ -82,6 +87,7 @@ var latestWaterLeakReport;
 
                 let alarmStatusMsg = 'Pois';
                 alarmStatus = msg.payload;
+
                 if (alarmStatus === 0) {
                     $('#alarmStatus').removeClass('badge-danger').addClass('badge badge-success');
                 } else {
@@ -90,13 +96,14 @@ var latestWaterLeakReport;
                 }
                 $('#alarmText').html('Murtohälytin');
                 $('#alarmStatus').html(alarmStatusMsg);
-            
+
+                checkWaterLeakLastReportTime();   
               break;
             default: 
               console.log('Error:no such MQTT topic handler.');
               break;
         }
-        //swithc case per topic ja oma käsittely
+        //swithc case per topic
     });
 
 var checkWaterLeakLastReportTime = function () {

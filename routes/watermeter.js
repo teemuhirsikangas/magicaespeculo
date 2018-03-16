@@ -24,7 +24,6 @@ router.get('/minutes', function (req, res, next) {
         if (err !== null) {
             res.json(err);
         } else {
-            //console.log(row);
             res.status(200).json(row);
         }
     });
@@ -38,7 +37,6 @@ router.get('/hourly', function (req, res, next) {
         if (err !== null) {
             res.json(err);
         } else {
-            //console.log(row);
             res.status(200).json(row);
         }
     });
@@ -100,7 +98,6 @@ router.get('/yesterday', function (req, res, next) {
         if (err !== null) {
             res.json(err);
         } else {
-            console.log(row);
             res.status(200).json(row);
         }
     });
