@@ -26,7 +26,7 @@ def WATER(WL_PIN):
         #sensor is 1 when no water, 0 when water is detected, so let's flip it
         state = GPIO.input(WL_PIN)
         state ^= 1
-        payload = { 'time' : epoch_time, 'state' : state }
+        payload = { 'time' : epoch_time*1000, 'state' : state }
         payload_string = json.dumps(payload)
         publish.single("home/engineroom/waterleak", payload_string, retain=True, hostname=MQTT_BROKER_ADDR, auth=AUTH)
 
@@ -34,6 +34,7 @@ def DAILY():
         #print("TEST")
         WATER(WL_PIN)
 
+WATER(WL_PIN)
 schedule.every().day.at("06:00").do(DAILY)
 schedule.every().day.at("18:00").do(DAILY)
 time.sleep(1)
