@@ -32,15 +32,15 @@ var latestWaterLeakReport;
                 } else if (battery <= 3) {
                     batteryIcon = `<i class="fa fa-battery-empty" aria-hidden="true" style="color:red"></i>`;
                 }
-                let doorStatusText = 'Auki';
+                let doorStatusText = mqtttext.doorOpen;
 
                 if (msg.payload.door_closed === 1) {
-                    doorStatusText = 'Kiinni';
+                    doorStatusText = mqtttext.doorClosed;
                     $('#garagestatus').removeClass('badge-danger').addClass('badge badge-success');
                 } else {
                     $('#garagestatus').removeClass('badge-success').addClass('badge badge-danger');
                 }
-                $('#garagetext').html(`${batteryIcon} Autotallin ovi:`);
+                $('#garagetext').html(`${batteryIcon} ${mqtttext.garageDoor}`);
                 $('#garagestatus').html(doorStatusText);
 
               break;
@@ -54,21 +54,21 @@ var latestWaterLeakReport;
                 } else if (battery <= 3) {
                     batteryIcon = `<i class="fa fa-battery-empty" aria-hidden="true" style="color:red"></i>`;
                 }
-                let frontText = 'Auki';
+                let frontText = mqtttext.doorOpen;
 
                 if (msg.payload.door_closed === 1) {
-                    frontText = 'Kiinni';
+                    frontText = mqtttext.doorClosed;
                     $('#frontdoorstatus').removeClass('badge-danger').addClass('badge badge-success');
                 } else {
                     $('#frontdoorstatus').removeClass('badge-success').addClass('badge badge-danger');
                 }
-                $('#frontdoortext').html(`${batteryIcon} Etuovi:`);
+                $('#frontdoortext').html(`${batteryIcon} ${mqtttext.frontDoor}`);
                 $('#frontdoorstatus').html(frontText);
 
               break;
             case 'home/engineroom/waterleak':
 
-                let waterStatusMsg = 'OK';
+                let waterStatusMsg = mqtttext.statusOK;
                 alarmStatus = msg.payload.time;
                 // Store the report time
                 latestWaterLeakReport = msg.payload.time;
@@ -76,25 +76,25 @@ var latestWaterLeakReport;
                 if (msg.payload.state === 0) {
                     $('#waterleakStatus').removeClass('badge-danger').removeClass('badge badge-warning').addClass('badge badge-success');
                 } else {
-                    waterStatusMsg = 'Vuoto';
+                    waterStatusMsg = mqtttext.waterLeakON;
                     $('#waterleakStatus').removeClass('badge-success').removeClass('badge badge-warning').addClass('badge badge-danger');
                 }
-                $('#waterleakText').html('Päävesi vuoto');
+                $('#waterleakText').html(mqtttext.waterLeak);
                 $('#waterleakStatus').html(waterStatusMsg);
 
              break;
             case 'home/alarm':
 
-                let alarmStatusMsg = 'Pois';
+                let alarmStatusMsg = mqtttext.statusOFF;
                 alarmStatus = msg.payload;
 
                 if (alarmStatus === 0) {
                     $('#alarmStatus').removeClass('badge-danger').addClass('badge badge-success');
                 } else {
-                    alarmStatusMsg = 'Päällä';
+                    alarmStatusMsg = mqtttext.statusON;
                     $('#alarmStatus').removeClass('badge-success').addClass('badge badge-danger');
                 }
-                $('#alarmText').html('Murtohälytin');
+                $('#alarmText').html(mqtttext.alarmtext);
                 $('#alarmStatus').html(alarmStatusMsg);
 
                 checkWaterLeakLastReportTime();   
@@ -113,7 +113,7 @@ var checkWaterLeakLastReportTime = function () {
         checkIfDataIsStalefrom(latestWaterLeakReport, 780);
      } catch (error) {
         $('#waterleakStatus').removeClass('badge-success').removeClass('badge-danger').addClass('badge badge-warning');
-        $('#waterleakStatus').html('Ei tietoa');
+        $('#waterleakStatus').html(mqtttext.statusNA);
      }
 }
 

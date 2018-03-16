@@ -63,6 +63,20 @@ var ventilationtext = {
     }
 };
 
+var mqtttext = {
+    "frontDoor": "Etuovi",
+    "doorOpen" : "Auki",
+    "doorClosed" : "Kiinni",
+    "garageDoor": "Autotallin ovi",
+    "waterLeak": "Päävesi vuoto",
+    "waterLeakON": "Vuoto!",
+    "statusOK": "OK",
+    "statusON": "Päällä",
+    "statusOFF": "Pois",
+    "statusNA": "Ei tietoa",
+    "alarmtext": "Murtohälytin"
+};
+
 var electricitytext = {
     "yesterday" : "Eilen:"
 };

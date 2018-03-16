@@ -63,6 +63,20 @@ var ventilationtext = {
     }
 };
 
+var mqtttext = {
+    "frontDoor": "Front door",
+    "doorOpen" : "Open",
+    "doorClosed" : "closed",
+    "garageDoor": "Garage Door",
+    "waterLeak": "Water leak(mains)",
+    "waterLeakON": "LEAK!",
+    "statusOK": "OK",
+    "statusON": "ON",
+    "statusOFF": "Off",
+    "statusNA": "N/A",
+    "alarmtext": "Alarm"
+};
+
 var electricitytext = {
     "yesterday" : "y-day: "
 };
