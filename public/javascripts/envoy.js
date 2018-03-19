@@ -136,7 +136,7 @@ var envoyDataToday = function () {
             text: ''
         },
         min:0,
-        softMax:1000,
+        softMax:800,
         maxPadding: 0,
         offset: -10,
     },

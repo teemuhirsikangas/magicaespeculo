@@ -13,10 +13,10 @@ html
     link(rel='stylesheet', href='/stylesheets/amschart.css')
     link(rel='stylesheet', href='/stylesheets/envoy.css')
     link(rel='stylesheet', href='/stylesheets/watermeter.css')
-    link(rel='stylesheet', href='/stylesheets/highcharts.css')
+    link(rel='stylesheet', href='/highcharts/css/highcharts.css')
+    link(rel='stylesheet', href='/stylesheets/highchartsOverwrite.css')
     link(rel='stylesheet', href='/stylesheets/realtimenotifications.css')
 
-    //6.0.3 version -^
     //script(type='text/javascript')(src='//ajax.googleapis.com/ajax/libs/jquery/2.2.3/jquery.min.js')
     //script(type='text/javascript')(src='//cdnjs.cloudflare.com/ajax/libs/jquery.simpleWeather/3.1.0/jquery.simpleWeather.min.js')
     //script(type='text/javascript')(src='//cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment-with-locales.min.js')
@@ -28,8 +28,6 @@ html
     script(src='/Resource/moment-with-locales.min.js') //2.19.4
     script(src='/Resource/skycons.min.js')
     script(src='/Resource/Chart.min.js') //2.7.1
-    script(src='/Resource/highcharts.js') // 6.0.3
-    script(src='/Resource/highcharts-more.js') // 6.0.3
     
     //3rd party CDN files
     script(type='text/javascript', src='//www.amcharts.com/lib/3/amcharts.js')
@@ -41,6 +39,9 @@ html
     //from node_modules
     script(src='/socket.io/socket.io.js')
     script(src='/bootstrap/dist/js/bootstrap.min.js')
+    script(src='/highcharts/js/highcharts.js')
+    script(src='/highcharts/js/highcharts-more.js')
+
     //own
     script(src='/javascripts/config.js')
     script(src='/javascripts/utils.js')
