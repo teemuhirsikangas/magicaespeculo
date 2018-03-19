@@ -101,7 +101,7 @@ def on_message(client, userdata, msg):
 		water_status = list['state']
 		#time = str(datetime.datetime.now().replace(microsecond=0).isoformat(' ')) + ","
 		measuretime = list['time']
-		time = str(datetime.datetime.fromtimestamp(measuretime).replace(microsecond=0).isoformat(' ')) + ","
+		time = str(datetime.datetime.fromtimestamp(measuretime/1000).replace(microsecond=0).isoformat(' ')) + ","
 		#print (time2)
 		if(str(water_status) == "1"):
 			water_state = "Engine room Water LEAK!! "
