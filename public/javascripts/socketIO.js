@@ -89,10 +89,10 @@ var latestWaterLeakReport;
                 alarmStatus = msg.payload;
 
                 if (alarmStatus === 0) {
-                    $('#alarmStatus').removeClass('badge-danger').addClass('badge badge-success');
+                    $('#alarmStatus').removeClass('badge-success').addClass('badge badge-danger');
                 } else {
                     alarmStatusMsg = mqtttext.statusON;
-                    $('#alarmStatus').removeClass('badge-success').addClass('badge badge-danger');
+                    $('#alarmStatus').removeClass('badge-danger').addClass('badge badge-success')
                 }
                 $('#alarmText').html(mqtttext.alarmtext);
                 $('#alarmStatus').html(alarmStatusMsg);

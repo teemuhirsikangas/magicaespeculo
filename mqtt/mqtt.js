@@ -53,7 +53,7 @@ io.on('connection', function(socket){
     });
     //send MQTT mesage from front-end socket.emit
     socket.on('mqtt', function (data) {
-        socket.mqttClient.publish(data.topic, `${data.payload}`);
+        socket.mqttClient.publish(data.topic, `${data.payload}`, {retain: true});
     });
 });
 
