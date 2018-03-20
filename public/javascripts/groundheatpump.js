@@ -118,7 +118,7 @@ $(document).ready(function () {
 
     if(config.groundheatpump.show) {
         
-        var d = document.getElementById("groundheatpumpyesterday");
+        var d = document.getElementById("groundheatpump");
         d.onclick = function () {
              window.open(config.groundheatpump.domain,'_blank');
         };

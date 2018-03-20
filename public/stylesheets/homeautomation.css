@@ -3,10 +3,10 @@
     font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
     left: 0;
     bottom: 270px;
-    #width: 175px;
-    #height: 250px;
+    /* #width: 175px;
+    #height: 250px; */
     font-weight: bold;
-    #background-color: #333333;
+    /* #background-color: #333333; */
     line-height: 90%;
 }
 
@@ -22,6 +22,9 @@
     height: 258px;
 }   
 
+#groundheatpump:hover {
+    cursor: pointer;
+}  
 
 
 #ghpbrinetemp {
