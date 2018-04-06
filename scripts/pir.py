@@ -22,7 +22,7 @@ def MONITORON():
 	last_motion_time = time.time()
 	#print("Monitor ON")
 	if turned_off:
-		subprocess.call("tvservice -p", shell=True)
+		subprocess.call("tvservice -p && sudo chvt 1 && sudo chvt 7", shell=True)
 		turned_off = False
 
 def MONITOROFF():
