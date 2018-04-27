@@ -55,6 +55,10 @@ io.on('connection', function(socket){
     socket.on('mqtt', function (data) {
         socket.mqttClient.publish(data.topic, `${data.payload}`, {retain: true});
     });
+
+    socket.on('mqtt_noretain', function (data) {
+        socket.mqttClient.publish(data.topic, `${data.payload}`, {retain: false, qos: 2});
+    });
 });
 
 socketApi.garageDoorNotification = function(message) {

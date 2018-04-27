@@ -1,0 +1,33 @@
+doctype html
+html
+  head
+    title= title
+    link(rel="stylesheet" href='/bootstrap/dist/css/bootstrap.min.css')
+    link(rel='stylesheet', href='/stylesheets/garagedoorHandler.css')
+
+    //3rd party - using locale files instead
+    link(rel='stylesheet', href='/Resource/font-awesome-4.7.0/css/font-awesome.min.css')
+    script(src='/Resource/jquery-2.2.4.min.js')
+    script(src='/Resource/moment-with-locales.min.js') //2.19.4
+
+    //from node_modules
+    script(src='/socket.io/socket.io.js')
+    script(src='/bootstrap/dist/js/bootstrap.min.js')
+
+    //own
+    script(src='/javascripts/config.js')
+    script(src='/javascripts/utils.js')
+    script(src='/javascripts/garagedoorHandler.js')
+    script(src='/locales/fi.js')
+
+    block content
+        //wrapper
+        #realtimenotifications
+            #garagedoor
+                #garagetext
+                #garagestatus
+                #garageBattery
+                #activeGarageDoorBtn
+            #alarm
+                #alarmText
+                #alarmStatus

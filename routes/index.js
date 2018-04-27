@@ -8,9 +8,9 @@ router.get('/', function (req, res, next) {
 	};
 });
 
-router.get('/guestmode', function (req, res, next) {
+router.get('/garagedoor', function (req, res, next) {
   	
-  	res.render('guestmode'), { 
+  	res.render('garagedoor'), { 
     };
 });
 

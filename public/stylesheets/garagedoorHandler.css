@@ -1,0 +1,78 @@
+body {
+    padding: 30px;
+    background-color: #1d2124;
+    color: white;
+    font-size: 6em;    
+  }
+  
+
+#realtimenotifications {
+    z-index: 100;
+    position: absolute;
+    font-weight: bold;
+    width: 95%;
+    height: 20%;
+    color: white;
+}
+
+#alarm {
+
+}
+
+#alarmText {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+#alarmStatus {
+    position: absolute;
+    top: 0.2em;
+    right: 0px;
+}
+
+#garagedoor {
+    position: absolute;
+    width:  100%;
+    height: 50%;
+    font-weight: bold;
+}  
+#garagestatus {
+    position: absolute;
+    top:2.9em;
+    right: 0px;
+}
+
+#garagetext {
+    position: absolute;
+    top:2em;
+    left: 0px;
+
+}
+
+#garageBattery {
+    position: absolute;
+    top:3em;
+    left: 0px;
+}
+
+#activeGarageDoorBtn {
+    position: absolute;
+    top: 8em;
+    left: 1em;
+    width: 80%;
+    height: 3em;
+    text-align: center;
+    vertical-align: middle;
+    padding: 1em;
+}
+
+#activeGarageDoorBtn:hover {
+    cursor: pointer;
+}
+
+
+#alarmStatus:hover {
+    cursor: pointer;
+}
+

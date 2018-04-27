@@ -82,6 +82,7 @@ var latestWaterLeakReport;
                 $('#waterleakText').html(mqtttext.waterLeak);
                 $('#waterleakStatus').html(waterStatusMsg);
 
+                checkWaterLeakLastReportTime();
              break;
             case 'home/alarm':
 
@@ -97,7 +98,6 @@ var latestWaterLeakReport;
                 $('#alarmText').html(mqtttext.alarmtext);
                 $('#alarmStatus').html(alarmStatusMsg);
 
-                checkWaterLeakLastReportTime();   
               break;
             default: 
               console.log('Error:no such MQTT topic handler.');
