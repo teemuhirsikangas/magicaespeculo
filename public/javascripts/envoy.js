@@ -8,7 +8,6 @@ var envoyData = function () {
                 var d = moment(new Date(Data[0].readingTime * 1000));
 
                 $("#readingTime").html('<i class="fa fa-clock-o" aria-hidden="true"></i> ' + d.locale(config.locale).format('LT'));
-                
 
                 $("#wNow").html('<i class="fa fa-bolt" aria-hidden="true"></i> ' + Data[0].wNow /1000 + ' kW');
                 $("#wattHoursToday").html('<i class="fa fa-plug" aria-hidden="true"></i> ' + Data[0].wattHoursToday / 1000 + ' kWh');
@@ -18,21 +17,52 @@ var envoyData = function () {
                 var table = document.createElement("table");
                 const columnCount = inverters.length;
                 var row = table.insertRow(0);
+                //var row2 = table.insertRow(0);
+                var row3 = table.insertRow(0);
                 //to get the inverters on correct order as layout on the roof
-                inverters.reverse();
+
+                var L1 = [];
+                var L2 = [];
+                var L3 = [];
+                var L3sum = 0;
+                var L2sum = 0;
+                var L1sum = 0;
+                // Separeta the power lines from single array
                 for (var i = 0; i < columnCount; i++) {
-                    var cell = row.insertCell(i);
-                    var text = '<i class="fa fa-circle" aria-hidden="true" style="color: green"></i> '
-                    var redbullet = '<i class="fa fa-circle" aria-hidden="true" style="color: Crimson"></i> '
-                    var yellowbullet = '<i class="fa fa-circle" aria-hidden="true" style="color: Gold"></i> '
-                    var text;
-                    if(inverters[i].producing === 0) {
-                        text = redbullet;
-                    } else if (isReportDateOverdue(inverters[i].lastReportDate*1000)) {
-                        text = yellowbullet;
-                    }
-                    cell.innerHTML = text + inverters[i].lastReportWatts + ' W ';
+                    const serialNumber = inverters[i].serialNumber.toString();
+                     if (config.envoy.inverters.L1.indexOf(serialNumber) != -1) {
+                        L1.push(inverters[i]);
+                        L1sum += parseInt(inverters[i].lastReportWatts);
+                     } else if (config.envoy.inverters.L2.indexOf(serialNumber) != -1) {
+                        L2.push(inverters[i]);
+                        L2sum += parseInt(inverters[i].lastReportWatts);
+                     } else if (config.envoy.inverters.L3.indexOf(serialNumber) != -1) {
+                        L3.push(inverters[i]);
+                        L3sum += parseInt(inverters[i].lastReportWatts);
+                     }
                 }
+                // sort the inverters to correct order, which they are on the roof
+                const L1Sorted = sortArray(config.envoy.inverters.L1, L1);
+                const L2Sorted = sortArray(config.envoy.inverters.L2, L2);
+                const L3Sorted = sortArray(config.envoy.inverters.L3, L3);
+
+                addRow(row, L2Sorted, 'L2');
+                addRow(row, L1Sorted, 'L1');
+                addRow(row3, L3Sorted, 'L3');
+
+                //add sums for phases
+                row.insertCell(-1);
+                var celltemp = row.insertCell(-1);
+                celltemp.innerHTML = " ";
+                var cell = row.insertCell(-1);
+                cell.title = `Phase: L1  Watts: ${L1sum} \nPhase: L2  Watts: ${L2sum}`;
+                cell.innerHTML = L1sum +'|' + L2sum  + ' W';
+
+                celltemp = row3.insertCell(-1);
+                celltemp.innerHTML = " ";
+                var cell = row3.insertCell(-1);
+                cell.title = `Phase: L3  Watts: ${L3sum}`;
+                cell.innerHTML = L3sum + ' W';
 
                 var dvTable = document.getElementById("inverters");
                 dvTable.innerHTML = "";
@@ -40,6 +70,7 @@ var envoyData = function () {
                 checkIfDataIsStale(Data[0].timestamp);
 
         } catch (e) {
+            console.log(e);
             if (e instanceof NoNewDataException) {
                 document.getElementById("wNow").style.color = "#ff0000";
                 document.getElementById("inverters").style.color = "#ff0000";
@@ -136,7 +167,7 @@ var envoyDataToday = function () {
             text: ''
         },
         min:0,
-        softMax:800,
+        softMax:1800,
         maxPadding: 0,
         offset: -10,
     },
@@ -211,4 +242,35 @@ function isReportDateOverdue(lastTimestamp) {
         return true;
     }
     return false;
+}
+function sortArray(ref, data) {
+
+    var sortedArray= [];
+
+    for (var i = 0; i < ref.length; i++) {
+
+        var item = ref[i];
+        var obj = data.find(function (obj) { return obj.serialNumber.toString() === item.toString(); });
+        sortedArray.push(obj);
+    }
+    return sortedArray;
+}
+
+function addRow(row, items, powerPhase) {
+
+    let cell;
+    for (var i = 0; i < items.length; i++) {
+
+        cell = row.insertCell(i);
+        var text = '<i class="fa fa-circle" aria-hidden="true" style="color: green"></i> ';
+        var redbullet = '<i class="fa fa-circle" aria-hidden="true" style="color: Crimson"></i> ';
+        var yellowbullet = '<i class="fa fa-circle" aria-hidden="true" style="color: Gold"></i> ';
+        if(items[i].producing === 0) {
+            text = redbullet;
+        } else if (isReportDateOverdue(items[i].lastReportDate*1000)) {
+            text = yellowbullet;
+        }
+        cell.title = `Phase: ${powerPhase} Serial#: ${items[i].serialNumber}  maxWatts: ${items[i].maxReportWatts}`;
+        cell.innerHTML = text + items[i].lastReportWatts + ' W ';
+    }
 }

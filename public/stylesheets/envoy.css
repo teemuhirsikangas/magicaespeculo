@@ -56,9 +56,16 @@
 }
 #inverters {
     position: absolute;
-    left: 150px;
-    top: 15px;
+    left: 120px;
+    top: -2px;
 }
+
+#inverters table {
+    border-collapse: separate;
+    border-spacing: 7px 0px;
+    padding: 0px;
+}
+
 #serialNumber {
     position: absolute;
 }

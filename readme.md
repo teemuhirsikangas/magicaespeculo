@@ -335,6 +335,8 @@ Changes:
 
 15.3.2018 - Added socket.io for realtime MQTT message: water leak, water consumption, front and garade door status, set/get alarm status
 
+30.5.2018 - Added Emphase envoy inverters to 3 phases and sort the microinverter arrays to same layout as in the roof
+
 License
 MIT
 

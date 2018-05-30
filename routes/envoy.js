@@ -17,7 +17,7 @@ router.get('/', function (req, res, next) {
             if(row != null && row  != undefined && row[0] != null) {
                 timestamp = row[0].timestamp;
             }
-            db.all('SELECT * FROM ENVOY_INVERTER_STATUS WHERE timestamp = '+ timestamp + '  ORDER BY timestamp DESC LIMIT 4', function (err, row2) {
+            db.all('SELECT * FROM ENVOY_INVERTER_STATUS WHERE timestamp = '+ timestamp + '  ORDER BY timestamp DESC LIMIT 9', function (err, row2) {
 
             row.push({ "inverters" : row2});
             res.status(200).json(row);
@@ -30,7 +30,7 @@ router.get('/', function (req, res, next) {
 /* GET last values from status report listing. */
 router.get('/latest', function (req, res, next) {
 
-    db.all('SELECT * FROM  ENVOY_STATUS_REPORTS t1 INNER JOIN ENVOY_INVERTER_STATUS t2 ON t1.timestamp = t2.timestamp  ORDER BY timestamp DESC LIMIT 4', function (err, row) {
+    db.all('SELECT * FROM  ENVOY_STATUS_REPORTS t1 INNER JOIN ENVOY_INVERTER_STATUS t2 ON t1.timestamp = t2.timestamp  ORDER BY timestamp DESC LIMIT 9', function (err, row) {
         if (err !== null) {
            res.json(err);
         } else {
@@ -42,7 +42,7 @@ router.get('/latest', function (req, res, next) {
 /* GET last values from inverters listing. */
 router.get('/latestinv', function (req, res, next) {
 
-    db.all('SELECT * FROM ENVOY_INVERTER_STATUS ORDER BY timestamp DESC LIMIT 4', function (err, row) {
+    db.all('SELECT * FROM ENVOY_INVERTER_STATUS ORDER BY timestamp DESC LIMIT 9', function (err, row) {
         if (err !== null) {
            res.json(err);
         } else {
