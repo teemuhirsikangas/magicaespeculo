@@ -2,8 +2,9 @@
 # -*- coding: UTF-8 -*-
 # modified from https://github.com/mverleun/RTL433-to-mqtt/blob/master/src/rtl2mqtt.py
 
+#This script will listen rtl-433 messages and dump them to mqtt
 #run script on start:
-#@reboot sudo python3 /home/pi/magicaespeculo/scripts/mqtt433.py /dev/null 2>&1
+#@reboot sudo python3 /home/atnu/magicaespeculo/scripts/mqtt433.py > /dev/null 2>&1
 #example json what is send via mqtt
 #{"time": "2018-06-09 17:58:05", "cmd": 14, "id": 1813, "tristate": "00F10FFF001!", "model": "Generic Remote"}
 import config #contains MQTT username/password
