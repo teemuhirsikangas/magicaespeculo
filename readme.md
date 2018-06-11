@@ -337,6 +337,8 @@ Changes:
 
 30.5.2018 - Added Emphase envoy inverters to 3 phases and sort the microinverter arrays to same layout as in the roof
 
+11.6.2018 - Added rtl_433 door sensors and mqtt handler
+
 License
 MIT
 

@@ -44,28 +44,41 @@ var latestWaterLeakReport;
                 $('#garagestatus').html(doorStatusText);
 
               break;
-            case 'home/lobby/door':
 
-                battery = msg.payload.vbatt;
-                batteryIcon = `<i class="fa fa-battery-full" aria-hidden="true" style="color:green"></i>`;
 
-                if (battery < 3.3 && battery > 3) {
-                    batteryIcon = `<i class="fa fa-battery-half" aria-hidden="true" style="color:orange"></i>`;
-                } else if (battery <= 3) {
-                    batteryIcon = `<i class="fa fa-battery-empty" aria-hidden="true" style="color:red"></i>`;
-                }
-                let frontText = mqtttext.doorOpen;
+            // 433MHz door sensors
+            case 'home/rtl_433/sensor_1813':
+            case 'home/rtl_433/sensor_34238':
+            case 'home/rtl_433/sensor_50860':
+            let sensorText = mqtttext.doorOpen;
 
-                if (msg.payload.door_closed === 1) {
-                    frontText = mqtttext.doorClosed;
-                    $('#frontdoorstatus').removeClass('badge-danger').addClass('badge badge-success');
-                } else {
-                    $('#frontdoorstatus').removeClass('badge-success').addClass('badge badge-danger');
-                }
-                $('#frontdoortext').html(`${batteryIcon} ${mqtttext.frontDoor}`);
-                $('#frontdoorstatus').html(frontText);
+            if ( !msg.payload.id ) {
+                console.log(`unknown sensor ${JSON.stringify(msg)}`);
+                break;
+            }
+            const sensor = msg.payload.id.toString();
 
-              break;
+            let sensorVal;
+            if(sensor === '1813') {
+                sensorVal = 'backdoor'
+            } else if(sensor === '34238') {
+                sensorVal = 'sidedoor'
+            } else if(sensor === '50860') {
+                sensorVal = 'frontdoor'
+            }
+
+            if (msg.payload.cmd === 14) {
+                sensorText = mqtttext.doorClosed;
+                $(`#${sensorVal}status`).removeClass('badge-danger').addClass('badge badge-success');
+            } else if (msg.payload.cmd === 10) {
+                $(`#${sensorVal}status`).removeClass('badge-success').addClass('badge badge-danger');
+            }
+
+            $(`#${sensorVal}text`).html(`${mqtttext[sensorVal]}`);
+            $(`#${sensorVal}status`).html(sensorText);
+
+              break;   
+
             case 'home/engineroom/waterleak':
 
                 let waterStatusMsg = mqtttext.statusOK;
@@ -100,7 +113,7 @@ var latestWaterLeakReport;
 
               break;
             default: 
-              console.log('Error:no such MQTT topic handler.');
+              console.log(`Error:no such MQTT topic handler. ${JSON.stringify(msg)}`);
               break;
         }
         //swithc case per topic

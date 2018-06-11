@@ -64,7 +64,9 @@ var ventilationtext = {
 };
 
 var mqtttext = {
-    "frontDoor": "Front door",
+    "frontdoor": "Front door",
+    "sidedoor": "Side door",
+    "backtdoor": "Back door",
     "doorOpen" : "Open",
     "doorClosed" : "closed",
     "garageDoor": "Garage Door",

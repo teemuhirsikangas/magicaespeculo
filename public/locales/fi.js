@@ -64,7 +64,9 @@ var ventilationtext = {
 };
 
 var mqtttext = {
-    "frontDoor": "Etuovi",
+    "frontdoor": "Etuovi",
+    "sidedoor": "Sivuovi",
+    "backdoor": "takaovi",
     "doorOpen" : "Auki",
     "doorClosed" : "Kiinni",
     "garageDoor": "Autotallin ovi",

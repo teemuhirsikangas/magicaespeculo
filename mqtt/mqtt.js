@@ -91,6 +91,8 @@ const init = function () {
         switch (topic) {
             case 'home/engineroom/watermeter':
             return handleWaterMeter(message);
+
+            //TODO: move IFTT alerts here from python script
         }
         });
 };
