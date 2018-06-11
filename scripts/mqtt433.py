@@ -22,9 +22,10 @@ MQTT_HOST=config.MQTT_ADDRESS
 MQTT_PORT=1883
 MQTT_TOPIC="home/rtl_433"
 MQTT_QOS=0
-MQTT_RETAIN="True"
+MQTT_RETAIN=True
 # End config section
 
+# TODO: add build instructions and correct folder
 rtl_433_cmd = "/home/atnu/rtl_433/build/src/rtl_433 -U -R 30 -F json" # linux
 
 # Define MQTT event callbacks
