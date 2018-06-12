@@ -3,11 +3,18 @@ const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('./data/homeautomation.db');
 const mqtt = require('mqtt');
 const config = require('../config');
+const moment = require('moment');
 var socket_io = require('socket.io');
+const IFTTT = require('node-ifttt-maker');
 var io = socket_io();
 var socketApi = {};
 
 socketApi.io = io;
+
+//IFTTT stuff, event is the name registered to the service
+const ifttt = new IFTTT(config.iftt.key);
+const event = 'ovi';
+let ALARM = true;
 
 io.on('connection', function(socket){
     console.log('A user connected');
@@ -23,8 +30,9 @@ io.on('connection', function(socket){
     socket.mqttClient = {};
     socket.mqttClient = mqtt.connect(config.mqtt.host, options);
 
+    // send mqtt messag to frontend
     socket.mqttClient.on('message', function (topic, message) {
-        console.log('Topic ' + topic + ' Message' + message.toString());
+        //console.log('Topic ' + topic + ' Message' + message.toString());
         socket.emit('mqtt', {'topic'  : topic, 'payload' : JSON.parse(message)});
       });
 
@@ -88,11 +96,55 @@ const init = function () {
 
       client.on('message', (topic, message) => {
         //special cases for db storage
+        const now = moment(new Date());
+        const date = now.locale('fi').format('hh:mm:ss YYYY-MM-DD');
+
         switch (topic) {
             case 'home/engineroom/watermeter':
-            return handleWaterMeter(message);
+                handleWaterMeter(message);
+                break;
+            case 'home/alarm':
+                if (message.toString() === '1') {
+                    ALARM = true;
+                    sendIFTT('Alarm', 'is set ON ', date);
+                } else {
+                    ALARM = false;
+                    sendIFTT('Alarm', 'is set OFF ', date);
+                }
+                break;
+            case 'home/rtl_433/sensor_1813':
+            case 'home/rtl_433/sensor_34238':
+            case 'home/rtl_433/sensor_50860':
+                const msg = JSON.parse(message);
+                if (ALARM) {
+                    const sensor = msg.id.toString();
+                    let sensorVal;
+                    if (sensor === '1813') {
+                        sensorVal = 'takaovi'
+                    } else if(sensor === '34238') {
+                        sensorVal = 'sivuovi'
+                    } else if(sensor === '50860') {
+                        sensorVal = 'etuovi'
+                    }
+                    let status = 'kiinni';
+                    if (msg.cmd.toString() === '14') {
+                        status = 'auki';
+                    }
+                    sendIFTT(sensorVal, status, date);
+                }
+                break;
 
-            //TODO: move IFTT alerts here from python script
+            case 'home/engineroom/waterleak':
+
+                const wtrmsg = JSON.parse(message);
+                if (wtrmsg.water_status.toString() === '1') {
+                    const status = 'Päähanan vesivuoto!';
+                    sendIFTT(status, date, '');
+                }
+                break;
+
+            default: 
+                break;
         }
         });
 };
@@ -113,6 +165,21 @@ function handleWaterMeter (message) {
     });
 
   }
+
+const sendIFTT = async (value1, value2, value3) => {
+
+    const params = {
+        value1,
+        value2,
+        value3 
+    }
+    try {
+        const response = await ifttt.request({ event, params });
+
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 module.exports =  {
     init,

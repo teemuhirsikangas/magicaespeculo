@@ -103,7 +103,6 @@ var envoyDataYesterday = function () {
 
 var envoyDataToday = function () {
 
-
     var startOfToday = new Date();
     startOfToday.setHours(4,0,0,0);
     var endOfToday = new Date();
@@ -112,7 +111,6 @@ var envoyDataToday = function () {
 
     $.getJSON('/envoy/today', function (Data) {
         try {
-
 
             var time = [];
             var powervalues = [];
@@ -159,15 +157,15 @@ var envoyDataToday = function () {
         allowDecimals: false,
         type: 'datetime',
         tickPixelInterval: 60,
-        min: startOfToday,
-        max: endOfToday
+        min: startOfToday.getTime(),
+        max: endOfToday.getTime()
     },
     yAxis: {
         title: {
             text: ''
         },
         min:0,
-        softMax:1800,
+        softMax:1900,
         maxPadding: 0,
         offset: -10,
     },

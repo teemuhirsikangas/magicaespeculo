@@ -7,3 +7,4 @@ public/javascripts/config.js
 scripts/config.py
 scripts/config.pyc
 config.js
+scripts/__pycache__/

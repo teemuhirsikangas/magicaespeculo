@@ -106,15 +106,15 @@ var doortextFullyClosed = function () {
 
 $(document).ready(function () {
 
+    var d = document.getElementById("activeGarageDoorBtn");
+    d.onclick = function () {
+        activateGarageDoor();
+    };
 
     var d = document.getElementById("alarmStatus");
     d.onclick = function () {
         toggleAlarm();
     };
 
-    var d = document.getElementById("activeGarageDoorBtn");
-    d.onclick = function () {
-        activateGarageDoor();
-    };
 
 });

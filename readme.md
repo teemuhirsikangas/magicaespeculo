@@ -296,6 +296,33 @@ Copy files to
 */1 * * * * sudo python /home/pi/magicaespeculo/scripts/send_envoy.py > /dev/null 2>&1
 ```
 
+# rtl-443 lib using 433Mhz communication
+
+USB dongle for dvb-t to capture 433Mhz sensor data:
+
+```
+sudo apt-get install git cmake libusb-1.0-0.dev build-essential librtlsdr-dev doxygen
+
+git clone https://github.com/merbanan/rtl_433.git
+cd rtl-433/
+mkdir build
+cd build
+cmake ../
+make
+
+Optional:
+sudo nano /etc/modprobe.d/raspi-blacklist.conf
+
+blacklist dvb_usb_rtl28xxu
+blacklist rtl_2832
+blacklist rtl_2830
+```
+
+set the rtl-433 lib location to the mqtt433.py script
+`sudo crontab -e`
+```
+@reboot sudo python3 /home/pi/magicaespeculo/scripts/mqtt433.py > /dev/null 2>&1
+```
 
 ##  external sources
 
@@ -337,7 +364,7 @@ Changes:
 
 30.5.2018 - Added Emphase envoy inverters to 3 phases and sort the microinverter arrays to same layout as in the roof
 
-11.6.2018 - Added rtl_433 door sensors and mqtt handler
+12.6.2018 - Added rtl_433 door sensors and mqtt handler, IFTT push notifications moved from python script to node
 
 License
 MIT
