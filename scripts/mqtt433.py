@@ -26,6 +26,8 @@ MQTT_QOS=0
 MQTT_RETAIN=True
 # End config section
 
+# the usb dvb-t dongle is not ready when this script is started from crontab @reboot, use 60sec timeout
+time.sleep(60)
 # TODO: add build instructions and correct folder
 rtl_433_cmd = "/home/atnu/rtl_433/build/src/rtl_433 -U -R 30 -F json" # linux
 
