@@ -127,7 +127,7 @@ const init = function () {
                         sensorVal = 'etuovi'
                     }
                     let status = 'kiinni';
-                    if (msg.cmd.toString() === '14') {
+                    if (msg.cmd.toString() === '10') {
                         status = 'auki';
                     }
                     sendIFTT(sensorVal, status, date);
