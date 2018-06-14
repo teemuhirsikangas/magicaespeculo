@@ -14,7 +14,7 @@ socketApi.io = io;
 //IFTTT stuff, event is the name registered to the service
 const ifttt = new IFTTT(config.iftt.key);
 const event = 'ovi';
-let ALARM = true;
+let ALARM = false;
 
 io.on('connection', function(socket){
     console.log('A user connected');
@@ -77,8 +77,8 @@ socketApi.garageDoorNotification = function(message) {
 const init = function () {
 
     const options = {
-        clean: false,
-        clientId: config.mqtt.clientId || 'mqtt_nodejs',
+        clean: false, // set to false to receive QoS 1 and 2 messages while offline
+        clientId: 'mqttjs_notifier' + Math.random().toString(16).substr(2, 8),
         username: config.mqtt.username,
         password: config.mqtt.password
     }
@@ -88,7 +88,7 @@ const init = function () {
     client.on('connect', (connack) => {
         if (connack.sessionPresent) {
             //console.log('Already subscribed, nop');
-          } else {
+        } else {
             //console.log('First session.');
             client.subscribe('home/#', { qos: 1 })
           }
@@ -97,18 +97,18 @@ const init = function () {
       client.on('message', (topic, message) => {
         //special cases for db storage
         const now = moment(new Date());
-        const date = now.locale('fi').format('hh:mm:ss YYYY-MM-DD');
+        const date = now.locale('fi').format('HH:mm:ss YYYY-MM-DD');
 
         switch (topic) {
             case 'home/engineroom/watermeter':
                 handleWaterMeter(message);
                 break;
             case 'home/alarm':
-                if (message.toString() === '1') {
-                    ALARM = true;
+
+                ALARM = parseInt(message);
+                if (ALARM) {
                     sendIFTT('Alarm', 'is set ON ', date);
                 } else {
-                    ALARM = false;
                     sendIFTT('Alarm', 'is set OFF ', date);
                 }
                 break;
@@ -137,9 +137,9 @@ const init = function () {
             case 'home/engineroom/waterleak':
 
                 const wtrmsg = JSON.parse(message);
-                if (wtrmsg.water_status.toString() === '1') {
-                    const status = 'Päähanan vesivuoto!';
-                    sendIFTT(status, date, '');
+                if (wtrmsg.state.toString() === '1') {
+                    const msg = 'Päähanan vesivuoto!';
+                    sendIFTT(msg, date, '');
                 }
                 break;
 

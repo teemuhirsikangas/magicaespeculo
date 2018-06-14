@@ -1,5 +1,5 @@
 var socket = io();
-var alarmStatus;
+var alarmStatus = 0;
 var latestWaterLeakReport;
 
     socket.on('connect', function(data) {
@@ -82,7 +82,6 @@ var latestWaterLeakReport;
             case 'home/engineroom/waterleak':
 
                 let waterStatusMsg = mqtttext.statusOK;
-                alarmStatus = msg.payload.time;
                 // Store the report time
                 latestWaterLeakReport = msg.payload.time;
 
@@ -101,7 +100,7 @@ var latestWaterLeakReport;
 
                 let alarmStatusMsg = mqtttext.statusOFF;
                 alarmStatus = msg.payload;
-
+                
                 if (alarmStatus === 0) {
                     $('#alarmStatus').removeClass('badge-success').addClass('badge badge-danger');
                 } else {
