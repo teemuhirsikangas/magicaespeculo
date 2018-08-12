@@ -1,5 +1,4 @@
 #electricity {
-    z-index: 100;
     position: absolute;
     left: 270px;
     font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
@@ -14,7 +13,6 @@
     position: absolute;
     bottom: 0px;
 }
-
 
 #kwh {
     position: absolute;

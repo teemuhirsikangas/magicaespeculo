@@ -16,6 +16,7 @@ var calendardata = require('./routes/calendar');
 var bedditdata = require('./routes/beddit');
 var electricitydata = require('./routes/electricity');
 var garagedata = require('./routes/garage');
+var greenhousedata = require('./routes/greenhouse');
 var envoydata = require('./routes/envoy');
 var waterdata = require('./routes/watermeter');
 var pug = require('pug');
@@ -54,6 +55,7 @@ app.use('/electricity', electricitydata);
 app.use('/garage', garagedata);
 app.use('/envoy', envoydata);
 app.use('/watermeter', waterdata);
+app.use('/greenhouse', greenhousedata);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

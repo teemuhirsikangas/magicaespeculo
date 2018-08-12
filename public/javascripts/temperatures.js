@@ -58,6 +58,41 @@ var data = function () {
             }
         }
     });
+
+    $.getJSON('/greenhouse/temperature', function (ghdata) {
+        try {
+            console.log('joo1');
+            console.log(ghdata);
+            console.log(ghdata[0].temp);
+
+            $("#ghtext").html('Kasvihuone:');
+            $("#ghtemp").html(ghdata[0].temp + '&deg;');
+            $("#ghhumid").html(ghdata[0].humid + '&#37;');
+            const battery = ghdata[0].vbatt;
+            
+            let batteryIcon = `<i class="fa fa-battery-full" aria-hidden="true" style="color:green"></i>`;
+
+            if (battery < 3.5 && battery > 3.3) {
+                batteryIcon = `<i class="fa fa-battery-half" aria-hidden="true" style="color:orange"></i>`;
+            } else if (battery <= 3.3) {
+                batteryIcon = `<i class="fa fa-battery-empty" aria-hidden="true" style="color:red"></i>`;
+            }
+
+            $('#ghvbatt').html(`${batteryIcon} ${battery}V`);
+
+            checkIfDataIsStalefrom(ghdata[0].timestamp, 15);
+
+        } catch (e) {
+
+            if (e instanceof NoNewDataException) {
+                document.getElementById("garage").style.color = "#ff0000";
+            } else {
+                $("#ghtemp").html("-");
+                $("#ghhumid").html("-");
+                $("#ghvbatt").html("-");
+            }
+        }
+    });
 };
 
 $(document).ready(function () {
@@ -70,6 +105,11 @@ $(document).ready(function () {
     var d = document.getElementById("garage");
     d.onclick = function () {
         generateChart('/garage/temperature/hourly');
+    };
+
+    var d = document.getElementById("greenhouse");
+    d.onclick = function () {
+        generateChart('/greenhouse/temperature/hourly');
     };
 
     data();

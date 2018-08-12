@@ -20,7 +20,7 @@
     "mqtt": "2.18.3",
     "node-ifttt-maker": "1.0.2",
     "pug": "2.0.3",
-    "request": "2.87.0",
+    "request": "2.88.0",
     "serve-favicon": "2.5.0",
     "socket.io": "2.1.1",
     "sqlite3": "4.0.2"

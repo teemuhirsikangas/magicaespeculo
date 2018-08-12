@@ -55,6 +55,25 @@ module.exports.init = function () {
         }
     });
 
+        db.get("SELECT name FROM sqlite_master WHERE type='table' AND name='GREENHOUSE_TEMP'", function (err, rows) {
+            if (err !== null) {
+                console.log(err);
+            } else if (rows === undefined) {
+                  db.run('CREATE TABLE "GREENHOUSE_TEMP" ' +
+                         '("timestamp" integer primary key, ' +
+                         '"temp" VARCHAR(255), ' +
+                         '"humid" VARCHAR(255), ' +
+                         '"vbatt" VARCHAR(255));', function (err) {
+                      if (err !== null) {
+                          console.log(err);
+                      } else {
+                        console.log("SQL Table 'GREENHOUSE_TEMP' initialized.");
+                      }
+                });
+            } else {
+                console.log("SQL Table 'GREENHOUSE_TEMP' already initialized.");
+            }
+        });
 
     // Database initialization for ground heat pump
     db.get("SELECT name FROM sqlite_master WHERE type='table' AND name='DATASTORE_RAW'", function (err, rows) {

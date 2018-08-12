@@ -7,7 +7,6 @@ body {
   
 
 #realtimenotifications {
-    z-index: 100;
     position: absolute;
     font-weight: bold;
     width: 95%;

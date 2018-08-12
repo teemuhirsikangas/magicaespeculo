@@ -103,6 +103,9 @@ const init = function () {
             case 'home/engineroom/watermeter':
                 handleWaterMeter(message);
                 break;
+            case 'home/greenhouse/temp':
+                handleGreenHouse(message);
+                break;
             case 'home/alarm':
 
                 ALARM = parseInt(message);
@@ -160,6 +163,25 @@ function handleWaterMeter (message) {
     db.run(sqlRequest, function (err) {
         if (err !== null) {
             console.log('Could not store WaterMeter data', err);
+        }
+
+    });
+
+  }
+
+  function handleGreenHouse (message) {
+
+    console.log(`greenhouse data ${message}`)    
+    const data = JSON.parse(message);
+    console.log(data);
+    const timestamp = new Date().getTime();
+
+    const sqlRequest = "INSERT INTO 'GREENHOUSE_TEMP' (timestamp, temp, humid, vbatt) " +
+    "VALUES('" + timestamp + "', '" + data.temperature + "','" + data.humidity + "','" + data.vbatt + "')"
+
+    db.run(sqlRequest, function (err) {
+        if (err !== null) {
+            console.log('Could not store greenhouse data', err);
         }
 
     });

@@ -135,3 +135,39 @@ img {
     right: 4px;
     bottom: 56px;
 }
+
+#greenhouse {
+    position: absolute;
+    font-size: 10px;
+    font-weight: bold;    
+    top: 20px;
+    right: 0px;
+    width: 120px;
+    height: 70px;
+}
+
+#greenhouse:hover {
+    cursor: pointer;
+}  
+
+#ghtext {
+    position: absolute;
+    right: 45px;
+    top: 0px;
+}
+
+#ghtemp {
+    position: absolute;
+    right: 2px;
+    top: 15px;
+}
+#ghhumid {
+    position: absolute;
+    right: 32px;
+    top: 15px;
+}
+#ghvbatt {
+    position: absolute;
+    right: 2px;
+    top: 0px;
+}
