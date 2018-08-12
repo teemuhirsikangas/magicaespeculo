@@ -61,10 +61,6 @@ var data = function () {
 
     $.getJSON('/greenhouse/temperature', function (ghdata) {
         try {
-            console.log('joo1');
-            console.log(ghdata);
-            console.log(ghdata[0].temp);
-
             $("#ghtext").html('Kasvihuone:');
             $("#ghtemp").html(ghdata[0].temp + '&deg;');
             $("#ghhumid").html(ghdata[0].humid + '&#37;');
@@ -87,6 +83,7 @@ var data = function () {
             if (e instanceof NoNewDataException) {
                 document.getElementById("garage").style.color = "#ff0000";
             } else {
+                $("#ghtext").html('Kasvihuone:');
                 $("#ghtemp").html("-");
                 $("#ghhumid").html("-");
                 $("#ghvbatt").html("-");
