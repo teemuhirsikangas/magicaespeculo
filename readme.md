@@ -366,6 +366,8 @@ Changes:
 
 12.6.2018 - Added rtl_433 door sensors and mqtt handler, IFTT push notifications moved from python script to node
 
+12.8.2018 Added greenhouse temp, humid and vbatt logging to db via mqtt message
+
 License
 MIT
 
