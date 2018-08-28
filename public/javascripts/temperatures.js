@@ -81,7 +81,9 @@ var data = function () {
         } catch (e) {
 
             if (e instanceof NoNewDataException) {
-                document.getElementById("garage").style.color = "#ff0000";
+                document.getElementById("ghtemp").style.color = "#ff0000";
+                document.getElementById("ghhumid").style.color = "#ff0000";
+                document.getElementById("ghvbatt").style.color = "#ff0000";
             } else {
                 $("#ghtext").html('Kasvihuone:');
                 $("#ghtemp").html("-");
