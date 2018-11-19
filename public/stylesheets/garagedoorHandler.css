@@ -36,13 +36,13 @@ body {
     height: 50%;
     font-weight: bold;
 }  
-#garagestatus {
+#garagedoorstatus {
     position: absolute;
     top:2.9em;
     right: 0px;
 }
 
-#garagetext {
+#garagedoortext {
     position: absolute;
     top:2em;
     left: 0px;
