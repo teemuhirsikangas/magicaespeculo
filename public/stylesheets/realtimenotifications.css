@@ -41,13 +41,13 @@
 
 #garagedoor
 
-#garagestatus {
+#garagedoorstatus {
     position: absolute;
     top: 50px;
     right: 5px;
 }
 
-#garagetext {
+#garagedoortext {
     position: absolute;
     top: 50px;   
     left: 0px;

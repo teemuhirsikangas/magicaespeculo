@@ -66,10 +66,10 @@ var ventilationtext = {
 var mqtttext = {
     "frontdoor": "Front door",
     "sidedoor": "Side door",
-    "backtdoor": "Back door",
+    "backdoor": "Back door",
+    "garagedoor": "Garage Door",
     "doorOpen" : "Open",
     "doorClosed" : "closed",
-    "garageDoor": "Garage Door",
     "waterLeak": "Water leak(mains)",
     "waterLeakON": "LEAK!",
     "statusOK": "OK",

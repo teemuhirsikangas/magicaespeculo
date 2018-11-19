@@ -118,6 +118,7 @@ const init = function () {
             case 'home/rtl_433/sensor_1813':
             case 'home/rtl_433/sensor_34238':
             case 'home/rtl_433/sensor_50860':
+            case 'home/rtl_433/sensor_48187':
                 const msg = JSON.parse(message);
                 if (ALARM) {
                     const sensor = msg.id.toString();
@@ -128,6 +129,8 @@ const init = function () {
                         sensorVal = 'sivuovi'
                     } else if(sensor === '50860') {
                         sensorVal = 'etuovi'
+                    } else if(sensor === '48187') {
+                        sensorVal = 'Autotalli'
                     }
                     let status = 'kiinni';
                     if (msg.cmd.toString() === '10') {

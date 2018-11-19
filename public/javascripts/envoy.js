@@ -70,7 +70,6 @@ var envoyData = function () {
                 checkIfDataIsStale(Data[0].timestamp);
 
         } catch (e) {
-            console.log(e);
             if (e instanceof NoNewDataException) {
                 document.getElementById("wNow").style.color = "#ff0000";
                 document.getElementById("inverters").style.color = "#ff0000";
@@ -236,7 +235,7 @@ function isReportDateOverdue(lastTimestamp) {
         currentDate = moment(new Date()),
         diff = currentDate.diff(lastEntryDate, 'minutes');
     if (diff >= 16) {
-        console.log("not reported inverter data since: " + lastEntryDate.format("YYYY-MM-DD HH:mm"));
+        console.log("not reported Enphase Envoy inverter data since: " + lastEntryDate.format("YYYY-MM-DD HH:mm"));
         return true;
     }
     return false;
