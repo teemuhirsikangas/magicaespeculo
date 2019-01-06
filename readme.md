@@ -138,7 +138,7 @@ Autoconnect to wifi if connection goes down
 
 Raspberry Pi 2 b+ Wheezy mounted to ground heatpump with [ThermIQ](http://www.thermiq.net/) data logger
 #### Configure
-[ThermIQ](http://www.thermiq.net/product/thermiq-2/?lang=en) data logger is using sqlite3 db ([how install ThermIQ on raspberry Wheezy](http://www.thermiq.net/wp-conteny/uploads/ThermIQ-installation-for-Raspberry-PI.pdf))
+[ThermIQ](http://www.thermiq.net/product/thermiq-2/?lang=en) data logger is using sqlite3 db ([how install ThermIQ on raspberry Stretch](http://www.thermiq.net/wp-conteny/uploads/ThermIQ-installation-for-Raspberry-PI.pdf))
 
 `git clone git@github.com:teemuhirsikangas/magicaespeculo.git`
 

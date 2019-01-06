@@ -1,6 +1,9 @@
 #!/usr/bin/python
 #run this script on reboot, add it to the cron job
 #@reboot sudo nohup python /home/pi/magicaespeculo/scripts/send_waterleak.py & > /dev/null 2>&1
+#sudo pip install paho-mqtt
+#sudo pip install schedule
+
 import sys
 import RPi.GPIO as GPIO
 import time
