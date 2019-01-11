@@ -40,14 +40,14 @@ Raspberry Pi 3 Stretch
 node.js:
 ```
 curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
-sudo apt-get install -y nodejs
+sudo apt install -y nodejs
 ```
 
 SQLite3:
-`sudo apt-get install sqlite3`
+`sudo apt install sqlite3`
 
 get sources:
-`git clone git@github.com:teemuhirsikangas/magicaespeculo.git`
+`git clone https://github.com/teemuhirsikangas/magicaespeculo.git`
 
 #### Configure
 
@@ -110,9 +110,9 @@ Change display orientation (use 1 or 3):
 ```    
     display_rotate=3
 ```
-For hiding cursor: `sudo apt-get install unclutter`
+For hiding cursor: `sudo apt install unclutter`
 
-Install browser:`sudo apt-get install firefox-esr`
+Install browser:`sudo apt install firefox-esr`
 (Run Firefox in Fullscreen: Once installed, go to Tools > Add-ons > Extensions. Select/find MA Full screen
 
 Scripts to run on startup:
@@ -136,11 +136,11 @@ Autoconnect to wifi if connection goes down
 -------------------------------------------------------------
 # Ground Heat Pump
 
-Raspberry Pi 2 b+ Wheezy mounted to ground heatpump with [ThermIQ](http://www.thermiq.net/) data logger
+Raspberry Pi 2 b+ mounted to ground heatpump with [ThermIQ](http://www.thermiq.net/) data logger
 #### Configure
 [ThermIQ](http://www.thermiq.net/product/thermiq-2/?lang=en) data logger is using sqlite3 db ([how install ThermIQ on raspberry Stretch](http://www.thermiq.net/wp-conteny/uploads/ThermIQ-installation-for-Raspberry-PI.pdf))
 
-`git clone git@github.com:teemuhirsikangas/magicaespeculo.git`
+`git clone https://github.com/teemuhirsikangas/magicaespeculo.git`
 
 Or copy files to
 1. `/home/pi/magicaespeculo/scripts/send_homeautomation_raw_values.py` -sends status values every 60secs to backend (Json)
@@ -158,18 +158,16 @@ Edit scripts to match your backend address
 @reboot sudo /home/pi/ThermIq_usbxDevice.sh 2>&1
 ```
 
-Install Python requests package 
+Install Python requests package
 
-`sudo apt-get install libkrb5-dev`
+`sudo apt install libkrb5-dev`
 
 `wget https://bootstrap.pypa.io/get-pip.py`
 
 `sudo python get-pip.py`
 
-`sudo pip install requests==2.5.3`
+`sudo pip install requests`
 
-(later versions doesn't work with wheezy's python 2.7)
-You might be required to install if above gives errors about ssl: `sudo pip install requests[security]`
 -------------------------------------------------------------
 # Power meter
 Raspberry Zero with photoresistor (LDR) reading the flashing LED from household power meter (1000 imp/kwh)
@@ -199,7 +197,7 @@ Autoconnect to wifi if connection goes down
 ```
 -------------------------------------------------------------
 ### Garage temperature / humidity logging
-Raspberry Zero with DS18B20 x3 and DHT22 x2
+Raspberry Zero with 3x DS18B20 and 2x DHT22 sensors
 
 #### Hardware
 ![alt tag](http://i.imgur.com/WBTJp5J.png)
@@ -221,9 +219,10 @@ and data in
 
 #### Setup DHT22 libs:
 ```
+
+sudo apt install build-essential python-dev python-setuptools python-pip avahi-utils git
+sudo pip install requests
 git clone https://github.com/adafruit/Adafruit_Python_DHT
-sudo apt-get update
-sudo apt-get install build-essential python-dev
 cd Adafruit_Python_DHT
 sudo python setup.py install
 ```
@@ -231,7 +230,7 @@ Copy files to
 1. `/home/pi/magicaespeculo/scripts/wlan-monitor.sh` (change wlan0 if using different interface name, check ifconfig)
 2. `/home/pi/magicaespeculo/scripts/send_garage_temp.py` -sends status values every 60secs to backend (Json)
 
-Edit `send_garage_temp.py`  to match your sensors and wiring and change the backend address
+Edit `send_garage_temp.py` to match your sensors and wiring and change the backend address
 
 #### cronjobs
 `sudo crontab -e`
@@ -241,7 +240,7 @@ Edit `send_garage_temp.py`  to match your sensors and wiring and change the back
 ```
 -------------------------------------------------------------
 # House temperature / humidity
-Raspberry Pi 2 + 1wire + DHT22 (the same Raspberry Pi which is the backend)
+Raspberry Pi 3 + 1wire + DHT22 (the same Raspberry Pi which is the backend)
 
 Copy files to
 1. `/home/pi/magicaespeculo/scripts/send_temp.py` -sends temperature/humidity values every 60secs to backend (Json)
@@ -254,13 +253,14 @@ Copy files to
 -------------------------------------------------------------
 # Ventilation
 
-`sudo apt-get install python-pip`
+`sudo apt install python-pip`
 
 `sudo pip install minimalmodbus`
 
 
 Uses minimalmodbus library to read modbus register values from Enervent Pingvin ventilation unit.
 Ventilaton unit is in slave mode (when using freeway modbus port) and the script acts as master to read register values
+note: minimalmodbus does not support writing to coils, use ModbusClient, see example in scripts/write_modbus_example.py
 
 Enervent slave configuration:
 ```
@@ -301,7 +301,7 @@ Copy files to
 USB dongle for dvb-t to capture 433Mhz sensor data:
 
 ```
-sudo apt-get install git cmake libusb-1.0-0.dev build-essential librtlsdr-dev doxygen
+sudo apt install git cmake libusb-1.0-0.dev build-essential librtlsdr-dev doxygen
 
 git clone https://github.com/merbanan/rtl_433.git
 cd rtl-433/

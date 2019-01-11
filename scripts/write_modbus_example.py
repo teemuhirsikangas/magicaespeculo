@@ -28,7 +28,7 @@ rr = client.read_coils(12, 1, unit=0x01)
 
 #print rqq
 kk =  client.read_holding_registers(53,1,unit=0x01)
-print "tuuletus:"
+print "ventilation:"
 print kk.registers
 
 
