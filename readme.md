@@ -368,6 +368,8 @@ Changes:
 
 12.8.2018 Added greenhouse temp, humid and vbatt logging to db via mqtt message
 
+3.2.2019 Changed to use Dark Sky weather api
+
 License
 MIT
 

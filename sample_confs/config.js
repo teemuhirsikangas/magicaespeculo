@@ -7,8 +7,8 @@ var config = {
 
     weather : {
         unit : "c",  //f or c
-        location : "lempäälä", //city http://simpleweatherjs.com/
-        woeid : "568960"
+        location : "40.7127837,-74.0059413", //city http://simpleweatherjs.com/
+        apikey: "dark sky api key" // https://darksky.net/dev/docs
     },
     groundheatpump : {
         show : true, //enable disble)
