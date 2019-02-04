@@ -45,20 +45,22 @@ var latestWaterLeakReport;
             } else if(sensor === '48187') {
                 sensorVal = 'garagedoor'
             }
-
+            let batteryIcon = '';
             if (msg.payload.cmd === 14) {
                 sensorText = mqtttext.doorClosed;
                 $(`#${sensorVal}status`).removeClass('badge-danger').addClass('badge badge-success');
+                $(`#${sensorVal}status`).html(sensorText);
             } else if (msg.payload.cmd === 10) {
                 $(`#${sensorVal}status`).removeClass('badge-success').addClass('badge badge-danger');
+                $(`#${sensorVal}status`).html(sensorText);
             } else {
+                //mostlikely cmd 7 === low batter?
+                batteryIcon = `<i class="fa fa-battery-empty" aria-hidden="true" style="color:orange"></i>`;
                 console.log('unsupported cmd:', msg);
             }
+            $(`#${sensorVal}text`).html(`${mqtttext[sensorVal]} ${batteryIcon}`); 
 
-            $(`#${sensorVal}text`).html(`${mqtttext[sensorVal]}`);
-            $(`#${sensorVal}status`).html(sensorText);
-
-              break;   
+              break;
 
             case 'home/engineroom/waterleak':
 
@@ -76,7 +78,7 @@ var latestWaterLeakReport;
                 $('#waterleakStatus').html(waterStatusMsg);
 
                 checkWaterLeakLastReportTime();
-             break;
+              break;
             case 'home/alarm':
 
                 let alarmStatusMsg = mqtttext.statusOFF;
