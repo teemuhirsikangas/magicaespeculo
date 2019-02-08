@@ -341,9 +341,7 @@ http://codepen.io/dazulu/pen/fGFyj
 #### IDEAS/TODO:
 ```
 Robomow lawn mower schedule integration to calendar or directly via Bluetooth LE connection
-BUTTON: change mirror pages to hide calendar/reload page/shutdown
-Add welcome text other info which requires attention?
-sd-card optimization from wear and tear
+BUTTON: change mirror pages to hide calendar/reload page/shutdown/ open camera feed
 ```
 
 Changes:
@@ -369,6 +367,8 @@ Changes:
 12.8.2018 Added greenhouse temp, humid and vbatt logging to db via mqtt message
 
 3.2.2019 Changed to use Dark Sky weather api
+
+8.2.2019 Added darkSky api to prevent corrs from clientside js, lint fixes
 
 License
 MIT
