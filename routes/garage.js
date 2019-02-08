@@ -1,9 +1,9 @@
 "use strict";
-var express = require('express');
-var router = express.Router();
-var moment = require('moment');
-var sqlite3 = require('sqlite3').verbose();
-var db = new sqlite3.Database('./data/homeautomation.db');
+const express = require('express');
+const router = express.Router();
+const moment = require('moment');
+const sqlite3 = require('sqlite3').verbose();
+const db = new sqlite3.Database('./data/homeautomation.db');
 
 
 router.get('/', function (req, res, next) {
@@ -49,7 +49,7 @@ router.get('/temperature/hourly', function (req, res, next) {
  */
 router.post('/temperature', function (req, res) {
     //timestamp = req.body.timestamp;
-    var garage_floor = req.body.garage_floor,
+    const garage_floor = req.body.garage_floor,
         garage_floor2 = req.body.garage_floor2,
         garage_room = req.body.garage_room,
         garage_humid = req.body.garage_humid,

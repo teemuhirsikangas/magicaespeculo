@@ -1,9 +1,9 @@
 "use strict";
-var express = require('express');
-var router = express.Router();
-var moment = require('moment');
-var sqlite3 = require('sqlite3').verbose();
-var db = new sqlite3.Database('./data/homeautomation.db');
+const express = require('express');
+const router = express.Router();
+const moment = require('moment');
+const sqlite3 = require('sqlite3').verbose();
+const db = new sqlite3.Database('./data/homeautomation.db');
 
 
 router.get('/', function (req, res, next) {
@@ -13,7 +13,7 @@ router.get('/', function (req, res, next) {
             res.json(err);
         } else {
 
-            var timestamp = 0;
+            let timestamp = 0;
             if(row != null && row  != undefined && row[0] != null) {
                 timestamp = row[0].timestamp;
             }
@@ -53,9 +53,9 @@ router.get('/latestinv', function (req, res, next) {
 //today
 router.get('/today', function (req, res, next) {
 
-    var startOfToday = new Date();
+    let startOfToday = new Date();
     startOfToday.setHours(0,0,0,0);
-    var now = new Date();
+    const now = new Date();
     db.all('SELECT * FROM ENVOY_STATUS_REPORTS WHERE timestamp BETWEEN ' + startOfToday.getTime() + ' AND ' + now.getTime() + ' ORDER BY timestamp ASC', function (err, row) {
         if (err !== null) {
             res.json(err);
@@ -69,12 +69,12 @@ router.get('/today', function (req, res, next) {
 //watthours yesterday
 router.get('/yesterday', function (req, res, next) {
 
-    var today = new Date();
+    let today = new Date();
     today.setHours(0,0,0,0);
-    var msecPerDay = 24 * 60 * 60 * 1000;
-    var startOfYesterday = new Date(today.getTime() - msecPerDay);
+    const msecPerDay = 24 * 60 * 60 * 1000;
+    const startOfYesterday = new Date(today.getTime() - msecPerDay);
     today.setHours(24,0,0,0);
-    var endOfYesterday = new Date(today.getTime() - msecPerDay);
+    const endOfYesterday = new Date(today.getTime() - msecPerDay);
     db.all('SELECT * FROM ENVOY_STATUS_REPORTS WHERE timestamp BETWEEN ' + startOfYesterday.getTime() + ' AND ' + endOfYesterday.getTime() + ' ORDER BY timestamp ASC', function (err, row) {
         if (err !== null) {
             res.json(err);
@@ -90,7 +90,7 @@ router.get('/yesterday', function (req, res, next) {
  */
 router.post('/', function (req, res) {
 
-    var wattHoursToday = req.body.wattHoursToday,
+    const wattHoursToday = req.body.wattHoursToday,
         readingTime = req.body.readingTime,
         wNow = req.body.wNow,
         wattHoursSevenDays = req.body.wattHoursSevenDays,
@@ -106,7 +106,7 @@ router.post('/', function (req, res) {
 
     } else {
         //add status data
-        var sqlRequest = "INSERT INTO 'ENVOY_STATUS_REPORTS' (timestamp, readingTime, wNow, whLifetime, wattHoursSevenDays, wattHoursToday) " +
+        const sqlRequest = "INSERT INTO 'ENVOY_STATUS_REPORTS' (timestamp, readingTime, wNow, whLifetime, wattHoursSevenDays, wattHoursToday) " +
                     "VALUES('" + timestamp + "', '" + readingTime + "','" + wNow + "','" + whLifetime + "','" + wattHoursSevenDays + "','"  + wattHoursToday + "')";
 
         db.run(sqlRequest, function (err) {
@@ -116,13 +116,13 @@ router.post('/', function (req, res) {
                 //Add status data for all inverters
                 for (var i = 0; i <= inverters.length - 1; i++) {
 
-                    var serialNumber = inverters[i].serialNumber,
+                    const serialNumber = inverters[i].serialNumber,
                         lastReportWatts = inverters[i].lastReportWatts,
                         maxReportWatts = inverters[i].maxReportWatts,
                         lastReportDate = inverters[i].lastReportDate,
                         producing = inverters[i].producing ? 1 : 0;
 
-                    var sqlRequestInv = "INSERT INTO 'ENVOY_INVERTER_STATUS' (timestamp, serialNumber, lastReportWatts, maxReportWatts, lastReportDate, producing) " +
+                    const sqlRequestInv = "INSERT INTO 'ENVOY_INVERTER_STATUS' (timestamp, serialNumber, lastReportWatts, maxReportWatts, lastReportDate, producing) " +
                          "VALUES('" + timestamp + "', '" + serialNumber + "','" + lastReportWatts + "','" + maxReportWatts + "','" + lastReportDate + "','" + producing + "')";
                     db.run(sqlRequestInv);
                 }

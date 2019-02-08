@@ -1,9 +1,9 @@
 "use strict";
-var express = require('express');
-var router = express.Router();
-var moment = require('moment');
-var bedditapi = require('beddit-api');
-var fs = require('fs');
+const express = require('express');
+const router = express.Router();
+const moment = require('moment');
+const bedditapi = require('beddit-api');
+const fs = require('fs');
 
 /* GET beddit data
 http://localhost:3333/beddit/
@@ -18,12 +18,12 @@ router.get('/', function (req, res) {
 
 });
 
-var getBedditData = function (res, maxResults, days) {
+const getBedditData = function (res, maxResults, days) {
 
-    var currentDate = new Date();
+    const currentDate = new Date();
     currentDate.setDate(currentDate.getDate() + 1);
 
-    var beddit = new Beddit(),
+    const beddit = new Beddit(),
         today = new Date(),
         msecPerDay = 24 * 60 * 60 * 1000,
         maxDays = new Date(today.getTime() - msecPerDay * days),
@@ -31,7 +31,7 @@ var getBedditData = function (res, maxResults, days) {
         end_date = today.toISOString().split('T')[0],
         tomorrow = currentDate.toISOString().split('T')[0],
         //check paramenters from here: https://github.com/beddit/beddit-api/blob/master/3_2-SleepResources.md
-        //var queryparams = { 'updated_after': maxDays.getTime(), 'limit': maxResults  };
+        //const queryparams = { 'updated_after': maxDays.getTime(), 'limit': maxResults  };
         key = require('../data/beddit_key.json'),
         queryparams = { 'start_date': start_date, 'end_date': tomorrow, 'limit': maxResults, 'reverse' : "no" };
         console.log(end_date);

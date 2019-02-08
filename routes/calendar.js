@@ -1,9 +1,8 @@
 "use strict";
-var express = require('express');
-var router = express.Router();
-var moment = require('moment');
-var { google } = require('googleapis');
-var fs = require('fs');
+const express = require('express');
+const router = express.Router();
+const moment = require('moment');
+const { google } = require('googleapis');
 
 /* GET calendar.
 http://localhost:3333/calendar/

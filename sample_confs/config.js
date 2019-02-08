@@ -1,3 +1,4 @@
+//place this into pulic/javascript/config.js
 var config = {
     language : "en-EN", //or en-EN //fi-FI
     locale : "en", //or fi
@@ -5,11 +6,6 @@ var config = {
     calendartextformat :"Do MMM dd", //for en "Do MMM dd" or fi "DoM dd"
     calendartimeformat : "hh:mm A",    //for en 'h:mm A' or for fi "HH:mm"
 
-    weather : {
-        unit : "c",  //f or c
-        location : "40.7127837,-74.0059413", //city http://simpleweatherjs.com/
-        apikey: "dark sky api key" // https://darksky.net/dev/docs
-    },
     groundheatpump : {
         show : true, //enable disble)
         avaragepowerusage : 1.7 //kWh

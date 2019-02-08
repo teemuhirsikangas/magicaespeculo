@@ -1,5 +1,5 @@
 'use strict';
-// rename me to config.js
+// rename me to config.js on parent folder
 
 const config = { 
     mqtt: {
@@ -8,7 +8,12 @@ const config = {
         password: '2222',
         host: 'http://192.168.100.3',
         clientId: 'mqtt_nodejs-testdev'
-    }
+    },
+    weather : {
+        unit : "si",  //si system -> celcius
+        location : "40.7127837,-74.0059413", //city http://simpleweatherjs.com/
+        apikey: "dark sky api key" // https://darksky.net/dev/docs
+    },
 
 }
 

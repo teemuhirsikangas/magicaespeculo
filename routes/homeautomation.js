@@ -1,9 +1,9 @@
 "use strict";
-var express = require('express');
-var router = express.Router();
-var moment = require('moment');
-var sqlite3 = require('sqlite3').verbose();
-var db = new sqlite3.Database('./data/homeautomation.db');
+const express = require('express');
+const router = express.Router();
+const moment = require('moment');
+const sqlite3 = require('sqlite3').verbose();
+const db = new sqlite3.Database('./data/homeautomation.db');
 
 /* GET homeautomation listing. */
 router.get('/', function (req, res, next) {
@@ -70,7 +70,7 @@ router.get('/:id', function(req, res, next) {
  */
 router.post('/temperature', function (req, res) {
 
-    var floor = req.body.floor,
+    const floor = req.body.floor,
         room = req.body.room,
         out = req.body.out,
         humid = req.body.humid,
@@ -98,7 +98,7 @@ router.post('/datastoreday', function (req, res) {
         res.json(400);
     }
 
-    var time = req.body.TID,
+    const time = req.body.TID,
         temp_out = req.body.T_UTE,
         temp_max = req.body.T_UTE_MAX,
         temp_min = req.body.T_UTE_MIN,
@@ -145,7 +145,7 @@ router.post('/datastoreraw', function (req, res) {
     if (typeof req.body.T_UTE === 'undefined' || req.body.T_UTE === null) {
         res.json(400);
     }
-    var time = req.body.TID,
+    const time = req.body.TID,
         temp_out = req.body.T_UTE,
         temp_supplyline = req.body.T_FRAM,   //supplyline temp
         temp_supplylinereturn = req.body.T_RETUR, //returnline temp 
@@ -234,7 +234,7 @@ router.get('/technicalroom/hourly', function (req, res, next) {
  */
 router.post('/technicalroom', function (req, res) {
     //timestamp = req.body.timestamp;
-    var technical_room = req.body.technical_room,
+    const technical_room = req.body.technical_room,
         technical_humid = req.body.technical_humid,
         timestamp = new Date().getTime(),
         sqlRequest = "INSERT INTO 'TECHNICAL_ROOM' (timestamp, technical_room, technical_humid) " +

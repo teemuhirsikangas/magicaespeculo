@@ -1,10 +1,9 @@
 'use strict';
 var weather = function () {
         $.simplerWeather({
-            location: config.weather.location,
-            //woeid: config.weather.woeid,
-            unit: config.weather.unit,
-            apikey: config.weather.apikey,
+            authmethod: 'proxy',
+            //use own proxy in index.js to get rid of corrs
+            proxyurl: '/darksky',
             success: function (weather) {
                 let skycons = new Skycons({"color": "white"}),
                     skycons_forecast = new Skycons({"color": "white"}),

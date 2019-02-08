@@ -6,7 +6,7 @@ Based on SimpleWeather -- https://github.com/monkeecreate/jquery.simpleWeather
 
 Simple Weather Java Switches to DarkSky */
 
-//made some additions for the weather data //Teemu
+//made some additions, changes for the weather data //Teemu
 
 ( function( $ ) {
   'use strict';
@@ -44,24 +44,14 @@ Simple Weather Java Switches to DarkSky */
 
       //Check that the latitude and longitude has been set and generate the API URL based on authentication method
       function getWeatherURL( authmethod ) {
-        if( /^\-?\d+(\.\d+)?,\s*\-?\d+(\.\d+)$/.test( options.location ) ) {
 
-          let geoLocation = options.location.split( ',' );
-          var lat = geoLocation[ 0 ];
-          var lon = geoLocation[ 1 ];
-        } else {
-          options.error(
-            'Could not retrieve weather due to an invalid location. Must enter location as latitude,longitude'
-          );
-        }
         if( authmethod === "apikey" && options.apikey !== '' ) {
           let apiKey = encodeURIComponent( options.apikey );
           return 'https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/' + apiKey + '/' +
             lat + ',' + lon + '/?units=' + units +
             '&exclude=minutely,hourly,alerts,flags';
         } else if( authmethod === "proxy" && options.proxyurl !== '' ) {
-          return encodeURI( options.proxyurl + '?lat=' + lat + '&lon=' +
-            lon + '&units=' + units );
+          return encodeURI( options.proxyurl );
         } else {
           options.error(
             'Could not retrieve weather due to an invalid api key or proxy setting.'
@@ -75,7 +65,7 @@ Simple Weather Java Switches to DarkSky */
           if( data !== null ) {
             var result = data,
               weather = {};
-            console.log(data);
+            //console.log(data);
             weather.temp = result.currently.temperature;
             weather.currently = result.currently.summary;
             weather.icon = result.currently.icon;

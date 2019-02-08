@@ -6,13 +6,14 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "beddit-api": "teemuhirsikangas/beddit-api",
     "body-parser": "1.18.3",
     "bootstrap": "4.2.1",
     "cookie-parser": "1.4.3",
     "debug": "4.1.1",
     "express": "4.16.4",
-    "googleapis": "37.1.0",
+    "googleapis": "37.2.0",
     "highcharts": "6.2.0",
     "kew": "0.7.0",
     "moment": "2.24.0",

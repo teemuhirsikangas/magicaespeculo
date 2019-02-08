@@ -1,9 +1,9 @@
 "use strict";
-var express = require('express');
-var router = express.Router();
-var moment = require('moment');
-var sqlite3 = require('sqlite3').verbose();
-var db = new sqlite3.Database('./data/homeautomation.db');
+const express = require('express');
+const router = express.Router();
+const moment = require('moment');
+const sqlite3 = require('sqlite3').verbose();
+const db = new sqlite3.Database('./data/homeautomation.db');
 
 /* GET last values. */
 router.get('/', function (req, res, next) {
@@ -58,8 +58,8 @@ router.get('/dailyusage', function (req, res, next) {
 /* GET last values. */
 router.get('/:starttime/:endtime', function (req, res, next) {
 
-    var starttime = req.params.starttime;
-    var endtime = req.params.endtime;
+    const starttime = req.params.starttime;
+    const endtime = req.params.endtime;
     db.all('SELECT litercount FROM WATERMETER WHERE timestamp BETWEEN ' + starttime.getTime() + ' AND ' + endtime.getTime(), function (err, row) {
         if (err !== null) {
             res.json(err);
@@ -72,9 +72,9 @@ router.get('/:starttime/:endtime', function (req, res, next) {
 
 router.get('/today', function (req, res, next) {
 
-    var starttime = new Date();
+    let starttime = new Date();
     starttime.setHours(0,0,0,0);
-    var endtime = new Date();
+    let endtime = new Date();
     endtime.setHours(24,0,0,0);
     db.all('SELECT timestamp, COUNT(litercount) as liters FROM WATERMETER WHERE timestamp BETWEEN ' + starttime.getTime() + ' AND ' + endtime.getTime(), function (err, row) {
         if (err !== null) {
@@ -87,12 +87,12 @@ router.get('/today', function (req, res, next) {
 
 router.get('/yesterday', function (req, res, next) {
 
-    var today = new Date();
+    let today = new Date();
     today.setHours(0,0,0,0);
-    var msecPerDay = 24 * 60 * 60 * 1000;
-    var startOfYesterday = new Date(today.getTime() - msecPerDay);
+    const msecPerDay = 24 * 60 * 60 * 1000;
+    const startOfYesterday = new Date(today.getTime() - msecPerDay);
     today.setHours(24,0,0,0);
-    var endOfYesterday = new Date(today.getTime() - msecPerDay);
+    const endOfYesterday = new Date(today.getTime() - msecPerDay);
 
     db.all('SELECT COUNT(litercount) as liters FROM WATERMETER WHERE timestamp BETWEEN ' + startOfYesterday.getTime() + ' AND ' + endOfYesterday.getTime(), function (err, row) {
         if (err !== null) {
@@ -108,12 +108,12 @@ router.get('/yesterday', function (req, res, next) {
 //last 30day daily avarage
 router.get('/thirtydayavarage', function (req, res, next) {
 
-    var today = new Date();
+    let today = new Date();
     today.setHours(0,0,0,0);
-    var msecPerDay = 24 * 60 * 60 * 1000;
-    var thirty1daysago = new Date(today.getTime() - msecPerDay * 31);
+    const msecPerDay = 24 * 60 * 60 * 1000;
+    const thirty1daysago = new Date(today.getTime() - msecPerDay * 31);
     today.setHours(24,0,0,0);
-    var endOfYesterday = new Date(today.getTime() - msecPerDay);
+    const endOfYesterday = new Date(today.getTime() - msecPerDay);
 
     db.all('SELECT ROUND(SUM(litercount)/30,1) as liters FROM WATERMETER WHERE timestamp BETWEEN ' + thirty1daysago.getTime() + ' AND ' + endOfYesterday.getTime(), function (err, row) {
         if (err !== null) {
@@ -130,11 +130,11 @@ router.get('/thirtydayavarage', function (req, res, next) {
  */
 router.post('/', function (req, res) {
 
-    var litercount = req.body.litercount;
-    var timestamp = new Date().getTime();
+    const litercount = req.body.litercount;
+    const timestamp = new Date().getTime();
     //date = moment(new Date());
     //var datetime =  date.format("YYYY-MM-DD HH:mm:ss");
-    var sqlRequest = "INSERT INTO 'WATERMETER' (timestamp, litercount) " +
+    const sqlRequest = "INSERT INTO 'WATERMETER' (timestamp, litercount) " +
                  "VALUES('" + timestamp + "','" + litercount + "')";
     //console.log(sqlRequest);             
     db.run(sqlRequest, function (err) {
