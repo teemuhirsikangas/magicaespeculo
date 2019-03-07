@@ -10,8 +10,8 @@ var weather = function () {
                     current_weather = '<canvas id="weather-icon" width="128" height="128"></canvas>',
                     temp_sunrise = new Date(weather.sunrise * 1000),                    
                     temp_sunset = new Date(weather.sunset * 1000);
-                let sunrise = temp_sunrise.getHours() + ":" + temp_sunrise.getMinutes();
-                let sunset = temp_sunset.getHours() + ":" + temp_sunset.getMinutes();
+                let sunrise = temp_sunrise.getHours() + ":" + addLeadingZerosToMin(temp_sunrise.getMinutes());
+                let sunset = temp_sunset.getHours() + ":" + addLeadingZerosToMin(temp_sunset.getMinutes());
 
                 current_weather += '<div id= weather_desc>' + weather.currently + '</div>';
                 current_weather += '<div id= uv_index style="font-size:70%" >UV-index' + uvIndexPlainer(weather.uvIndex) + '</div>';
@@ -79,6 +79,13 @@ function degToCompass(num) {
     return arr[ Math.abs(val) ] ;
 }
 
+function addLeadingZerosToMin(time) {
+    if (parseInt(time, 10) < 10) {
+        time = '0' + time;
+    }
+    return time;
+}
+
 // only used for simpleWeather, which seems to be deprecated due to yahoo api.
 // remove these later:
 
@@ -95,19 +102,11 @@ function degToCompass(num) {
 // }
 
 // function splitTimeToComponents(time) {
+//     console.log(time:)
 //     var temp = time.substring(0, time.indexOf(" ")),
 //         res  = temp.split(":");
 //     res = addLeadingZerosToMin(res);
 //     return res;
-// }
-
-// function addLeadingZerosToMin(time) {
-
-//     if (parseInt(time[1], 10) < 10) {
-//         //var temp = time[1];
-//         time[1] = 0 + time[1];
-//     }
-//     return time;
 // }
 
 // function getAnimationforWeatherCode(weathercode) {

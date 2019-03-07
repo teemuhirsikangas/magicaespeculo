@@ -7,6 +7,8 @@
 #@reboot sudo python3 /home/atnu/magicaespeculo/scripts/mqtt433.py > /dev/null 2>&1
 #example json what is send via mqtt
 #{"time": "2018-06-09 17:58:05", "cmd": 14, "id": 1813, "tristate": "00F10FFF001!", "model": "Generic Remote"}
+
+#TODO: https://raspberrypiandstuff.wordpress.com/2017/08/04/rtl_433-on-a-raspberry-pi-made-bulletproof/
 import config #contains MQTT username/password
 import subprocess
 import sys
