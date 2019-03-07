@@ -16,7 +16,7 @@ var weather = function () {
                 current_weather += '<div id= weather_desc>' + weather.currently + '</div>';
                 current_weather += '<div id= uv_index style="font-size:70%" >UV-index' + uvIndexPlainer(weather.uvIndex) + '</div>';
                 current_weather += '<div>' + degToCompass(weather.windBearing) + ' ' + weather.windSpeed + ' ' + 'km/h' + '</div>';
-                current_weather += '<div><canvas id=sunrise width="18" height="18"> </canvas>' + sunrise + '<canvas id=sunset width="18" height="18"> </canvas> ' + sunset + '</div>';
+                current_weather += '<div><canvas id=sunrise width="25" height="25"> </canvas> ' + sunrise + ' <i class="fa fa-moon-o" aria-hidden="true"></i>' + sunset + '</div>';
                 $("#weather_now").html(current_weather);
                 let date,
                     weekday,
@@ -36,7 +36,7 @@ var weather = function () {
                 }
 
                 skycons_forecast.add("sunrise", "clear-day");
-                skycons_forecast.add("sunset", "clear-night");
+                //skycons_forecast.add("sunset", "clear-night");
 
                 for (i = 0; i < weather.forecast.length; i++) {
                     skycons_forecast.add("weather-forecast-" + i, weather.forecast[i].icon);

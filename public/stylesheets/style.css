@@ -103,7 +103,7 @@ Fix for wiggling spinner when using awesomefont (happens on some browsers)
 }
 #weatherforecast {
 	position: absolute;
-    font: 18px "Lucida Grande", Helvetica, Arial, sans-serif;
+    font: 20px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
 #weatherforecast canvas {
