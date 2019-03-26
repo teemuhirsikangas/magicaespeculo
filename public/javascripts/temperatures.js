@@ -75,6 +75,9 @@ var data = function () {
             }
 
             $('#ghvbatt').html(`${batteryIcon} ${battery}V`);
+            document.getElementById("ghtemp").style.color = "#ffffff";
+            document.getElementById("ghhumid").style.color = "#ffffff";
+            document.getElementById("ghvbatt").style.color = "#ffffff";
 
             checkIfDataIsStalefrom(ghdata[0].timestamp, 15);
 

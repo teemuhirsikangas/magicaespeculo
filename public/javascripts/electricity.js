@@ -19,6 +19,7 @@ var electricityData = function () {
         try {
 
             $("#watts").html('<i class="fa fa-bolt" aria-hidden="true"></i> ' + electricityDataMinute[0].pulsecount * 60 / 1000 + ' kW');
+            document.getElementById("watts").style.color = "#ffffff";
             checkIfDataIsStale(electricityDataMinute[0].timestamp);
 
         } catch (e) {

@@ -67,6 +67,10 @@ var envoyData = function () {
                 var dvTable = document.getElementById("inverters");
                 dvTable.innerHTML = "";
                 dvTable.appendChild(table);
+
+                document.getElementById("wNow").style.color = "#ffffff";
+                document.getElementById("inverters").style.color = "#ffffff";
+                document.getElementById("readingTime").style.color = "#ffffff";
                 checkIfDataIsStale(Data[0].timestamp);
 
         } catch (e) {

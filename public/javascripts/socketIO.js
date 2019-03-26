@@ -3,7 +3,7 @@ var alarmStatus = 0;
 var latestWaterLeakReport;
 
     socket.on('connect', function(data) {
-        console.log('connecting..');
+        //console.log('connect to websocket..');
        // socket.emit('join', 'Hello World from client');
     });
 
