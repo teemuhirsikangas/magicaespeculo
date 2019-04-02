@@ -8,3 +8,4 @@ scripts/config.py
 scripts/config.pyc
 config.js
 scripts/__pycache__/
+package-lock.json

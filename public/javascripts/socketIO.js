@@ -9,10 +9,10 @@ var latestWaterLeakReport;
 
     socket.on('mqtt', function(msg) {
 
-        var message = msg.topic.split('/');
-        var area = message[1];
-        var state = message[2];
-        var timestamp = Math.round((new Date()).getTime() / 1000);
+        //var message = msg.topic.split('/');
+        //var area = message[1];
+        //var state = message[2];
+        //var timestamp = Math.round((new Date()).getTime() / 1000);
 
         let battery; //make it better
         let batteryIcon;
