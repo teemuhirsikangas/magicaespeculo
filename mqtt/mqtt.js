@@ -65,9 +65,13 @@ io.on('connection', function(socket){
         socket.mqttClient.end();
         //delete socket;
     });
-    //send MQTT mesage from front-end socket.emit
+    //send MQTT mesage initialized from front-end socket.emit
     socket.on('mqtt', function (data) {
         socket.mqttClient.publish(data.topic, `${data.payload}`, {retain: true});
+    });
+
+    socket.on('mqtt_noretainqos0', function (data) {
+        socket.mqttClient.publish(data.topic, `${data.payload}`, {retain: false});
     });
 
     socket.on('mqtt_noretain', function (data) {

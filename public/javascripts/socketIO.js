@@ -94,12 +94,104 @@ var latestWaterLeakReport;
                 $('#alarmStatus').html(alarmStatusMsg);
 
               break;
+
+            case 'home/garage/ventilator/status':
+
+                const { temp, humid, mode, fan } = msg.payload;
+
+                $("#ventilator_temp").html(temp + '&deg;');
+                $("#ventillator_humid").html(humid + '&#37;');
+                if (mode === "AUTO") {
+                    $("#ventilator_mode").html(mode.toLowerCase());
+                } else {
+                    $("#ventilator_mode").html('');
+                }
+                if (fan === "ON") {
+                    $("#ventilator_fan").html('<i class="fa fa-wrench" aria-hidden="true"></i> ' + fan.toLowerCase()).removeClass('badge-danger').addClass('badge badge-success')
+                } else {
+                    $("#ventilator_fan").html('<i class="fa fa-wrench" aria-hidden="true"></i> ' + fan.toLowerCase()).removeClass('badge-success').addClass('badge badge-danger');
+                }
+
+              break;
             default: 
               console.log(`Error:no such MQTT topic handler in frontend UI. ${JSON.stringify(msg)}`);
               break;
         }
         //swithc case per topic
     });
+
+var insertModal = function () {
+    document.getElementById('ventilatorModal').innerHTML += 
+    `<div class="modal fade" id="ventilatorBtn" role="dialog">
+      <div class="modal-dialog">
+      
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header" style="padding:35px 50px;">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4><span class="glyphicon glyphicon-cog"></span>Garage Ventilation setup</h4>
+          </div>
+          <div class="modal-body" style="padding:40px 50px;">
+            <form id="ventform" name="vent" role="form">
+              <div class="form-group">
+                <label for="humid_high"><span class="glyphicon glyphicon-play"></span> set humidity start value (Auto mode)</label>
+                <input type="text" name="humid_high" class="form-control" id="humid_high" placeholder="65" value="65" color="black">
+              </div>
+              <div class="form-group">
+                <label for="humid_low"><span class="glyphicon glyphicon-stop"></span> set humidity stop value (Auto mode)</label>
+                <input type="text" name="humid_low" class="form-control" id="humid_low" placeholder="55" value="55">
+              </div>
+              <p>Select Mode:</p>
+
+              <div class="form-group">
+                   <label class="radio-inline">
+                   <input type="radio" name="fan" id="inlineRadio1" value="AUTO" checked> AUTO
+                   </label>
+                   <label class="radio-inline">
+                   <input type="radio" name="fan" id="inlineRadio1" value="ON"> ON
+                   </label>
+                   <label class="radio-inline">
+                   <input type="radio" name="fan" id="inlineRadio1" value="OFF"> OFF
+                   </label>
+               </div>
+              <p><br></br></p>
+              <button type="submit" class="btn btn-success btn-block"><span class="glyphicon glyphicon-floppy-disk"></span> Save</button>
+            </form>          
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-danger btn-default pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+            
+          </div>
+        </div>
+    </div> 
+  </div>`;
+}
+
+function parseQuery(queryString) {
+    let query = {};
+    let pairs = (queryString[0] === '?' ? queryString.substr(1) : queryString).split('&');
+    for (var i = 0; i < pairs.length; i++) {
+        let pair = pairs[i].split('=');
+        query[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1] || '');
+    }
+    return query;
+}
+
+function submitForm() {
+
+    const data = $('form#ventform').serialize();
+    const obj = parseQuery(data);
+    const topic = 'home/garage/ventilator/cmd';
+    const payload = {
+        'mode': obj.fan,
+        'humid_low': parseInt(obj.humid_low),
+        'humid_high': parseInt(obj.humid_high)
+    };
+    //send the values as mqtt message to sonoff relay to control the ventilation fan
+    socket.emit('mqtt_noretainqos0', {'topic'  : topic, 'payload' : JSON.stringify(payload)});
+
+    $("#ventilatorBtn").modal('hide');
+}
 
 var checkWaterLeakLastReportTime = function () {
 
@@ -128,5 +220,19 @@ $(document).ready(function () {
     //evrey hour
     checkWaterLeakLastReportTime();
     setInterval(checkWaterLeakLastReportTime, 3600000);
+
+    //initialized ventilation config modal
+    insertModal();
+
+    $('#ventilator_fan').on('click', function () {
+        $("#ventilatorBtn").modal();
+      });
+
+    //handle the ventilation config button save
+    $("#ventform").submit(function(event){
+        submitForm();
+        //close the form until sending has been succesfull
+        return false;
+	});
 
 });
