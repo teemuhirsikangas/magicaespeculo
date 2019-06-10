@@ -83,57 +83,91 @@ img {
     height: 70px;
 }
 
-#garage:hover {
+#garage_floor:hover {
     cursor: pointer;
-}  
+} 
 
 #garage_floor {
     z-index: 100;
     position: absolute;
-    right: 39px;
+    right: 40px;
     bottom: 0px;
 }
 #garage_floor2 {
     z-index: 100;
     position: absolute;
-    right: 39px;
-    bottom: 18px;
+    right: 40px;
+    bottom: 10px;
 }
 #garage_room {
     z-index: 100;
     position: absolute;
-    right: 39px;
-    bottom: 36px;
+    right: 40px;
+    bottom: 25px;
 }
 #garage_humid {
     z-index: 100;
     position: absolute;
-    right: 38px;
-    bottom: 56px;
+    right: 35px;
+    bottom: 35px;
 }
 #storage_floor {
     z-index: 100;
     position: absolute;
-    right: 4px;
+    right: 2px;
     bottom: 0px;
 }
 #storage_floor2 {
     z-index: 100;
     position: absolute;
-    right: 4px;
+    right: 2px;
     bottom: 18px;
 }
 #storage_room {
     z-index: 100;
     position: absolute;
-    right: 4px;
-    bottom: 36px;
+    right: 2px;
+    bottom: 25px;
 }
 #storage_humid {
     z-index: 100;
     position: absolute;
+    right: 2px;
+    bottom: 35px;
+}
+
+#ventilator_temp {
+    z-index: 100;
+    position: absolute;
+    right: 40px;
+    bottom: 52px;
+}
+#ventillator_humid {
+    z-index: 100;
+    position: absolute;
+    right: 35px;
+    bottom: 63px;
+}
+#ventilator_fan:hover {
+    cursor: pointer;
+}
+
+#ventilator_mode {
+    z-index: 100;
+    position: absolute;
     right: 4px;
-    bottom: 56px;
+    bottom: 52px;
+}
+#ventilator_fan {
+    z-index: 100;
+    position: absolute;
+    right: 4px;
+    bottom: 63px; 
+}
+
+#ventilatorModal {
+    left: 2px;
+    top: 12px;
 }
 
 #greenhouse {
@@ -170,4 +204,18 @@ img {
     position: absolute;
     right: 2px;
     top: 0px;
+}
+/* Overwrite garage ventilation bootstrap modal  */
+.modal-header, h4, .close {
+    background-color: #5cb85c;
+    color:white !important;
+    text-align: center;
+    font-size: 30px;
+}
+.modal-footer {
+    background-color: #f9f9f9;
+}
+
+.modal-content {
+    color: black;
 }

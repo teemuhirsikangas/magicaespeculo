@@ -39,14 +39,20 @@ var data = function () {
             $("#garage_humid").html(garagedata[0].garage_humid + '&#37;');
             $("#storage_floor").html(garagedata[0].storage_floor + '&deg;');
             $("#storage_room").html(garagedata[0].storage_room + '&deg;');
-            $("#storage_humid").html(garagedata[0].storage_humid);
+            $("#storage_humid").html(garagedata[0].storage_humid + '&#37;');
 
             checkIfDataIsStale(garagedata[0].timestamp);
 
         } catch (e) {
 
             if (e instanceof NoNewDataException) {
-                document.getElementById("garage").style.color = "#ff0000";
+                document.getElementById("garage_floor").style.color = "#ff0000";
+                document.getElementById("garage_floor2").style.color = "#ff0000";
+                document.getElementById("garage_room").style.color = "#ff0000";
+                document.getElementById("garage_humid").style.color = "#ff0000";
+                document.getElementById("storage_floor").style.color = "#ff0000";
+                document.getElementById("storage_room").style.color = "#ff0000";
+                document.getElementById("storage_humid").style.color = "#ff0000";
             } else {
                 $("#garage_floor").html("-");
                 $("#garage_floor2").html("-");
@@ -104,7 +110,7 @@ $(document).ready(function () {
         generateChart('/homeautomation/temperature/hourly');
     };
 
-    var d = document.getElementById("garage");
+    var d = document.getElementById("garage_floor");
     d.onclick = function () {
         generateChart('/garage/temperature/hourly');
     };

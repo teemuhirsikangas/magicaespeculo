@@ -17,7 +17,7 @@ const event = 'ovi';
 let ALARM = false;
 
 io.on('connection', function(socket){
-    console.log('A user connected');
+    //console.log('A user connected');
 
     // Front end mqtt client, just for front end clients
     const options = {
@@ -30,10 +30,16 @@ io.on('connection', function(socket){
     socket.mqttClient = {};
     socket.mqttClient = mqtt.connect(config.mqtt.host, options);
 
-    // send mqtt messag to frontend
+    // send mqtt message to frontend
     socket.mqttClient.on('message', function (topic, message) {
         //console.log('Topic ' + topic + ' Message' + message.toString());
-        socket.emit('mqtt', {'topic'  : topic, 'payload' : JSON.parse(message)});
+        try {
+            const JSONMessage = JSON.parse(message);
+            socket.emit('mqtt', {'topic'  : topic, 'payload' : JSONMessage});
+        } catch(err) {
+            console.log(`MQTT topic: ${topic} message: ${message} not JSON: ${err}`);
+        }
+        
       });
 
     //MQTT connected
@@ -59,9 +65,13 @@ io.on('connection', function(socket){
         socket.mqttClient.end();
         //delete socket;
     });
-    //send MQTT mesage from front-end socket.emit
+    //send MQTT mesage initialized from front-end socket.emit
     socket.on('mqtt', function (data) {
         socket.mqttClient.publish(data.topic, `${data.payload}`, {retain: true});
+    });
+
+    socket.on('mqtt_noretainqos0', function (data) {
+        socket.mqttClient.publish(data.topic, `${data.payload}`, {retain: false});
     });
 
     socket.on('mqtt_noretain', function (data) {
