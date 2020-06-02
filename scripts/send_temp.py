@@ -7,7 +7,7 @@ import requests
 import sys
 import Adafruit_DHT
 
-outside_temp=os.path.join("/","mnt","1wire","10.E1B894020800","temperature")
+outside_temp=os.path.join("/","mnt","1wire","28.FF1521621603","temperature")
 floor_temp=os.path.join("/","mnt","1wire","10.04A794020800","temperature")
 room_temp=os.path.join("/","mnt","1wire","10.D9AB94020800","temperature")
 
@@ -17,7 +17,10 @@ def get1wiretemp(file_name):
         file_object.close()
         return round(float(line.lstrip()),1)
 
-out = get1wiretemp(outside_temp)
+try:
+        out = get1wiretemp(outside_temp)
+except IOError, e:
+        out = "99"
 floor = get1wiretemp(floor_temp)
 room = get1wiretemp(room_temp)
 
