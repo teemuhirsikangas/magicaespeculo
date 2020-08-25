@@ -14,7 +14,7 @@
     "debug": "4.1.1",
     "express": "4.17.1",
     "googleapis": "40.0.0",
-    "highcharts": "6.2.0",
+    "highcharts": "8.2.0",
     "kew": "0.7.0",
     "moment": "2.24.0",
     "morgan": "1.9.1",
