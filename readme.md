@@ -39,7 +39,7 @@ Raspberry Pi 3 Stretch
 
 node.js:
 ```
-curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
+curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
 sudo apt install -y nodejs
 ```
 
@@ -341,7 +341,6 @@ http://codepen.io/dazulu/pen/fGFyj
 #### IDEAS/TODO:
 ```
 Robomow lawn mower schedule integration to calendar or directly via Bluetooth LE connection
-BUTTON: change mirror pages to hide calendar/reload page/shutdown/ open camera feed
 ```
 
 Changes:
