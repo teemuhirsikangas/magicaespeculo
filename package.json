@@ -20,7 +20,7 @@
     "morgan": "1.10.0",
     "mqtt": "4.2.6",
     "node-ifttt-maker": "1.0.2",
-    "pug": "3.0.0",
+    "pug": "3.0.1",
     "request": "2.88.2",
     "serve-favicon": "2.5.0",
     "socket.io": "3.1.1",
