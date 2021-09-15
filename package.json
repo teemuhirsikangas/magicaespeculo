@@ -1,29 +1,29 @@
 {
   "name": "magicaspeculo",
-  "version": "1.4.10",
+  "version": "1.4.11",
   "private": true,
   "scripts": {
     "start": "node ./bin/www"
   },
   "dependencies": {
-    "axios": "^0.21.1",
+    "axios": "^0.21.4",
     "beddit-api": "teemuhirsikangas/beddit-api",
     "body-parser": "1.19.0",
     "bootstrap": "4.6.0",
     "cookie-parser": "1.4.5",
-    "debug": "4.3.1",
+    "debug": "4.3.2",
     "express": "4.17.1",
-    "googleapis": "67.0.0",
-    "highcharts": "9.0.0",
+    "googleapis": "67.1.1",
+    "highcharts": "9.2.2",
     "kew": "0.7.0",
     "moment": "2.29.1",
     "morgan": "1.10.0",
-    "mqtt": "4.2.6",
+    "mqtt": "4.2.8",
     "node-ifttt-maker": "1.0.2",
-    "pug": "3.0.0",
+    "pug": "3.0.2",
     "request": "2.88.2",
     "serve-favicon": "2.5.0",
-    "socket.io": "3.1.1",
-    "sqlite3": "5.0.1"
+    "socket.io": "3.1.2",
+    "sqlite3": "5.0.2"
   }
 }
