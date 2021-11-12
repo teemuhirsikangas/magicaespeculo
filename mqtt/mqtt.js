@@ -24,7 +24,7 @@ io.on('connection', function(socket){
         //clientId: config.mqtt.clientId || 'mqtt_nodejsjoo',
         username: config.mqtt.username,
         password: config.mqtt.password,
-        keepalive: 0,
+        keepalive: 60,
         clean: true
     }
     socket.mqttClient = {};
