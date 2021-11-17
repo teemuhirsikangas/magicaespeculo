@@ -60,13 +60,13 @@ $(document).ready(function () {
 
 function uvIndexPlainer(index) {
     if(index >= 0 && index <=2) {
-       return ` <span class="badge badge-success">${index}</span>`
+       return ` <span class="badge bg-success">${index}</span>`
     } else if(index >= 3 && index <=5) {
-        return `<span class="badge badge-warning">${index}</span>`
+        return `<span class="badge bg-warning">${index}</span>`
     } else if(index >= 6 && index <=10) {
-        return `<span class="badge badge-danger">${index}</span>`
+        return `<span class="badge bg-danger">${index}</span>`
     } else if(index >= 11 && index <=20) {
-        return `<span class="badge badge-danger">${index} !!!</span>`
+        return `<span class="badge bg-danger">${index} !!!</span>`
     }
 }
 

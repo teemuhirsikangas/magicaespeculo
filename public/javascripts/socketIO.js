@@ -48,10 +48,10 @@ var latestWaterLeakReport;
             let batteryIcon = '';
             if (msg.payload.cmd === 14) {
                 sensorText = mqtttext.doorClosed;
-                $(`#${sensorVal}status`).removeClass('badge-danger').addClass('badge badge-success');
+                $(`#${sensorVal}status`).removeClass('bg-danger').addClass('badge bg-success');
                 $(`#${sensorVal}status`).html(sensorText);
             } else if (msg.payload.cmd === 10) {
-                $(`#${sensorVal}status`).removeClass('badge-success').addClass('badge badge-danger');
+                $(`#${sensorVal}status`).removeClass('bg-success').addClass('badge bg-danger');
                 $(`#${sensorVal}status`).html(sensorText);
             } else {
                 //mostlikely cmd 7 === low batter?
@@ -69,10 +69,10 @@ var latestWaterLeakReport;
                 latestWaterLeakReport = msg.payload.time;
 
                 if (msg.payload.state === 0) {
-                    $('#waterleakStatus').removeClass('badge-danger').removeClass('badge badge-warning').addClass('badge badge-success');
+                    $('#waterleakStatus').removeClass('bg-danger').removeClass('badge bg-warning').addClass('badge bg-success');
                 } else {
                     waterStatusMsg = mqtttext.waterLeakON;
-                    $('#waterleakStatus').removeClass('badge-success').removeClass('badge badge-warning').addClass('badge badge-danger');
+                    $('#waterleakStatus').removeClass('bg-success').removeClass('badge bg-warning').addClass('badge bg-danger');
                 }
                 $('#waterleakText').html(mqtttext.waterLeak);
                 $('#waterleakStatus').html(waterStatusMsg);
@@ -85,10 +85,10 @@ var latestWaterLeakReport;
                 alarmStatus = msg.payload;
                 
                 if (alarmStatus === 0) {
-                    $('#alarmStatus').removeClass('badge-success').addClass('badge badge-danger');
+                    $('#alarmStatus').removeClass('bg-success').addClass('badge bg-danger');
                 } else {
                     alarmStatusMsg = mqtttext.statusON;
-                    $('#alarmStatus').removeClass('badge-danger').addClass('badge badge-success')
+                    $('#alarmStatus').removeClass('bg-danger').addClass('badge bg-success')
                 }
                 $('#alarmText').html(mqtttext.alarmtext);
                 $('#alarmStatus').html(alarmStatusMsg);
@@ -107,9 +107,9 @@ var latestWaterLeakReport;
                     $("#ventilator_mode").html('');
                 }
                 if (fan === "ON") {
-                    $("#ventilator_fan").html('<i class="fa fa-wrench" aria-hidden="true"></i> ' + fan.toLowerCase()).removeClass('badge-danger').addClass('badge badge-success')
+                    $("#ventilator_fan").html('<i class="fa fa-wrench" aria-hidden="true"></i> ' + fan.toLowerCase()).removeClass('bg-danger').addClass('badge bg-success');
                 } else {
-                    $("#ventilator_fan").html('<i class="fa fa-wrench" aria-hidden="true"></i> ' + fan.toLowerCase()).removeClass('badge-success').addClass('badge badge-danger');
+                    $("#ventilator_fan").html('<i class="fa fa-wrench" aria-hidden="true"></i> ' + fan.toLowerCase()).removeClass('bg-success').addClass('badge bg-danger');
                 }
 
               break;
@@ -128,7 +128,6 @@ var insertModal = function () {
         <!-- Modal content-->
         <div class="modal-content">
           <div class="modal-header" style="padding:35px 50px;">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
             <h4><span class="glyphicon glyphicon-cog"></span>Garage Ventilation setup</h4>
           </div>
           <div class="modal-body" style="padding:40px 50px;">
@@ -159,8 +158,8 @@ var insertModal = function () {
             </form>          
           </div>
           <div class="modal-footer">
-            <button type="submit" class="btn btn-danger btn-default pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
-            
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+
           </div>
         </div>
     </div> 
@@ -199,7 +198,7 @@ var checkWaterLeakLastReportTime = function () {
         // check if report time more than 13h
         checkIfDataIsStalefrom(latestWaterLeakReport, 780);
      } catch (error) {
-        $('#waterleakStatus').removeClass('badge-success').removeClass('badge-danger').addClass('badge badge-warning');
+        $('#waterleakStatus').removeClass('bg-success').removeClass('bg-danger').addClass('badge bg-warning');
         $('#waterleakStatus').html(mqtttext.statusNA);
      }
 }
@@ -211,7 +210,7 @@ var toggleAlarm = function () {
     socket.emit('mqtt', {'topic'  : topic, 'payload' : alarmStatus})
 }
 
-$(document).ready(function () {
+$(function () {
 
     var d = document.getElementById("alarmStatus");
     d.onclick = function () {
@@ -225,7 +224,7 @@ $(document).ready(function () {
     insertModal();
 
     $('#ventilator_fan').on('click', function () {
-        $("#ventilatorBtn").modal();
+        $("#ventilatorBtn").modal('show');
       });
 
     //handle the ventilation config button save

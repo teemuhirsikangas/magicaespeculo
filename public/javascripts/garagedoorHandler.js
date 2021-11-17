@@ -32,10 +32,10 @@ var doorState;
                 if (msg.payload.cmd === 14) {
                     sensorText = mqtttext.doorClosed;
                     doorClosed = true;
-                    $(`#${sensorVal}status`).removeClass('badge-danger').addClass('badge badge-success');
+                    $(`#${sensorVal}status`).removeClass('bg-danger').addClass('badge bg-success');
                     doortextFullyClosed();
                 } else if (msg.payload.cmd === 10) {
-                    $(`#${sensorVal}status`).removeClass('badge-success').addClass('badge badge-danger');
+                    $(`#${sensorVal}status`).removeClass('bg-success').addClass('badge bg-danger');
                     doorclosed = false;
                     setTimeout(doortextstatus, 12000);
                 }
@@ -51,10 +51,10 @@ var doorState;
               alarmStatus = msg.payload;
 
               if (alarmStatus === 0) {
-                  $('#alarmStatus').removeClass('badge-success').addClass('badge badge-danger');
+                  $('#alarmStatus').removeClass('bg-success').addClass('badge bg-danger');
               } else {
                   alarmStatusMsg = mqtttext.statusON;
-                  $('#alarmStatus').removeClass('badge-danger').addClass('badge badge-success')
+                  $('#alarmStatus').removeClass('bg-danger').addClass('badge bg-success')
               }
               $('#alarmText').html(mqtttext.alarmtext);
               $('#alarmStatus').html(alarmStatusMsg);
@@ -80,10 +80,10 @@ var activateGarageDoor = function () {
     // Send socket.io message to mqtt server side which send the actual mqtt message
     socket.emit('mqtt_noretain', {'topic'  : topic, 'payload' : 1})
     if (doorState) {
-        $('#activeGarageDoorBtn').removeClass('badge-danger').addClass('badge badge-success');
+        $('#activeGarageDoorBtn').removeClass('bg-danger').addClass('badge bg-success');
         $('#activeGarageDoorBtn').html('aktivoi tallin ovi');
     } else {
-        $('#activeGarageDoorBtn').removeClass('badge-success').addClass('badge badge-danger');
+        $('#activeGarageDoorBtn').removeClass('bg-success').addClass('badge bg-danger');
         $('#activeGarageDoorBtn').html('Pysäytä Ovi');
     }
     doorState ^= true;
@@ -92,13 +92,13 @@ var activateGarageDoor = function () {
 var doortextstatus = function () {
     
     if(!doorClosed) {
-        $('#activeGarageDoorBtn').removeClass('badge-danger').addClass('badge badge-success');
+        $('#activeGarageDoorBtn').removeClass('bg-danger').addClass('badge bg-success');
         $('#activeGarageDoorBtn').html('aktivoi tallin ovi');
     }
 }
 
 var doortextFullyClosed = function () {
-    $('#activeGarageDoorBtn').removeClass('badge-danger').addClass('badge badge-success');
+    $('#activeGarageDoorBtn').removeClass('bg-danger').addClass('badge bg-success');
     $('#activeGarageDoorBtn').html('Aukaise tallin Ovi');
 }
 

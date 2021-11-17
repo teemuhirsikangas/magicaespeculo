@@ -369,6 +369,8 @@ Changes:
 
 8.2.2019 Added darkSky api to prevent corrs from clientside js, lint fixes
 
+17.9.2021 Fix migrate to work with bootsrap 5, update deps
+
 License
 MIT
 
