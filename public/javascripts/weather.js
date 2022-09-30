@@ -45,7 +45,8 @@ var weather = function () {
                 skycons.remove('weather-icon');
                 let animation = weather.icon;
                 skycons.add("weather-icon", animation);
-                skycons.play();
+                //skycons.play(); //raspi and latest firefox eats all the cpu, disabling animation
+                
             },
             error: function (error) {
                 $("#weather").html('<p>' + error + '</p>');

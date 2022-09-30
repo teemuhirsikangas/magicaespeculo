@@ -91,8 +91,8 @@
     color: white;
     font-size: 18px;
     font-weight: bold;
-    left: 110px;
-    bottom: 200px;
+    left: 70px;
+    bottom: 185px;
 }
 
 #gphcompressorstatus {
@@ -101,7 +101,7 @@
     color: white;
     font-size: 18px;
     font-weight: bold;
-    left: 62px;
+    left: 60px;
     bottom: 100px;
 }
 #gphsupplypumpstatus {
@@ -110,8 +110,8 @@
     color: white;
     font-size: 10px;
     font-weight: bold;
-    left: 125px;
-    bottom: 55px;
+    left: 124px;
+    bottom: 54px;
     width: 17px;
 
 }
@@ -128,12 +128,12 @@
     bottom: 100px;
 }
 
-#SPIN_KOMPR img {
+/* #SPIN_KOMPR img {
     animation-name: spin; 
     animation-duration: 3s; 
     animation-iteration-count: infinite; 
     animation-timing-function: linear;
-}
+} */
 /*
 @-moz-keyframes spin {
     from { -moz-transform: rotate(0deg); }
@@ -156,8 +156,8 @@
     text-align: center;
     font-size: 10px;
     font-weight: bold;
-    left: 13px;
-    bottom: 134px;
+    left: 12px;
+    bottom: 133px;
 }
 
 #TS_P {

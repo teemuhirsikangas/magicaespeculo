@@ -35,14 +35,6 @@ a {
  	font-size: 50%;
 	color: #C0C0C0;
 }
-/*
-Fix for wiggling spinner when using awesomefont (happens on some browsers)
-*/
-.fix .fa-spin {
-    -webkit-transform-origin: 50% calc(50% - .5px);
-    -moz-transform-origin: 50% calc(50% - .5px);
-    transform-origin: 50% calc(50% - .5px);
-}
 
 #calendar {
 	position: absolute;
