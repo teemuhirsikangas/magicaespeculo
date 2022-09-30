@@ -69,21 +69,21 @@ var rawdata = function () {
             //$("#gphsupplypumpstatus").html("<i class='fa fa-2x fa-refresh fa-spin'></i>");
             $("#gphsupplypumpstatus").html("<i class='fa-solid fa-2x fa-rotate' style='color:green'></i>");
         } else {
-            $("#gphsupplypumpstatus").html("<i class='fa-solid fa-2x fa-rotate' style='color:red'></i>");
+            $("#gphsupplypumpstatus").html("<i class='fa-solid fa-2x fa-rotate' style='color:white'></i>");
         }
 
         if (rawdata[0].BRINE_SPEED > 0) {
             //$("#gphbrinestatus").html("<i class='fa fa-2x fa-refresh fa-spin'></i>");
             $("#gphbrinestatus").html("<i class='fa-solid fa-2x fa-rotate' style='color:green'></i>");
         } else {
-            $("#gphbrinestatus").html("<i class='fa-solid fa-2x fa-rotate' style='color:red'></i>");
+            $("#gphbrinestatus").html("<i class='fa-solid fa-2x fa-rotate' style='color:white'></i>");
         }
 
         if (rawdata[0].KOMPR == 1) {
             $("#gphcompressorstatus").html("<i class='fa-solid fa-2x fa-gear' style='color:green'></i>");
             //$("#gphcompressorstatus").html("<i class='fa fa-2x fa-cog fa-spin'></i>");
         } else {
-            $("#gphcompressorstatus").html("<i class='fa-solid fa-2x fa-gear' style='color:red'></i>");
+            $("#gphcompressorstatus").html("<i class='fa-solid fa-2x fa-gear' style='color:white'></i>");
         }
 
         $("#INTEGR_DIV").html(rawdata[0].INTEGR_DIV);
