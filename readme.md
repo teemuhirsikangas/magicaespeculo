@@ -371,6 +371,8 @@ Changes:
 
 17.9.2021 Fix migrate to work with bootsrap 5, update deps
 
+30.9.2022 Upgrade to awesomefont 6.x, stop animation as Rasperry pi cpu+firefox cannot handle those
+
 License
 MIT
 

@@ -60,29 +60,30 @@ var rawdata = function () {
         $("#TRYCKR_T").html(rawdata[0].TRYCKR_T + '&deg;');
 
         if (rawdata[0].VARMVATTEN == 1) {
-            $("#VARMVATTEN").html('<div class="container"><div class="red flame"></div><div class="orange flame"></div><div class="yellow flame"></div><div class="white flame"></div><div class="blue circle"></div> <div class="black circle"></div></div>');
+            $("#VARMVATTEN").html("<i class='fa-solid fa-temperature-arrow-up' style='color:yellow'></i>");
         } else {
             $("#VARMVATTEN").html("");
         }
 
         if (rawdata[0].CIRK_SPEED > 0) {
-            $("#gphsupplypumpstatus").html("<i class='fa fa-2x fa-refresh fa-spin'></i>");
+            //$("#gphsupplypumpstatus").html("<i class='fa fa-2x fa-refresh fa-spin'></i>");
+            $("#gphsupplypumpstatus").html("<i class='fa-solid fa-2x fa-rotate' style='color:green'></i>");
         } else {
-            $("#gphsupplypumpstatus").html("<i class='fa fa-2x fa-refresh'></i>");
+            $("#gphsupplypumpstatus").html("<i class='fa-solid fa-2x fa-rotate' style='color:red'></i>");
         }
 
         if (rawdata[0].BRINE_SPEED > 0) {
-            $("#gphbrinestatus").html("<i class='fa fa-2x fa-refresh fa-spin'></i>");
+            //$("#gphbrinestatus").html("<i class='fa fa-2x fa-refresh fa-spin'></i>");
+            $("#gphbrinestatus").html("<i class='fa-solid fa-2x fa-rotate' style='color:green'></i>");
         } else {
-            $("#gphbrinestatus").html("<i class='fa fa-2x fa-refresh'></i>");
+            $("#gphbrinestatus").html("<i class='fa-solid fa-2x fa-rotate' style='color:red'></i>");
         }
 
-        // TODO
-        // and add -webkit-font-smoothing: none; to the @{fa-css-prefix}-spin mixin
         if (rawdata[0].KOMPR == 1) {
-            $("#gphcompressorstatus").html("<i class='fa fa-2x fa-cog fa-spin'></i>");
+            $("#gphcompressorstatus").html("<i class='fa-solid fa-2x fa-gear' style='color:green'></i>");
+            //$("#gphcompressorstatus").html("<i class='fa fa-2x fa-cog fa-spin'></i>");
         } else {
-            $("#gphcompressorstatus").html("<i class='fa fa-2x fa-cog'></i>");
+            $("#gphcompressorstatus").html("<i class='fa-solid fa-2x fa-gear' style='color:red'></i>");
         }
 
         $("#INTEGR_DIV").html(rawdata[0].INTEGR_DIV);
