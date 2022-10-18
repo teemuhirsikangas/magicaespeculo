@@ -39,7 +39,7 @@ Raspberry Pi 3 Stretch
 
 node.js:
 ```
-curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+curl -sL https://deb.nodesource.com/setup_18.x | sudo -E bash -
 sudo apt install -y nodejs
 ```
 
@@ -372,6 +372,8 @@ Changes:
 17.9.2021 Fix migrate to work with bootsrap 5, update deps
 
 30.9.2022 Upgrade to awesomefont 6.x, stop animation as Rasperry pi cpu+firefox cannot handle those
+
+18.10.2022 update deps
 
 License
 MIT
