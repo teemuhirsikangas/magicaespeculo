@@ -24,6 +24,16 @@
     cursor: pointer;
 }
 
+#kwh_month {
+    position: absolute;
+    bottom: 0px;
+    left: 375px;
+}
+
+#kwh_month:hover {
+    cursor: pointer;
+}
+
 #watts_icon {
     position: absolute;
     bottom: 0px;   
