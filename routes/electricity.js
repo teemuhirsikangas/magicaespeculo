@@ -104,6 +104,21 @@ router.get('/yesterday', function (req, res, next) {
     });
 });
 
+router.get('/currentmonth', function (req, res, next) {
+    let today = new Date();
+    let starttime = new Date(today.getFullYear(), today.getMonth(), 1);
+    starttime.setHours(0,0,0,0);
+    let endtime = new Date();
+    endtime.setHours(24,0,0,0);
+    db.all('SELECT SUM(pulsecount) as Wh FROM ELECTRICITY_LOG WHERE timestamp BETWEEN ' + starttime.getTime() + ' AND ' + endtime.getTime(), function (err, row) {
+        if (err !== null) {
+            res.json(err);
+        } else {
+            res.status(200).json(row);
+        }
+    });
+});
+
 /*
  * POST to add electricity data
  */

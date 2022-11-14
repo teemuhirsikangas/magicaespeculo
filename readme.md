@@ -375,6 +375,8 @@ Changes:
 
 18.10.2022 update deps
 
+13.11.2022 add electricy price toggle + update deps
+
 License
 MIT
 
