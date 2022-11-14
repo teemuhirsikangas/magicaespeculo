@@ -135,7 +135,7 @@ $(document).ready(function () {
         setInterval(electricityData, 21600000);
         //every 5 secs
         if(config.electricity.togglePrice) {
-        setInterval(toggleValues, 5000)
+        setInterval(toggleValues, config.electricity.toggleInterval*1000)
         }
 
     }
