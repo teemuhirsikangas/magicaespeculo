@@ -27,8 +27,8 @@ def MONITORON():
 
 def MONITOROFF():
 	global turned_off
-        #print("Monitor off")
-        subprocess.call("tvservice -o", shell=True)
+	#print("Monitor off")
+	subprocess.call("tvservice -o", shell=True)
 	turned_off = True
 
 def NOMOTION(PIR_PIN):

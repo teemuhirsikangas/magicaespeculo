@@ -35,7 +35,7 @@ This project outgrew a bit from the original design, so db schemas etc needs ref
 
 -------------------------------------------------------------
 ### Backend
-Raspberry Pi 3 Stretch
+Raspberry Pi 3 bullseye
 
 node.js:
 ```
@@ -112,19 +112,21 @@ Change display orientation (use 1 or 3):
 ```
 For hiding cursor: `sudo apt install unclutter`
 
-Install browser:`sudo apt install firefox-esr`
+Install browser:`sudo apt install firefox-esr` and python3
 (Run Firefox in Fullscreen: Once installed, go to Tools > Add-ons > Extensions. Select/find MA Full screen
 
 Scripts to run on startup:
-`nano ~/.config/lxsession/LXDE-pi/autostart`
+`sudo nano /etc/xdg/lxsession/LXDE-pi/autostart`
+
 ```
-//@xscreensaver -no-splash  //comment this out to disable screens saver
+@lxpanel --profile LXDE-pi
+@pcmanfm --desktop --profile LXDE-pi
 @xset s noblank
 @xset s off
 @xset -dpms 
-@iceweasel http://[hostname of backend].local:3333      #e.g. http://numberpi.local:3333
+@firefox http://[hostname of backend].local:3333      #e.g. http://numberpi.local:3333
 @unclutter -idle 0.1 -root                              #hides mouse cursor if no movement
-@/usr/bin/python /home/pi/magicaspeculo/scripts/pir.py          #starts infrared sensor to turn of monitor to save energy
+@/usr/bin/python3 /home/pi/magicaespeculo/scripts/pir.py         #starts infrared sensor to turn of monitor to save energy
 ```
 
 #### cronjobs
@@ -376,6 +378,8 @@ Changes:
 18.10.2022 update deps
 
 13.11.2022 add electricy price toggle + update deps
+
+14.12.2022 pir.py fix to work on python3 and debian bullseye. (todo: update rest of the scripts and stuff to work on bullseye)
 
 License
 MIT
