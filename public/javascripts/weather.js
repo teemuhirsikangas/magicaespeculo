@@ -16,7 +16,7 @@ var weather = function () {
                 current_weather += '<div id= weather_desc>' + weather.currently + '</div>';
                 current_weather += '<div id= uv_index style="font-size:70%" >UV-index' + uvIndexPlainer(weather.uvIndex) + '</div>';
                 current_weather += '<div>' + degToCompass(weather.windBearing) + ' ' + weather.windSpeed + ' ' + 'km/h' + '</div>';
-                current_weather += '<div><canvas id=sunrise width="25" height="25"> </canvas> ' + sunrise + ' <i class="fa fa-moon-o" aria-hidden="true"></i>' + sunset + '</div>';
+                current_weather += '<div><canvas id=sunrise width="25" height="25"> </canvas> ' + sunrise + ' <i class="fa fa-moon"></i> ' + sunset + '</div>';
                 $("#weather_now").html(current_weather);
                 let date,
                     weekday,
@@ -44,6 +44,37 @@ var weather = function () {
 
                 skycons.remove('weather-icon');
                 let animation = weather.icon;
+                console.log(animation)
+
+                var time = new Date();
+                time = time.getHours();
+
+                switch ( weather.icon.toLowerCase()) {
+                    case "clouds":
+                        if (time >= 19 || time <= 4) {
+                            animation = "partly-cloudy-night"
+                        } else {
+                            animation = "cloudy";
+                        }
+                        break;
+                    case "rain":
+                        animation = "rain"
+                        break;
+                    case "snow":
+                        animation = "snow";
+                        break;
+                    case "clear":
+                        if (time >= 19 || time <= 4) {
+                            animation = "clear-night";
+                        } else {
+                            animation = "clear-day";
+                        }
+                        break;
+                    default:
+                        animation = "rain";
+                        
+                }
+
                 skycons.add("weather-icon", animation);
                 //skycons.play(); //raspi and latest firefox eats all the cpu, disabling animation
                 
