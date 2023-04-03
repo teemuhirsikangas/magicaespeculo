@@ -381,6 +381,10 @@ Changes:
 
 14.12.2022 pir.py fix to work on python3 and debian bullseye. (todo: update rest of the scripts and stuff to work on bullseye)
 
+14.02.2023 FI Electric spot prices listing + graphics
+
+03.04.2023 dark sky close, move to openweather
+
 License
 MIT
 

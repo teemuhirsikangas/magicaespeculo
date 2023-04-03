@@ -12,7 +12,7 @@ const config = {
     weather : {
         unit : "si",  //si system -> celcius
         location : "40.7127837,-74.0059413", //city http://simpleweatherjs.com/
-        apikey: "dark sky api key" // https://darksky.net/dev/docs
+        apikey: "open weather apikey" // https://openweathermap.org/darksky-openweather-3#match
     },
 
 }

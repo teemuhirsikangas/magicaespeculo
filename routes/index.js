@@ -22,7 +22,7 @@ router.get('/weathermode', function (req, res, next) {
     };
 });
 
-//proxy to get the weather data from dark sky
+//proxy to get the weather data from dark sky... openweather ask dark sky no more open
 router.get('/darksky', async function (req, res, next) {
 
   try {
@@ -30,8 +30,10 @@ router.get('/darksky', async function (req, res, next) {
 		const lat = geoLocation[ 0 ];
 		const lon = geoLocation[ 1 ];
 		const units = config.weather.unit;
-		const url = 'https://api.darksky.net/forecast/' + config.weather.apikey + '/' + lat + ',' + lon + '/?units=' + units + '&exclude=minutely,hourly,alerts,flags';
-    const response = await axios.get(url);
+		const appid = config.weather.apikey
+		//const url = 'https://api.darksky.net/forecast/' + config.weather.apikey + '/' + lat + ',' + lon + '/?units=' + units + '&exclude=minutely,hourly,alerts,flags';
+		const url = 'https://api.openweathermap.org/data/2.5/weather?q=Lempaala&APPID=' + appid + '&units=metric'
+		const response = await axios.get(url);
 		res.status(200).json(response.data);
 
   } catch (error) {

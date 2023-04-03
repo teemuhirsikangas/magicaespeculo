@@ -47,9 +47,8 @@ Simple Weather Java Switches to DarkSky */
 
         if( authmethod === "apikey" && options.apikey !== '' ) {
           let apiKey = encodeURIComponent( options.apikey );
-          return 'https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/' + apiKey + '/' +
-            lat + ',' + lon + '/?units=' + units +
-            '&exclude=minutely,hourly,alerts,flags';
+          return 'https://cors-anywhere.herokuapp.com/https://api.openweathermap.org/data/2.5/weather?q=Lempaala&APPID=' + apiKey + '&units=metric'
+
         } else if( authmethod === "proxy" && options.proxyurl !== '' ) {
           return encodeURI( options.proxyurl );
         } else {
@@ -65,23 +64,24 @@ Simple Weather Java Switches to DarkSky */
           if( data !== null ) {
             var result = data,
               weather = {};
-            //console.log(data);
-            weather.temp = result.currently.temperature;
-            weather.currently = result.currently.summary;
-            weather.icon = result.currently.icon;
-            weather.pressure = result.currently.pressure;
-            weather.humidity = result.currently.humidity;
-            weather.visibility = result.currently.visibility;
-            weather.updated = result.currently.time;
-            weather.windSpeed = result.currently.windSpeed;
-            weather.windBearing = result.currently.windBearing;
-            weather.uvIndex = result.currently.uvIndex;
+            console.log(data);
+            weather.temp = result.main.temp;
+            weather.currently = result.weather[0].description;
+            weather.icon = result.weather[0].main;
+            weather.pressure = result.main.pressure;
+            weather.humidity = result.main.humidity;
+            weather.visibility = result.visibility;
+            weather.updated = result.dt;
+            weather.windSpeed = result.wind.speed;
+            weather.windBearing = result.wind.deg;
+            //Where to get uv index?
+            weather.uvIndex = 0;
             
-            weather.high = result.daily.data[ 0 ].temperatureHigh;
-            weather.low = result.daily.data[ 0 ].temperatureLow;
-            weather.sunrise = result.daily.data[ 0 ].sunriseTime;
-            weather.sunset = result.daily.data[ 0 ].sunsetTime;
-            weather.description = result.daily.data[ 0 ].summary;
+            weather.high = result.main.temp_max;
+            weather.low = result.main.temp_min;
+            weather.sunrise = result.sys.sunrise;
+            weather.sunset = result.sys.sunset;
+            weather.description = result.weather[0].description;
 
             weather.attributionlink = "https://darksky.net/";
             weather.unit = options.units.toLowerCase();
@@ -103,22 +103,23 @@ Simple Weather Java Switches to DarkSky */
 
               weather.forecast = [];
 
-              for( var i = 0; i < options.forecastdays; i++ ) {
-                var forecast = result.daily.data[ i ];
-                forecast.date = forecast.time;
-                forecast.summary = forecast.summary;
-                forecast.high = forecast.temperatureHigh;
-                forecast.low = forecast.temperatureLow;
-                forecast.icon = forecast.icon;
+              //todo, fix next to openapi from darksky
+              // for( var i = 0; i < options.forecastdays; i++ ) {
+              //   var forecast = result.daily.data[ i ];
+              //   forecast.date = forecast.time;
+              //   forecast.summary = forecast.summary;
+              //   forecast.high = forecast.temperatureHigh;
+              //   forecast.low = forecast.temperatureLow;
+              //   forecast.icon = forecast.icon;
 
 
-                forecast.alt = {
-                  high: getAltTemp( options.units, forecast.temperatureHigh ),
-                  low: getAltTemp( options.units, forecast.temperatureLow )
-                };
+              //   forecast.alt = {
+              //     high: getAltTemp( options.units, forecast.temperatureHigh ),
+              //     low: getAltTemp( options.units, forecast.temperatureLow )
+              //   };
 
-                weather.forecast.push( forecast );
-              }
+              //   weather.forecast.push( forecast );
+              // }
             }
             options.success( weather );
           } else {
