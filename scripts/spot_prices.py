@@ -19,7 +19,7 @@ import paho.mqtt.publish as publish
 import config #passwords for mqtt, url etc from config.py
 
 CHEAPESTHOURS = 12 # only enable xx cheapest hours
-ALLOWPRICE = 5 # or allow if price is lower than this (eur cents)
+ALLOWPRICE = 0.05 # or allow if price is lower than this (eur cents)
 url = 'https://api.spot-hinta.fi/JustNow'
 MQTT_USER = config.username
 MQTT_PWD = config.password
