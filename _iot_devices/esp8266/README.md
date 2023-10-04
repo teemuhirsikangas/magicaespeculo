@@ -10,7 +10,7 @@ Once 1 liter of water is consumed, it will send MQTT messge to topic: `home/engi
  ```
  with JSON payload: {"water":" 1}
  ```
-[lin to code](https://github.com/teemuhirsikangas/magicaespeculo/blob/master/esp8266/watermeter)
+[lin to code](https://github.com/teemuhirsikangas/magicaespeculo/blob/master/_iot_devices/esp8266/watermeter)
 
 ## garage ventilator 
 Arduino SDK OTA update enabled, for easy update
@@ -34,7 +34,7 @@ example:
 ```
 
 - [Sonoff basic R2 relay ESP8285](https://github.com/arendst/Sonoff-Tasmota/wiki/Sonoff-Basic)
-- [link to code](https://github.com/teemuhirsikangas/magicaespeculo/blob/master/esp8266/garage_ventilator)
+- [link to code](https://github.com/teemuhirsikangas/magicaespeculo/blob/master/_iot_devices/esp8266/garage_ventilator)
 
 ## Garage Door Opener
 
@@ -45,7 +45,7 @@ message content is just `1` to toggle the relay to open|stop|close door.
 ```
 mosquitto_pub -u username -P password -h 192.168.100.3 -t home/garage/activatedoor -m "1"
 ```
-[link to code](https://github.com/teemuhirsikangas/magicaespeculo/blob/master/esp8266/garageDoorOpener)
+[link to code](https://github.com/teemuhirsikangas/magicaespeculo/blob/master/_iot_devices/esp8266/garageDoorOpener)
 
 
 ## Ground Heat Pump evu (disable/enable heatpump operations)
@@ -58,7 +58,7 @@ JSON message content is {"time": 1696270272, "state": 0} for relay to enable Hea
 and {"time": 1696270272, "state": 1} to disable heatpump evu (normal operations allowed)
 ```
 ```
-[link to code](https://github.com/teemuhirsikangas/magicaespeculo/blob/master/esp8266/heatpumpevu.ino)
+[link to code](https://github.com/teemuhirsikangas/magicaespeculo/blob/master/_iot_devices/esp8266/heatpumpevu/heatpumpevu.ino)
 
 Currently pyhton script run from cronjob sends the mqtt message
 [link to code](https://github.com/teemuhirsikangas/magicaespeculo/blob/master/scripts/spot_prices.py)
