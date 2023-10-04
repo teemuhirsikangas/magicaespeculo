@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
-#run this script in cronjob every hour 1 minute after
+# run this script in cronjob every hour 1 minute past:
+# 1 * * * * python3 /home/atnu/magicaespeculo/scripts/spot_prices.py > /dev/null 2>&1
 
 # https://api.spot-hinta.fi/swagger/ui#/(JSON)%20Prices%20today/Today
 
