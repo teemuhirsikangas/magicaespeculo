@@ -381,9 +381,10 @@ Changes:
 
 14.12.2022 pir.py fix to work on python3 and debian bullseye. (todo: update rest of the scripts and stuff to work on bullseye)
 
-14.02.2023 FI Electric spot prices listing + graphics
-
 03.04.2023 dark sky close, move to openweather
+
+04.10.2023 move ESP8266 scripts to this repo. ground heat pump evu control based on electric spot prices in Finland
+[esp8266code](_iot_devices/esp8266/README.md)
 
 License
 MIT
