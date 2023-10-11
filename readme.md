@@ -386,6 +386,8 @@ Changes:
 04.10.2023 move ESP8266 scripts to this repo. ground heat pump evu control based on electric spot prices in Finland
 [esp8266code](_iot_devices/esp8266/README.md)
 
+11.10.2023 Add Spot electric prices, and heatpump evu status if heating is allowed or not
+
 License
 MIT
 

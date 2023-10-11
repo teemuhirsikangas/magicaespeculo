@@ -22,6 +22,7 @@ import config #passwords for mqtt, url etc from config.py
 CHEAPESTHOURS = 12 # only enable xx cheapest hours
 ALLOWPRICE = 0.05 # or allow if price is lower than this (eur cents)
 url = 'https://api.spot-hinta.fi/JustNow'
+urlNextHour = 'https://api.spot-hinta.fi/JustNow?lookForwardHours=2'
 MQTT_USER = config.username
 MQTT_PWD = config.password
 MQTT_BROKER_ADDR = config.MQTT_ADDRESS
@@ -38,6 +39,23 @@ def publishData(state):
 		payload_string = json.dumps(payload)
 		print("MQTT payload sent:", payload_string)
 		publish.single("home/engineroom/heatpumpevu", payload_string, retain=True, hostname=MQTT_BROKER_ADDR, auth=AUTH)
+
+def publishSpotData(json_data):
+		# get next hour data
+		resp = requests.get(urlNextHour, headers=headers)
+		if resp.status_code == requests.codes.ok:
+			json_data_next_hour = resp.json()
+		else:
+			json_data_next_hour["PriceWithTax"] = "NA"
+		epoch_time = int(time.time())
+		json_data["PriceLimit"] = ALLOWPRICE
+		json_data["RankLimit"] = CHEAPESTHOURS
+		json_data["PriceWithTaxNextHour"] = json_data_next_hour["PriceWithTax"]
+		print(json_data)
+
+		payload_string = json.dumps(json_data)
+		print("MQTT payload sent:", payload_string)
+		publish.single("home/engineroom/spotprice", payload_string, retain=True, hostname=MQTT_BROKER_ADDR, auth=AUTH)
 
 resp = requests.get(url, headers=headers)
 if resp.status_code == requests.codes.ok:
@@ -57,6 +75,7 @@ if resp.status_code == requests.codes.ok:
 		print ("disable heating, expensive")
 		publishData(0)
 
+	publishSpotData(json_data)
 else:
 	#TODO: retry after 1 min for 3x, and enable if cannot connect
 	#and then set HP as enabled if no connection

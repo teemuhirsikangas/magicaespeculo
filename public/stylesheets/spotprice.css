@@ -1,0 +1,18 @@
+#spotprice {
+    position: absolute;
+    right: 0px;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    bottom: 580px;
+    width:  130px;
+    height: 25px;
+    color: white;
+}
+
+#spotpricenow {
+    font: 18px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+#spotpricenext {
+    color: grey;
+}

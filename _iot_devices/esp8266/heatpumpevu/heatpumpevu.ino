@@ -41,7 +41,7 @@ void initWiFi() {
   Serial.print("Connecting: ");
   Serial.println(SSID);
   WiFi.hostname("HPevu_esp8266");
-  MDNS.begin("sonoff-garagevent");
+  MDNS.begin("HPevu_esp8266");
   
   WiFi.begin(SSID, PASSWORD); // Wifi Connect
   while (WiFi.status() != WL_CONNECTED) {
@@ -87,7 +87,7 @@ void mqtt_callback(char* topic, byte* payload, unsigned int length) {
 
   if (state == 1) {
     digitalWrite(LED_BUILTIN, LOW);  // turn the LED on (HIGH is the voltage level)
-    digitalWrite(RELAY_PIN, HIGH); //turn off reley
+    digitalWrite(RELAY_PIN, HIGH); //turn off relay
   } else {
     digitalWrite(LED_BUILTIN, HIGH);  // turn the LED on (HIGH is the voltage level)
     digitalWrite(RELAY_PIN, LOW);    //turn on relay, to turn on EVU to disable heating

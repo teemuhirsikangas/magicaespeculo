@@ -237,3 +237,18 @@
     font-size: 12px;
     font-weight: bold;
 }
+
+#evu {
+    position: absolute;
+    left: 135px;
+    bottom: 200px;
+    z-index: 100;
+    width: 215px;
+}
+
+#evustate {
+    position: absolute;
+    left: 50px;
+    bottom: 180px;
+    z-index: 100;
+}
