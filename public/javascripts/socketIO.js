@@ -113,6 +113,41 @@ var latestWaterLeakReport;
                 }
 
               break;
+            case 'home/engineroom/spotprice':
+              //console.log(`spotprice: ${JSON.stringify(msg.payload)}`);
+              //{"Rank":12,"DateTime":"2023-10-11T14:00:00+03:00","PriceNoTax":-0.0001,"PriceWithTax":-0.0001,"PriceLimit":0.05,"RankLimit":12,"PriceWithTaxNextHour":0}
+              const { Rank, DateTime, PriceWithTax, PriceWithTaxNextHour, PriceLimit, RankLimit } = msg.payload;
+
+              $("#spotpriceicon").html('<i class="fa-solid fa-plug" aria-hidden="true"></i> Pörssisähkö');
+              $("#spotpricenow").html((spotIndexPlainer((PriceWithTax*100).toFixed(2))) + ' snt/kwh');
+              $("#spotpricenext").html((spotIndexPlainer((PriceWithTaxNextHour*100).toFixed(2))) + ' snt/kwh (+1h)');
+
+              $("#evutitle").html('<i class="fa-solid fa-arrow-trend-up"></i> Pörssisähkö ohjaus (EVU)');
+              $("#evuinfo").html( "Tunti Rank:" + Rank + " limit(" + RankLimit+")");
+              $("#evuprice").html("Hintakatto:" + PriceLimit*100 + " snt");
+
+              break;
+
+            case 'home/engineroom/heatpumpevu':
+              //console.log(`HPEvu state: ${JSON.stringify(msg.payload)}`);
+              //{"time":1697022061,"state":1}
+              const { time, state } = msg.payload;
+              if (state == 1) {
+                $("#evustate").html(`<span class="badge bg-success">Running</span>`);
+              } else {
+                $("#evustate").html(`<span class="badge bg-danger">EVU stop</span>`);
+              }
+
+              //if time > 1h, mark as red
+              let msg_date = new Date(time*1000);
+              if (!lessThanOneHourAgo(msg_date)) {
+                $("#evustate").html(`<span class="badge bg-danger">hintatietojen haku epäonnistu: ${msg_date}</span>`);
+                console.log("Failed to get price info" +  msg_date);
+              } else {
+                //$("#evustate").addClass('badge bg-warning')
+              }
+              break;
+
             default: 
               console.log(`Error:no such MQTT topic handler in frontend UI. ${JSON.stringify(msg)}`);
               break;
@@ -210,13 +245,33 @@ var toggleAlarm = function () {
     socket.emit('mqtt', {'topic'  : topic, 'payload' : alarmStatus})
 }
 
+function spotIndexPlainer(index) {
+
+  indexcomp = Math.floor(index)
+
+  if(indexcomp <= 5) {
+    return ` <span class="badge bg-success">${index}</span>`
+  } else if(indexcomp >= 5 && indexcomp <= 15) {
+      return `<span class="badge bg-warning">${index}</span>`
+  } else if(indexcomp > 15) {
+    return `<span class="badge bg-danger">${index}</span>`
+  }
+}
+
+const lessThanOneHourAgo = (date) => {
+  const HOUR = 1000 * 60 * 60;
+  const anHourAgo = Date.now() - HOUR;
+
+  return date > anHourAgo;
+}
+
 $(function () {
 
     var d = document.getElementById("alarmStatus");
     d.onclick = function () {
         toggleAlarm();
     };
-    //evrey hour
+    //every hour
     checkWaterLeakLastReportTime();
     setInterval(checkWaterLeakLastReportTime, 3600000);
 
