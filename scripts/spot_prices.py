@@ -22,7 +22,7 @@ import config #passwords for mqtt, url etc from config.py
 CHEAPESTHOURS = 12 # only enable xx cheapest hours
 ALLOWPRICE = 0.05 # or allow if price is lower than this (eur cents)
 url = 'https://api.spot-hinta.fi/JustNow'
-urlNextHour = 'https://api.spot-hinta.fi/JustNow?lookForwardHours=2'
+urlNextHour = 'https://api.spot-hinta.fi/JustNow?lookForwardHours=1'
 MQTT_USER = config.username
 MQTT_PWD = config.password
 MQTT_BROKER_ADDR = config.MQTT_ADDRESS
@@ -45,6 +45,7 @@ def publishSpotData(json_data):
 		resp = requests.get(urlNextHour, headers=headers)
 		if resp.status_code == requests.codes.ok:
 			json_data_next_hour = resp.json()
+			#print(json_data_next_hour)
 		else:
 			json_data_next_hour["PriceWithTax"] = "NA"
 		epoch_time = int(time.time())
