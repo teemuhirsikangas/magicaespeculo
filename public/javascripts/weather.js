@@ -44,7 +44,7 @@ var weather = function () {
 
                 skycons.remove('weather-icon');
                 let animation = weather.icon;
-                console.log(animation)
+                //console.log(animation)
 
                 var time = new Date();
                 time = time.getHours();
