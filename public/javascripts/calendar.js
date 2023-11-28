@@ -12,8 +12,11 @@ function ParseGoogleCalendar(calId, calElement) {
         }
         var counter,
             startdate,
+            enddate,
             start,
+            end,
             startclock,
+            endclock,
             startwkday,
             summary,
             caldate,
@@ -21,9 +24,12 @@ function ParseGoogleCalendar(calId, calElement) {
         for (i = 0; i < json.items.length; i++) {
             counter = json.items[i];
             startdate = moment(counter.start.dateTime);
+            enddate = moment(counter.end.dateTime);
             //start = startdate.locale(config.locale).format('DoM dd');
             start = startdate.locale(config.locale).format(config.calendartextformat);
+            //end = enddate.locale(config.locale).format(config.calendartextformat);
             startclock = startdate.locale(config.locale).format(config.calendartimeformat);
+            endclock = enddate.locale(config.locale).format(config.calendartimeformat);
             startwkday = startdate.locale(config.locale).format('dd');
             //add calendard icon for awesome-fonts
             summary = "<i class='fa fa-calendar'></i> ";
@@ -38,7 +44,7 @@ function ParseGoogleCalendar(calId, calElement) {
             } else {
                 summary += counter.summary;
             }
-            calitems.push([start, startclock, summary]);
+            calitems.push([start, startclock + " - " + endclock, summary]);
         }
 
         var table = document.createElement("TABLE");
