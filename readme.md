@@ -37,10 +37,9 @@ This project outgrew a bit from the original design, so db schemas etc needs ref
 ### Backend
 Raspberry Pi 3 bullseye
 
-node.js:
+node.js 20:
 ```
-curl -sL https://deb.nodesource.com/setup_18.x | sudo -E bash -
-sudo apt install -y nodejs
+https://github.com/nodesource/distributions#debian-versions
 ```
 
 SQLite3:
@@ -387,6 +386,8 @@ Changes:
 [esp8266code](_iot_devices/esp8266/README.md)
 
 11.10.2023 Add Spot electric prices, and heatpump evu status if heating is allowed or not
+
+22.12.2023 nodejs 20, update deps
 
 License
 MIT
