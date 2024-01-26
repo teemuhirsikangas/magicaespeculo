@@ -2,7 +2,8 @@
 const express = require('express');
 const router = express.Router();
 const moment = require('moment');
-const bedditapi = require('beddit-api');
+// package.json: "beddit-api": "teemuhirsikangas/beddit-api",
+//const bedditapi = require('beddit-api');
 const fs = require('fs');
 
 /* GET beddit data
