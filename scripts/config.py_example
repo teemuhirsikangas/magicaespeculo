@@ -1,3 +1,6 @@
+#spot price configs
+CHEAPESTHOURS = 17 # only enable xx cheapest hours
+ALLOWPRICE = 0.05 # or allow if price is lower than this (eur cents)
 #mqtt username and pw and addr of MQTT broker
 #copy this file to config.py
 username = "xxxx"
