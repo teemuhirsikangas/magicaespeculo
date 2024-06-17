@@ -19,10 +19,10 @@ My version of **Magic Mirror** which contains
 
 For hardware part list, mirror frame construction, etc see the whole project [here](https://speculo.hirsikangas.fi/dyi/magicae-speculo-magic-mirror-with-homeautomation/)
 
-* **Backend**: Raspberry Pi 3 with Rasbian stretch, hosts the web backend and database with REST endpoints, and room temperature logger) [Node.JS](https://nodejs.org/en/) [Express](http://expressjs.com/) [pug](http://jade-lang.com/)  [SQLite3](https://www.sqlite.org/)
+* **Backend**: Debian Bookworm, hosts the web backend and database with REST endpoints, and room temperature logger) [Node.JS](https://nodejs.org/en/) [Express](http://expressjs.com/) [pug](http://jade-lang.com/)  [SQLite3](https://www.sqlite.org/)
 * **MIRROR**: Raspberry Pi 3 mounted back of the mirror with PIR detection to turn of monitor to conserve energy
 * **Home automation**:  
-    1. Ground heat pump: [ThermIQ](http://www.thermiq.net/product/thermiq-2/?lang=en) data logger connected to [Thermia Diplomat](http://www.thermia.com/products/thermia-diplomat-optimum.asp) ground heat pump   (Raspberry Pi 1 b+)
+    1. Ground heat pump: [ThermIQ](http://www.thermiq.net/product/thermiq-2/?lang=en) data logger connected to [Thermia Diplomat](http://www.thermia.com/products/thermia-diplomat-optimum.asp) ground heat pump   (Raspberry Pi 2)
     2. Power consumption logging to monitor electricity usage (Raspberry Pi Zero)
     3. Ventilation: [RS-485 to USB adapter](http://www.ebay.com/itm/USB-to-RS485-TTL-Serial-Converter-Adapter-FTDI-interface-FT232RL-75176-Module-Ne-/161264238508?hash=item258c18ffac:g:c5gAAOSwT~9Wj4nl) connected to Ventilation unit [Enervent Pingvin](https://www.enervent.com/tuote/pingvin/) using modbus (rs-485) protocol
     4. Garage temperature / humidity logging (Raspberry Pi Zero)
@@ -35,7 +35,7 @@ This project outgrew a bit from the original design, so db schemas etc needs ref
 
 -------------------------------------------------------------
 ### Backend
-Raspberry Pi 3 bullseye
+Debian Bookworm running in Proxmox
 
 node.js 20:
 ```
@@ -73,7 +73,7 @@ https://console.developers.google.com/apis/
 
 ### start
 ```
-npm install
+npm ci
 npm start
 ```
 
@@ -339,56 +339,33 @@ http://www.clipartpanda.com/categories/lightening-clipart
 http://codepen.io/dazulu/pen/fGFyj
 
 
-#### IDEAS/TODO:
-```
-Robomow lawn mower schedule integration to calendar or directly via Bluetooth LE connection
-```
 
 Changes:
-
+```
 17.10.2016 - Added backup script
-
 1.2.2017 - Added Enervent Ventilation unit
-
 15.3.2017 - Added Wiring diagrams and updated dependencies
-
 07.07.2017 - Added Enphase Envoy-s data for solar production
-
 22.02.2018 - Added watermeter DB and placeholder for UI
-
 02.03.2018 - Added MQTT client sub, for watermeter data
-
 15.3.2018 - Added socket.io for realtime MQTT message: water leak, water consumption, front and garade door status, set/get alarm status
-
 30.5.2018 - Added Emphase envoy inverters to 3 phases and sort the microinverter arrays to same layout as in the roof
-
 12.6.2018 - Added rtl_433 door sensors and mqtt handler, IFTT push notifications moved from python script to node
-
 12.8.2018 Added greenhouse temp, humid and vbatt logging to db via mqtt message
-
 3.2.2019 Changed to use Dark Sky weather api
-
 8.2.2019 Added darkSky api to prevent corrs from clientside js, lint fixes
-
 17.9.2021 Fix migrate to work with bootsrap 5, update deps
-
 30.9.2022 Upgrade to awesomefont 6.x, stop animation as Rasperry pi cpu+firefox cannot handle those
-
 18.10.2022 update deps
-
 13.11.2022 add electricy price toggle + update deps
-
 14.12.2022 pir.py fix to work on python3 and debian bullseye. (todo: update rest of the scripts and stuff to work on bullseye)
-
 03.04.2023 dark sky close, move to openweather
-
-04.10.2023 move ESP8266 scripts to this repo. ground heat pump evu control based on electric spot prices in Finland
+04.10.2023 move ESP8266 scripts to this repo. ground heat pump evu control based on electric spot prices in
+ Finland
 [esp8266code](_iot_devices/esp8266/README.md)
-
 11.10.2023 Add Spot electric prices, and heatpump evu status if heating is allowed or not
-
 22.12.2023 nodejs 20, update deps
-
+```
 License
 MIT
 
