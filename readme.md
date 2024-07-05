@@ -37,7 +37,7 @@ This project outgrew a bit from the original design, so db schemas etc needs ref
 ### Backend
 Debian Bookworm running in Proxmox
 
-node.js 20:
+node.js 22:
 ```
 https://github.com/nodesource/distributions#debian-versions
 ```
@@ -83,12 +83,12 @@ Install pm2:
 `sudo npm install -g pm2`
 
 Autostart pm2 on reboot: 
-`pm2 startup`
+`sudo pm2 startup`
 
 `chmod a+x /home/pi/magicaespeculo/scripts/mm.sh`
 
 Start magic mirror:
-`pm2 start mm.sh`
+`pm2 start script/mm.sh`
 
 Save status to enable autostart after reboot:
 `pm2 save`
