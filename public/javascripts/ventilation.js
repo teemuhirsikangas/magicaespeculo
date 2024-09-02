@@ -11,8 +11,8 @@ var ventilationData = function () {
             $("#fresh_label").html(ventilationtext.fresh);
             $("#fresh").html(ventilationData[0].fresh + '&deg;');
             //$("#supply_hr").html(ventilationData[0].supply_hr);
-            $("#supply_label").html(ventilationtext.supply );
-            $("#supply").html(ventilationData[0].supply + '&deg;');
+            $("#supply_label").html(ventilationtext.supply + ' (hr)' );
+            $("#supply").html(ventilationData[0].supply + '&deg; (' + ventilationData[0].supply_hr +')' );
             $("#waste_label").html(ventilationtext.waste);
             $("#waste").html(ventilationData[0].waste + '&deg;');
             $("#exhaust_label").html(ventilationtext.exhaust);

@@ -3,16 +3,16 @@ var alarmStatus = 0;
 var latestWaterLeakReport;
 
     socket.on('connect', function(data) {
-        //console.log('connect to websocket..');
+       // console.log('connect to websocket..');
        // socket.emit('join', 'Hello World from client');
     });
 
     socket.on('mqtt', function(msg) {
 
-        //var message = msg.topic.split('/');
-        //var area = message[1];
-        //var state = message[2];
-        //var timestamp = Math.round((new Date()).getTime() / 1000);
+        // var message = msg.topic.split('/');
+        // var area = message[1];
+        // var state = message[2];
+        // var timestamp = Math.round((new Date()).getTime() / 1000);
 
         let battery; //make it better
         let batteryIcon;
@@ -149,7 +149,7 @@ var latestWaterLeakReport;
               break;
 
             default: 
-              console.log(`Error:no such MQTT topic handler in frontend UI. ${JSON.stringify(msg)}`);
+              // console.log(`Error:no such MQTT topic handler in frontend UI. ${JSON.stringify(msg)}`);
               break;
         }
         //swithc case per topic
