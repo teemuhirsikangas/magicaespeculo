@@ -4,10 +4,10 @@
  * Module dependencies.
  */
 
-var app = require('../app');
+var app = require('./app');
 var debug = require('debug')('magicaspeculo:server');
 var http = require('http');
-var socketApi = require('../mqtt/mqtt.js').socketApi;
+var socketApi = require('./mqtt/mqtt.js').socketApi;
 /**
  * Get port from environment and store in Express.
  */
