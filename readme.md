@@ -365,6 +365,7 @@ Changes:
 [esp8266code](_iot_devices/esp8266/README.md)
 11.10.2023 Add Spot electric prices, and heatpump evu status if heating is allowed or not
 22.12.2023 nodejs 20, update deps
+17.06.2024 nodejs 22
 ```
 License
 MIT
