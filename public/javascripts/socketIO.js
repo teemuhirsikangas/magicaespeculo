@@ -285,7 +285,7 @@ $(function () {
     //handle the ventilation config button save
     $("#ventform").submit(function(event){
         submitForm();
-        //close the form until sending has been succesfull
+        //close the form until sending has been successful
         return false;
 	});
 
