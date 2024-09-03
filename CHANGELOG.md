@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - Added changelog file
 ### Changed
+- Update jquery, fontawesome, moment
 - Refactor bin/www file into index.js file and pm2 startup docs
 - refactor package.json file
 - Copy changes from readme file:
