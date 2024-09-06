@@ -148,6 +148,35 @@ var latestWaterLeakReport;
               }
               break;
 
+              case 'home/han/sensor.momentary_active_import':
+                $("#hanicon").html('<i class="fa-solid fa-plug" aria-hidden="true"></i> Osto');
+
+                $("#sensor.momentary_active_import").html(msg.payload + ' kw');
+              break;
+
+              case 'home/han/sensor.momentary_active_import_phase_1':
+                $("#sensor.momentary_active_import_phase_1").html("L1: " + msg.payload);
+                break;
+              case 'home/han/sensor.momentary_active_import_phase_2':
+                $("#sensor.momentary_active_import_phase_2").html("L2: " + msg.payload);
+                break;              
+              case 'home/han/sensor.momentary_active_import_phase_3':
+                $("#sensor.momentary_active_import_phase_3").html("L3: " + msg.payload);
+                break;
+              case 'home/han/sensor.momentary_active_export':
+                console.log(msg);
+                $("#hanicone").html('<i class="fa-solid fa-solar-panel" aria-hidden="true"></i> Myynti');
+                $("#sensor.momentary_active_export").html(msg.payload + ' kw');
+                break;
+              case 'home/han/sensor.momentary_active_export_phase_1':
+                 $("#sensor.momentary_active_export_phase_1").html("L1: " + msg.payload + ' kw');
+                break;
+              case 'home/han/sensor.momentary_active_export_phase_2':
+                $("#sensor.momentary_active_export_phase_2").html("L2: " + msg.payload + ' kw');
+                break;
+              case 'home/han/sensor.momentary_active_export_phase_3':
+                $("#sensor.momentary_active_export_phase_3").html("L3: " + msg.payload + ' kw');
+                break;
             default: 
               // console.log(`Error:no such MQTT topic handler in frontend UI. ${JSON.stringify(msg)}`);
               break;
