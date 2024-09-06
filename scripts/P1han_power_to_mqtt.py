@@ -12,6 +12,7 @@
 
 import requests
 import paho.mqtt.client as mqtt
+import paho.mqtt.publish as publish
 import time
 import config #passwords for mqtt, url etc from config.py
 
@@ -21,6 +22,7 @@ access_token = config.HA_TOKEN
 MQTT_USER = config.username
 MQTT_PWD = config.password
 mqtt_broker = config.MQTT_ADDRESS
+AUTH = {'username':config.username, 'password':config.password}
 
 mqtt_port = 1883  # Default MQTT port
 mqtt_topic_prefix = "home/han"  # Prefix for the MQTT topics
@@ -59,7 +61,9 @@ def fetch_sensor_data(sensor_id):
 def publish_to_mqtt(client, sensor_id, state):
     topic = f"{mqtt_topic_prefix}/{sensor_id}"
     payload = str(state)
-    client.publish(topic, payload)
+    publish.single(topic, payload, retain=True, hostname=mqtt_broker, auth=AUTH)
+    #client publish has problems with async to write all topics, it randomly misses. timeout does not work
+    #client.publish(topic, payload)
     #print(f"Published to {topic}: {payload}")
 
 # Connect to MQTT broker
