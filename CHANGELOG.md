@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 - Remove/refactor ifttt lib, as it's using deprecated punycode dep
 
+## [1.4.30] - 2024-09-06
+### Added
+- script to fetch power import/export from home assistant via REST, to publish back to MQTT
+- Show these in UI
+
 ## [1.4.29] - 2024-09-03
 ### Added
 - Added changelog file

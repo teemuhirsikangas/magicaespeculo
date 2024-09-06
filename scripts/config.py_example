@@ -6,3 +6,6 @@ ALLOWPRICE = 0.05 # or allow if price is lower than this (eur cents)
 username = "xxxx"
 password = "yyyy"
 MQTT_ADDRESS = "192.168.100.3"
+#home assistant:
+HA_ADDRESS = "http://192.168.100.17:8123"
+HA_TOKEN = ""

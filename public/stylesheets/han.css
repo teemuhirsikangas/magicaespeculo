@@ -1,0 +1,58 @@
+#han {
+    position: absolute;
+    right: 0px;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    bottom: 480px;
+    width:  140px;
+    height: 25px;
+    color: white;
+}
+
+#hanimport {
+    position: absolute;
+    right: 30px;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    /* bottom: 480px; */
+    width:  140px;
+    height: 25px;
+    color: white;
+}
+
+#hanexport {
+    position: absolute;
+    right: -55px;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    /* bottom: 480px; */
+    width:  140px;
+    height: 25px;
+    color: white;
+}
+
+#sensor.momentary_active_import{
+    font: 18px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+#sensor.momentary_active_import_phase_1 {
+    color: grey;
+}
+#sensor.momentary_active_import_phase_2 {
+    color: grey;
+}
+#sensor.momentary_active_import_phase_3 {
+    color: grey;
+}
+#sensor.momentary_active_export {
+    right: 12px;
+    font: 18px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+#sensor.momentary_active_export_phase_1 {
+    color: grey;
+}
+#sensor.momentary_active_export_phase_2 {
+    color: grey;
+}
+#sensor.momentary_active_export_phase_3 {
+    color: grey;
+}
