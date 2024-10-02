@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 - Remove/refactor ifttt lib, as it's using deprecated punycode dep
 
+## [1.4.31] - 2024-10-02
+### Added
+- Heatpump adjustment tweaks. Script to command ground heat pump via ThermIQ serial to increase +2 degrees indoor temperature to reserve heat during low spot electric prices. Comfort mode, or ECO mode.
+logig:
+spot_prices.py will send the spot price + limits via MQTT
+config.py:  allowed time between XX-YY
+            outdoor temp limit, in summer time no need to heat to comfort mode
+            ghp integral, allow comfort mode only when integral >-150, so no aux heater doesn't come ON
+thermia.py will check the sport price MQTT, communicate with thermIQ serial, update values to UI via MQTT
+
+
 ## [1.4.30] - 2024-09-06
 ### Added
 - script to fetch power import/export from home assistant via REST, to publish back to MQTT

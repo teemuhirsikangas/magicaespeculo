@@ -1,6 +1,15 @@
-#spot price configs
-CHEAPESTHOURS = 17 # only enable xx cheapest hours
+#spot price configs used by spot_prices.py in numberpi.local
+CHEAPESTHOURS = 8 # only enable xx cheapest hours
 ALLOWPRICE = 0.05 # or allow if price is lower than this (eur cents)
+COMFORTPRICE = 0.05 # heatpump will rise target temp by +2 degrees, when this is hit
+#Thermia store energy logic, used by Thermia.py in konehuone.local
+ALLOWED_START ="22:00" #time 10pm
+ALLOWED_STOP ="07:00" # time 7am
+TARGET_TEMP = 20
+ECO_TEMP = 19
+INTEGRAL_LIMIT = -150
+COMFORTDISABLETEMP = 10 #summertime, if temp is over this, don't have comfort heating on, disable this
+
 #mqtt username and pw and addr of MQTT broker
 #copy this file to config.py
 username = "xxxx"

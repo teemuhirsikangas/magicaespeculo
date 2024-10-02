@@ -21,6 +21,7 @@ import config #passwords for mqtt, url etc from config.py
 
 CHEAPESTHOURS = config.CHEAPESTHOURS # only enable xx cheapest hours, Edit config.py file
 ALLOWPRICE = config.ALLOWPRICE # or allow if price is lower than this (eur cents)
+COMFORTPRICE = config.COMFORTPRICE # Set comfortprice limit
 url = 'https://api.spot-hinta.fi/JustNow'
 urlNextHour = 'https://api.spot-hinta.fi/JustNow?lookForwardHours=1'
 MQTT_USER = config.username
@@ -50,6 +51,7 @@ def publishSpotData(json_data):
 			json_data_next_hour["PriceWithTax"] = "NA"
 		epoch_time = int(time.time())
 		json_data["PriceLimit"] = ALLOWPRICE
+		json_data["ComfortPriceLimit"] = COMFORTPRICE
 		json_data["RankLimit"] = CHEAPESTHOURS
 		json_data["PriceWithTaxNextHour"] = json_data_next_hour["PriceWithTax"]
 		print(json_data)
