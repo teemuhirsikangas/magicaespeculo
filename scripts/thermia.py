@@ -321,7 +321,8 @@ def main():
 
             else:
                 print("DO NOTHING.")
-
+                #do nothing, send MQTT just to update time stamp and current status
+                sendMQTTUpdate(indoorCurrentTargetTemp, returnMode(indoorCurrentTargetTemp), integral, outdoorCurrentTemp)
         else:
             print("ECO MODE, TEMP: " + str(ECO_TEMP))
             if isTempChangeNeeded(indoorCurrentTargetTemp, ECO_TEMP) == True:
@@ -333,9 +334,9 @@ def main():
                     print("Failed to write new value to ThermIQ," + str(status))
             else:
                 print("DO NOTHING")
-    
-        #do nothing, send MQTT just to update time stamp and current status
-        sendMQTTUpdate(indoorCurrentTargetTemp, returnMode(indoorCurrentTargetTemp), integral, outdoorCurrentTemp)
+                #do nothing, send MQTT just to update time stamp and current status
+                sendMQTTUpdate(indoorCurrentTargetTemp, returnMode(indoorCurrentTargetTemp), integral, outdoorCurrentTemp)
+
         ser.close()  # Close serial port when done
     else:
         print("Failed to open serial port")
