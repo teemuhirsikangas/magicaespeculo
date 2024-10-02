@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # run this in cronjob:
-# 5,20,35,50 * * * * python3 /home/atnu/magicaespeculo/scripts/thermia.py > /dev/null 2>&1
+# 5,20,35,50 * * * * python3 /home/pi/magicaespeculo/scripts/thermia.py > /dev/null 2>&1
 
 
 import requests
@@ -24,9 +24,6 @@ MQTT_USER = config.username
 MQTT_PWD = config.password
 MQTT_HOST = config.MQTT_ADDRESS
 AUTH = {'username':config.username, 'password':config.password}
-
-mqtt_port = 1883  # Default MQTT port
-mqtt_topic_prefix = "home/engineroom/spotprice"  # Prefix for the MQTT topics
 
 # Constants for ThermIQ serial connection
 BAUDRATE = 9600
@@ -346,9 +343,9 @@ def main():
 if __name__ == "__main__":
     main()
 
-# when spot price is under 5c  and integral is >-150, change room target temp to 20, otherwise keep or change back to 19
+# when spot price is under 5c  and integral is >-150, change room target temp to 20 )(+2), otherwise keep or change back to 19 (+0)
 # run script every 15mins
-# integral must be >= -150, otherwise the Aux. heater 3 kW comes on, avoid that
+# integral must be >= -150, otherwise the Aux. heater 3 kW might come on, avoid that
 # and between 22-07 only
-# check status every 15mins, 05,20,35,50
+# check status every 15mins, 05,20,35,50 (5 past so spot prices etc have been updated)
 #read spot value from MQTT topic
