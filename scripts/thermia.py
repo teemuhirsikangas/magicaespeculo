@@ -240,6 +240,13 @@ def isTempChangeNeeded(currentTemp, desiredTemp):
         print("TEMP change ALLOW as: " + str(cTemp) + "!=" + str(DTemp))
         return True
 
+def returnMode(currentTemp):
+    cTemp = int(currentTemp)
+    if cTemp <= 19:
+        return "ECO"
+    else:
+        return "COMFORT"
+
 def outdoorTempUnderThreshold(currentTemp):
    limitTemp = int(config.COMFORTDISABLETEMP)
    cTemp = float(currentTemp)
@@ -253,12 +260,12 @@ def outdoorTempUnderThreshold(currentTemp):
 def sendMQTTUpdate(targetTemp, mode, integral, outdoorCurrentTemp):
 
         json_data = {}
-        json_data["hptargetTemp"] = targetTemp
+        json_data["hptargetTemp"] = int(targetTemp)
         json_data["hpmode"] = mode
         epoch_time = int(time.time())
         json_data["hptime"] = epoch_time
-        json_data["hpintegral"] = integral
-        json_data["hpoutdoorTemp"] = outdoorCurrentTemp
+        json_data["hpintegral"] = float(integral)
+        json_data["hpoutdoorTemp"] = float(outdoorCurrentTemp)
         print(json_data)
 
         payload_string = json.dumps(json_data)
@@ -330,6 +337,8 @@ def main():
             else:
                 print("DO NOTHING")
     
+        #do nothing, send MQTT just to update time stamp and current status
+        sendMQTTUpdate(indoorCurrentTargetTemp, returnMode(indoorCurrentTargetTemp), integral, outdoorCurrentTemp)
         ser.close()  # Close serial port when done
     else:
         print("Failed to open serial port")
