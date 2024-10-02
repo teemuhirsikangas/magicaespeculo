@@ -99,7 +99,7 @@ var electricityDataCurrentMonth = function () {
             $("#kwh_month").html("kk " + (electricityData[0].Wh / 1000).toFixed(2) + ' kWh');
             kwh_month = electricityData[0].Wh / 1000;
             price_month = kwh_month * config.electricity.price
-            console.log(kwh_month)
+            //console.log(kwh_month)
         } catch (e) {
 
             if (e) {

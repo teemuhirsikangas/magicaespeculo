@@ -114,9 +114,9 @@ var latestWaterLeakReport;
 
               break;
             case 'home/engineroom/spotprice':
-              //console.log(`spotprice: ${JSON.stringify(msg.payload)}`);
+              console.log(`spotprice: ${JSON.stringify(msg.payload)}`);
               //{"Rank":12,"DateTime":"2023-10-11T14:00:00+03:00","PriceNoTax":-0.0001,"PriceWithTax":-0.0001,"PriceLimit":0.05,"RankLimit":12,"PriceWithTaxNextHour":0}
-              const { Rank, DateTime, PriceWithTax, PriceWithTaxNextHour, PriceLimit, RankLimit } = msg.payload;
+              const { Rank, DateTime, PriceWithTax, PriceWithTaxNextHour, PriceLimit, ComfortPriceLimit, RankLimit } = msg.payload;
 
               $("#spotpriceicon").html('<i class="fa-solid fa-plug" aria-hidden="true"></i> Pörssisähkö');
               $("#spotpricenow").html((spotIndexPlainer((PriceWithTax*100).toFixed(2))) + ' snt/kwh');
@@ -124,8 +124,27 @@ var latestWaterLeakReport;
 
               $("#evutitle").html('<i class="fa-solid fa-arrow-trend-up"></i> Pörssisähkö ohjaus (EVU)');
               $("#evuinfo").html( "Tunti Rank:" + Rank + " limit(" + RankLimit+")");
-              $("#evuprice").html("Hintakatto:" + PriceLimit*100 + " snt");
+              $("#evuprice").html("Hintakatto:" + Math.floor(PriceLimit*100) + " snt, Comfort " + Math.floor(ComfortPriceLimit*100));
 
+              break;
+
+            case 'home/engineroom/heatpumpmode':
+              console.log(`HPmode state: ${JSON.stringify(msg.payload)}`);
+              //{"time":1697022061,"state":1}
+              const { hptime, hpmode, hpintegral, hpoutdoorTemp , hptargetTemp} = msg.payload;
+              if (hpmode == "ECO") {
+                $("#hpmode").html(`<span class="badge bg-success">ECO -1&deg;</span>`);
+              } else {
+                $("#hpmode").html(`<span class="badge bg-danger">COMFORT +2&deg;</span>`);
+              }
+        
+              let hpmsg_date = new Date(hptime*1000);
+              if (!lessThanOneHourAgo(hpmsg_date)) {
+                $("#evustate").html(`<span class="badge bg-danger">hintatietojen haku epäonnistu: ${hpmsg_date}</span>`);
+                console.log("Failed to get price info heatpumpmode mqtt" +  hpmsg_date);
+              } else {
+                //$("#evustate").addClass('badge bg-warning')
+              }
               break;
 
             case 'home/engineroom/heatpumpevu':
@@ -164,7 +183,7 @@ var latestWaterLeakReport;
                 $("#sensor.momentary_active_import_phase_3").html("L3: " + msg.payload);
                 break;
               case 'home/han/sensor.momentary_active_export':
-                console.log(msg);
+                //console.log(msg);
                 $("#hanicone").html('<i class="fa-solid fa-solar-panel" aria-hidden="true"></i> Myynti');
                 $("#sensor.momentary_active_export").html(msg.payload + ' kw');
                 break;

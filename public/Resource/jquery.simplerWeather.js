@@ -64,7 +64,7 @@ Simple Weather Java Switches to DarkSky */
           if( data !== null ) {
             var result = data,
               weather = {};
-            console.log(data);
+            //console.log(data);
             weather.temp = result.main.temp;
             weather.currently = result.weather[0].description;
             weather.icon = result.weather[0].main;
