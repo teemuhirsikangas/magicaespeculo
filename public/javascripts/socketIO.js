@@ -133,7 +133,7 @@ var latestWaterLeakReport;
               //{"time":1697022061,"state":1}
               const { hptime, hpmode, hpintegral, hpoutdoorTemp , hptargetTemp} = msg.payload;
               if (hpmode == "ECO") {
-                $("#hpmode").html(`<span class="badge bg-success">ECO -1&deg;</span>`);
+                $("#hpmode").html(`Lämmitys: <span class="badge bg-success">ECO -1&deg;</span>`);
               } else {
                 $("#hpmode").html(`<span class="badge bg-danger">COMFORT +2&deg;</span>`);
               }
