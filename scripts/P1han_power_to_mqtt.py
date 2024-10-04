@@ -21,7 +21,7 @@ access_token = config.HA_TOKEN
 
 MQTT_USER = config.username
 MQTT_PWD = config.password
-mqtt_broker = config.MQTT_ADDRESS
+MQTT_HOST = config.MQTT_ADDRESS
 AUTH = {'username':config.username, 'password':config.password}
 
 mqtt_port = 1883  # Default MQTT port
@@ -48,6 +48,8 @@ sensors = [
 # Function to fetch sensor data
 def fetch_sensor_data(sensor_id):
     url = f"{home_assistant_url}/api/states/{sensor_id}"
+    #http://192.168.100.17:8123/api/states/sensor.momentary_active_export
+    #print(url);
     response = requests.get(url, headers=headers)
 
     if response.status_code == 200:
@@ -61,7 +63,7 @@ def fetch_sensor_data(sensor_id):
 def publish_to_mqtt(client, sensor_id, state):
     topic = f"{mqtt_topic_prefix}/{sensor_id}"
     payload = str(state)
-    publish.single(topic, payload, retain=True, hostname=mqtt_broker, auth=AUTH)
+    publish.single(topic, payload, retain=True, hostname=MQTT_HOST, auth=AUTH)
     #client publish has problems with async to write all topics, it randomly misses. timeout does not work
     #client.publish(topic, payload)
     #print(f"Published to {topic}: {payload}")
@@ -70,7 +72,7 @@ def publish_to_mqtt(client, sensor_id, state):
 mqtt_client = mqtt.Client()
 mqtt_client.username_pw_set(MQTT_USER, MQTT_PWD)
 mqtt_client.loop_start()
-mqtt_client.connect(mqtt_broker, mqtt_port, 60)
+mqtt_client.connect(MQTT_HOST, mqtt_port, 60)
 
 # Fetch and publish data for all sensors
 for sensor_id in sensors:

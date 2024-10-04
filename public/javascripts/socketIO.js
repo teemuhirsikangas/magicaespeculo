@@ -128,6 +128,70 @@ var latestWaterLeakReport;
 
               break;
 
+            case 'home/sauna/airheatpump':
+              //{'ahptime': 1728049983, 'name': 'Pihasauna', 'serial': '2126811457', 'last_seen': '2024-10-04 13:52:55.091000+00:00', 'power': False, 'operation_mode': 'heat', 'daily_energy_consumed': 0.4, 'total_energy_consumed': 3401.6, 'room_temperature': 10.0, 'target_temperature': 10.0, 'target_temperature_min': 10.0, 'target_temperature_max': 31.0, 'fan_speed': 'auto', 'vane_horizontal': '2', 'vane_vertical': 'auto'}
+              console.log(`Sauna AHP: ${JSON.stringify(msg.payload)}`);
+              const {
+                ahptime,
+                name,
+                serial,
+                last_seen,
+                power,
+                operation_mode,
+                daily_energy_consumed,
+                total_energy_consumed,
+                room_temperature,
+                target_temperature,
+                target_temperature_min,
+                target_temperature_max,
+                fan_speed,
+                vane_horizontal,
+                vane_vertical
+            } = msg.payload;
+
+            $("#name").html(`${name} ILP`);
+            if (power === true) {
+              $("#power").html(`<span class="badge bg-success"><i class="fa-solid fa-power-off"></i> ON</span>   ${room_temperature}&deg;C<span style="color: grey;">/${target_temperature}&deg;</span>`);
+              if (operation_mode === 'heat') {
+                $("#operation_mode").html(`<i class="fa-solid fa-sun"></i> Lämmittää`);
+              } else if (operation_mode === 'dry') {
+                $("#operation_mode").html(`<i class="fa-solid fa-droplet"></i> Kuivaus`);
+              }else if (operation_mode === 'cool') {
+                $("#operation_mode").html(`<i class="fa-solid fa-snowflake"></i> Viilennys`);
+              } else if (operation_mode === 'fan_only') {
+                $("#operation_mode").html(`<i class="fa-solid fa-fan"></i> Puhallus`);
+              } else {
+                $("#operation_mode").html(`<i class="fa-solid fa-head-side-virus"></i> heat-cool?`);
+              }
+    
+            } else {
+              $("#power").html(`<span class="badge bg-danger"><i class="fa-solid fa-power-off"></i> OFF</span>   ${room_temperature}&deg;C<span style="color: grey;">/${target_temperature}&deg;</span>`);
+            }
+            $("#daily_energy_consumed").html(`<i class="fa-solid fa-plug"></i> ${daily_energy_consumed} kwh<span style="color: grey;">/${Math.floor(total_energy_consumed)}</span>`);
+            // $("#total_energy_consumed").html(`Energia ${total_energy_consumed}kwh`);
+             // 1: OPERATION_MODE_HEAT, <i class="fa-solid fa-sun"></i>
+            // 2: OPERATION_MODE_DRY, <i class="fa-solid fa-droplet"></i>
+            // 3: OPERATION_MODE_COOL, <i class="fa-regular fa-snowflake"></i>
+            // 7: OPERATION_MODE_FAN_ONLY, <i class="fa-solid fa-fan"></i>
+            // 8: OPERATION_MODE_HEAT_COOL,<i class="fa-solid fa-head-side-virus"></i>
+            $("#fan_speed").html(`<i class="fa-solid fa-fan"></i> ${fan_speed}`);
+            //$("#room_temperature").html(`Lämpötila ${room_temperature}&deg;/${target_temperature}&degC;</span>`);
+            //$("#target_temperature").html(`<span class="badge bg-success">${target_temperature}&deg;</span>`);
+            // const date = new Date(last_seen);
+            // $("#last_seen").html(`${date}`);
+              //if time > 1h, mark as red
+            let ahptime_date = new Date(ahptime*1000);
+            console.log(ahptime_date);
+            if (!lessThanOneHourAgo(ahptime_date)) {
+              $("#ahptime").html(`<span class="badge bg-danger">viimeisin tieto: ${ahptime_date}</span>`);
+              console.log("Failed to get price info" +  ahptime_date);
+            } else {
+              $("#ahptime").html("");
+            }
+
+
+              break;
+
             case 'home/engineroom/heatpumpmode':
               console.log(`HPmode state: ${JSON.stringify(msg.payload)}`);
               //{"time":1697022061,"state":1}
@@ -135,13 +199,13 @@ var latestWaterLeakReport;
               if (hpmode == "ECO") {
                 $("#hpmode").html(`Lämmitys: <span class="badge bg-success">ECO -1&deg;</span>`);
               } else {
-                $("#hpmode").html(`<span class="badge bg-danger">COMFORT +2&deg;</span>`);
+                $("#hpmode").html(`Lämmitys: <span class="badge bg-warning text-dark">COMFORT +2&deg;</span>`);
               }
         
               let hpmsg_date = new Date(hptime*1000);
               if (!lessThanOneHourAgo(hpmsg_date)) {
                 $("#evustate").html(`<span class="badge bg-danger">hintatietojen haku epäonnistu: ${hpmsg_date}</span>`);
-                console.log("Failed to get price info heatpumpmode mqtt" +  hpmsg_date);
+                console.log("Failed get info heatpumpmode mqtt" +  hpmsg_date);
               } else {
                 //$("#evustate").addClass('badge bg-warning')
               }

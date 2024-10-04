@@ -1,6 +1,22 @@
 #!/usr/bin/python
 # run this in cronjob:
-# 5,20,35,50 * * * * python3 /home/pi/magicaespeculo/scripts/thermia.py > /dev/null 2>&1
+#sleep 10 secs, as thermiq polls every minute, trying to avoid collisions
+# 5,20,35,50 * * * * sleep 15; python3 /home/pi/magicaespeculo/scripts/thermia.py > /dev/null 2>&1
+
+#Using ThermIQ to control Thermia diplomat (danfoss) ground heat pump
+# when spot price is under configurable value in config.py (5c)  and heat pump integral is >-150 and out side temp <10, change room target temp to 20 )(+2 increase is curve), otherwise keep or change back to 19 (+0)
+# run script every 15mins
+# integral must be >= -150, otherwise the Aux. heater 3 kW might come on, avoid that
+# and comfort heat mode allowed between 22-07 only
+# check status every 15mins, 05,20,35,50 (5 past so spot prices etc have been updated)
+#read spot value from MQTT topic
+### default config
+# ALLOWED_START ="22:00"
+# ALLOWED_STOP ="07:00"
+# TARGET_TEMP = 20
+# ECO_TEMP = 19
+# INTEGRAL_LIMIT = -150
+# COMFORTDISABLETEMP = 10
 
 
 import requests
@@ -343,10 +359,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-# when spot price is under 5c  and integral is >-150, change room target temp to 20 )(+2), otherwise keep or change back to 19 (+0)
-# run script every 15mins
-# integral must be >= -150, otherwise the Aux. heater 3 kW might come on, avoid that
-# and between 22-07 only
-# check status every 15mins, 05,20,35,50 (5 past so spot prices etc have been updated)
-#read spot value from MQTT topic
