@@ -1,7 +1,14 @@
 #!/usr/bin/python
-#https://github.com/vilppuvuorinen/pymelcloud
+#git clone https://github.com/vilppuvuorinen/pymelcloud
+#cd pymelcloud
+#python3 setup.py build
+#python3 setup.py install
+#apt install python3-aiohttp
+#setup cronjob every 10minutes (max every 5min due to melcloud ratelimit/banning)
+# */10 * * * *  python3 /home/pi/magicaespeculo/scripts/melCloud.py > /dev/null 2>&1
 #
-# 1,10,20,30,40,50 * * * * sleep 15; python3 /home/pi/magicaespeculo/scripts/melCloud.py > /dev/null 2>&1
+# todo: when outside temperature -20C, due to bug in Mitsubishi firmware, the heatpump cannot withhold +10 degree indoor temp
+# set automation to increase target temperature to 20, so it can held it warm
 # device.set({"power": 1})
 # device.set({"operation_mode": "heat"})
 # device.set({"fan_speed": 2})
