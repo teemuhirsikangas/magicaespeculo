@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 - Remove/refactor ifttt lib, as it's using deprecated punycode dep
 
+## [1.4.32] - 2024-10-04
+### Added
+- Add Mitshubishi air heat pump status info from yard sauna via melCloud
+
 ## [1.4.31] - 2024-10-02
 ### Added
 - Heatpump adjustment tweaks. Script to command ground heat pump via ThermIQ serial to increase +2 degrees indoor temperature to reserve heat during low spot electric prices. Comfort mode, or ECO mode.

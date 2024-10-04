@@ -1,33 +1,33 @@
 #han {
     position: absolute;
     right: 0px;
-    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    font: 14px "Luc§ida Grande", Helvetica, Arial, sans-serif;
     font-weight: bold;
-    bottom: 480px;
-    width:  140px;
-    height: 25px;
+    bottom: 500px;
+    width:  200px;
+    
     color: white;
 }
 
 #hanimport {
     position: absolute;
-    right: 30px;
+    left: 30px;
     font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
     font-weight: bold;
     /* bottom: 480px; */
-    width:  140px;
-    height: 25px;
+    width:  80px;
+    /* height: 25px; */
     color: white;
 }
 
 #hanexport {
     position: absolute;
-    right: -55px;
+    right: 0px;
     font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
     font-weight: bold;
     /* bottom: 480px; */
-    width:  140px;
-    height: 25px;
+    width:  90px;
+    /* height: 25px; */
     color: white;
 }
 
