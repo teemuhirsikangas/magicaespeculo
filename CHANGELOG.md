@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 - Remove/refactor ifttt lib, as it's using deprecated punycode dep
 
+## [1.4.33] - 2024-12-11
+### Added
+- Electricity price per h and day, will take account cheaper night transferprice + base montly price
+- Update deps
+
 ## [1.4.32] - 2024-10-04
 ### Added
 - Add Mitshubishi air heat pump status info from yard sauna via melCloud
