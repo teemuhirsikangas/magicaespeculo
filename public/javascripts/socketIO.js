@@ -1,6 +1,9 @@
 var socket = io();
 var alarmStatus = 0;
 var latestWaterLeakReport;
+var totalPrice = 0;
+var monthlyFeePerHour = 0;
+var priceNowSell = 0;
 
     socket.on('connect', function(data) {
        // console.log('connect to websocket..');
@@ -116,7 +119,7 @@ var latestWaterLeakReport;
             case 'home/engineroom/spotprice':
               console.log(`spotprice: ${JSON.stringify(msg.payload)}`);
               //{"Rank":12,"DateTime":"2023-10-11T14:00:00+03:00","PriceNoTax":-0.0001,"PriceWithTax":-0.0001,"PriceLimit":0.05,"RankLimit":12,"PriceWithTaxNextHour":0}
-              const { Rank, DateTime, PriceWithTax, PriceWithTaxNextHour, PriceLimit, ComfortPriceLimit, RankLimit } = msg.payload;
+              const { Rank, DateTime, PriceWithTax, PriceWithTaxNextHour, PriceLimit, ComfortPriceLimit, RankLimit, TotalPrice, MonthlyFeePerHour} = msg.payload;
 
               $("#spotpriceicon").html('<i class="fa-solid fa-plug" aria-hidden="true"></i> Pörssisähkö');
               $("#spotpricenow").html((spotIndexPlainer((PriceWithTax*100).toFixed(2))) + ' snt/kwh');
@@ -126,6 +129,10 @@ var latestWaterLeakReport;
               $("#evuinfo").html( "Tunti Rank:" + Rank + " limit(" + RankLimit+")");
               $("#evuprice").html("Hintakatto:" + Math.floor(PriceLimit*100) + " snt, Comfort " + Math.floor(ComfortPriceLimit*100));
 
+              //store this as global varibale, will be used later when the data populates from mqtt
+              totalPrice = TotalPrice;
+              monthlyFeePerHour = MonthlyFeePerHour;
+              priceNowSell = PriceWithTax;
               break;
 
             case 'home/sauna/airheatpump':
@@ -234,7 +241,7 @@ var latestWaterLeakReport;
               case 'home/han/sensor.momentary_active_import':
                 $("#hanicon").html('<i class="fa-solid fa-plug" aria-hidden="true"></i> Osto');
 
-                $("#sensor.momentary_active_import").html(msg.payload + ' kw');
+                $("#sensor.momentary_active_import").html(msg.payload + ' kw ' + ((msg.payload*totalPrice)+(monthlyFeePerHour)).toFixed(2) +' €/h '+ ((msg.payload*totalPrice*24)+(monthlyFeePerHour*24)).toFixed(2) +' €/d');
               break;
 
               case 'home/han/sensor.momentary_active_import_phase_1':
@@ -249,7 +256,7 @@ var latestWaterLeakReport;
               case 'home/han/sensor.momentary_active_export':
                 //console.log(msg);
                 $("#hanicone").html('<i class="fa-solid fa-solar-panel" aria-hidden="true"></i> Myynti');
-                $("#sensor.momentary_active_export").html(msg.payload + ' kw');
+                $("#sensor.momentary_active_export").html(msg.payload.toFixed(3) + ' kw ' + (msg.payload*priceNowSell).toFixed(2) +' €/h ' + (msg.payload*priceNowSell*24).toFixed(2) +' €/d');
                 break;
               case 'home/han/sensor.momentary_active_export_phase_1':
                  $("#sensor.momentary_active_export_phase_1").html("L1: " + msg.payload + ' kw');
