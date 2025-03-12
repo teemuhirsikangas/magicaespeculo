@@ -241,7 +241,7 @@ var priceNowSell = 0;
               case 'home/han/sensor.momentary_active_import':
                 $("#hanicon").html('<i class="fa-solid fa-plug" aria-hidden="true"></i> Osto');
 
-                $("#sensor.momentary_active_import").html(msg.payload + ' kw ' + ((msg.payload*totalPrice)+(monthlyFeePerHour)).toFixed(2) +' €/h '+ ((msg.payload*totalPrice*24)+(monthlyFeePerHour*24)).toFixed(2) +' €/d');
+                $("#sensor.momentary_active_import").html(msg.payload + ' kw<br>' + ((msg.payload*totalPrice)+(monthlyFeePerHour)).toFixed(2) +' €/h<br>'+ ((msg.payload*totalPrice*24)+(monthlyFeePerHour*24)).toFixed(2) +' €/d');
               break;
 
               case 'home/han/sensor.momentary_active_import_phase_1':
@@ -256,7 +256,7 @@ var priceNowSell = 0;
               case 'home/han/sensor.momentary_active_export':
                 //console.log(msg);
                 $("#hanicone").html('<i class="fa-solid fa-solar-panel" aria-hidden="true"></i> Myynti');
-                $("#sensor.momentary_active_export").html(msg.payload.toFixed(3) + ' kw ' + (msg.payload*priceNowSell).toFixed(2) +' €/h ' + (msg.payload*priceNowSell*24).toFixed(2) +' €/d');
+                $("#sensor.momentary_active_export").html(msg.payload + ' kw<br>' + (msg.payload*priceNowSell).toFixed(2) +' €/h<br>' + (msg.payload*priceNowSell*24).toFixed(2) +' €/d');
                 break;
               case 'home/han/sensor.momentary_active_export_phase_1':
                  $("#sensor.momentary_active_export_phase_1").html("L1: " + msg.payload + ' kw');
