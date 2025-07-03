@@ -78,6 +78,7 @@ mqtt_client.connect(MQTT_HOST, mqtt_port, 60)
 for sensor_id in sensors:
     sensor_id, state = fetch_sensor_data(sensor_id)
     if state is not None:
+        state = round(float(state), 3)
         publish_to_mqtt(mqtt_client, sensor_id, state)
         #time.sleep(0.1)
     else:
