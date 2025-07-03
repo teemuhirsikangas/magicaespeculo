@@ -5,14 +5,14 @@ const mqtt = require('mqtt');
 const config = require('../config');
 const moment = require('moment');
 var socket_io = require('socket.io');
-const IFTTT = require('node-ifttt-maker');
+//const IFTTT = require('node-ifttt-maker');
 var io = socket_io();
 var socketApi = {};
 
 socketApi.io = io;
 
 //IFTTT stuff, event is the name registered to the service
-const ifttt = new IFTTT(config.iftt.key);
+//const ifttt = new IFTTT(config.iftt.key);
 const event = 'ovi';
 let ALARM = false;
 
@@ -209,7 +209,8 @@ const sendIFTT = async (value1, value2, value3) => {
         value3 
     }
     try {
-        const response = await ifttt.request({ event, params });
+       // const response = await ifttt.request({ event, params });
+       console.log("IFFT deprecated, refactor to use gotify");
 
     } catch (error) {
         console.log(error);

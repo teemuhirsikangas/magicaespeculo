@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 - Remove/refactor ifttt lib, as it's using deprecated punycode dep
 
+## [1.4.34] - 2025-07-03
+### Added
+- refactor googleapis to work with major version change
+- update deps
+- remove IFTTT package
+
 ## [1.4.33] - 2024-12-11
 ### Added
 - Electricity price per h and day, will take account cheaper night transferprice + base montly price

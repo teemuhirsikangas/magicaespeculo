@@ -82,7 +82,7 @@ npm start
 Install pm2:
 `sudo npm install -g pm2`
 
-Autostart pm2 on reboot: 
+Autostart pm2 on reboot:
 `sudo pm2 startup`
 
 Start magic mirror:
@@ -125,6 +125,13 @@ Scripts to run on startup:
 @unclutter -idle 0.1 -root                              #hides mouse cursor if no movement
 @/usr/bin/python3 /home/pi/magicaespeculo/scripts/pir.py         #starts infrared sensor to turn of monitor to save energy
 ```
+
+or crontab
+```
+@reboot /usr/bin/python3 /home/pi/magicaespeculo/scripts/pir.py  
+
+```
+
 
 #### cronjobs
 Autoconnect to wifi if connection goes down
