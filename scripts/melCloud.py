@@ -58,7 +58,8 @@ async def main():
         json_data["last_seen"] = str(device.last_seen)
         json_data["power"] = device.power
         json_data["operation_mode"] = device.operation_mode
-        json_data["daily_energy_consumed"] = device.daily_energy_consumed
+        #daily data might not be present if no consumption. default to 0 to not fail on script
+        json_data["daily_energy_consumed"] = getattr(device, "daily_energy_consumed", 0) or 0
         json_data["total_energy_consumed"] = device.total_energy_consumed
         json_data["room_temperature"] = device.room_temperature
         json_data["target_temperature"] = device.target_temperature
