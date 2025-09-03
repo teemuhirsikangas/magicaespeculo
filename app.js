@@ -83,4 +83,6 @@ app.use(function (err, req, res, next) {
     });
 });
 
+console.log("http://localhost:3333");
+
 module.exports = app;
