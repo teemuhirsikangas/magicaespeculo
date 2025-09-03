@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 - Remove/refactor ifttt lib, as it's using deprecated punycode dep
 
+## [1.4.35] - 2025-09-03
+### Added
+- Update deps
+
 ## [1.4.34] - 2025-07-03
 ### Added
 - refactor googleapis to work with major version change
