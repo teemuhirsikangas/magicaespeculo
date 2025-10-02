@@ -29,8 +29,8 @@ MONTHLYFEESPERHOUR = config.MONTHLYFEESPERHOUR
 ALLOWED_START = config.ALLOWED_START #night time start
 ALLOWED_STOP = config.ALLOWED_STOP
 
-url = 'https://api.spot-hinta.fi/JustNow'
-urlNextHour = 'https://api.spot-hinta.fi/JustNow?lookForwardHours=1'
+url = 'https://api.spot-hinta.fi/JustNow?priceResolution=60'
+urlNextHour = 'https://api.spot-hinta.fi/JustNow?lookForwardHours=1&?priceResolution=60'
 MQTT_USER = config.username
 MQTT_PWD = config.password
 MQTT_BROKER_ADDR = config.MQTT_ADDRESS
