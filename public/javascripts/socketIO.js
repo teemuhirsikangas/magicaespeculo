@@ -119,10 +119,9 @@ var priceNowSell = 0;
             case 'home/engineroom/spotprice':
               console.log(`spotprice: ${JSON.stringify(msg.payload)}`);
               //{"Rank":12,"DateTime":"2023-10-11T14:00:00+03:00","PriceNoTax":-0.0001,"PriceWithTax":-0.0001,"PriceLimit":0.05,"RankLimit":12,"PriceWithTaxNextHour":0}
-              const { Rank, DateTime, PriceWithTax, PriceWithTaxNextHour, PriceLimit, ComfortPriceLimit, RankLimit, TotalPrice, MonthlyFeePerHour} = msg.payload;
-
+              const { Rank, DateTime, PriceWithTax, PriceWithTax15min, PriceWithTaxNextHour, PriceLimit, ComfortPriceLimit, RankLimit, TotalPrice, MonthlyFeePerHour} = msg.payload;
               $("#spotpriceicon").html('<i class="fa-solid fa-plug" aria-hidden="true"></i> Pörssisähkö');
-              $("#spotpricenow").html((spotIndexPlainer((PriceWithTax*100).toFixed(2))) + ' snt/kwh');
+              $("#spotpricenow").html((spotIndexPlainer((PriceWithTax15min*100).toFixed(2))) + ' snt/kwh');
               $("#spotpricenext").html((spotIndexPlainer((PriceWithTaxNextHour*100).toFixed(2))) + ' snt/kwh (+1h)');
 
               $("#evutitle").html('<i class="fa-solid fa-arrow-trend-up"></i> Pörssisähkö ohjaus (EVU)');

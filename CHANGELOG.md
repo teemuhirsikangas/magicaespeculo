@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 - Remove/refactor ifttt lib, as it's using deprecated punycode dep
 
+## [1.4.36] - 2025-10-02
+### Added
+- fix spot-price 3rd party api to use 60min interval parameter for heatpump evu control
+- Show spotprice for 15min interval in UI
+- update deps
+
 ## [1.4.35] - 2025-09-03
 ### Added
 - Update deps
