@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 # run this script in cronjob every hour 1 minute past:
-# 1 * * * * python3 /home/atnu/magicaespeculo/scripts/spot_prices.py > /dev/null 2>&1
+# 1,16,31,46 * * * * python3 /home/atnu/magicaespeculo/scripts/spot_prices.py > /dev/null 2>&1
 
 # https://api.spot-hinta.fi/swagger/ui#/(JSON)%20Prices%20today/Today
 
@@ -29,7 +29,9 @@ MONTHLYFEESPERHOUR = config.MONTHLYFEESPERHOUR
 ALLOWED_START = config.ALLOWED_START #night time start
 ALLOWED_STOP = config.ALLOWED_STOP
 
-url = 'https://api.spot-hinta.fi/JustNow?priceResolution=60'
+urlNow60min = 'https://api.spot-hinta.fi/JustNow?priceResolution=60'
+urlNow15min = 'https://api.spot-hinta.fi/JustNow?priceResolution=15'
+
 urlNextHour = 'https://api.spot-hinta.fi/JustNow?lookForwardHours=1&?priceResolution=60'
 MQTT_USER = config.username
 MQTT_PWD = config.password
@@ -92,6 +94,11 @@ def publishSpotData(json_data):
 		else:
 			print("Failed to get next hour data after retries, using NA")
 			json_data_next_hour["PriceWithTax"] = "NA"
+		# get 15 min data with retry logic (because now+15min is not same as now+60min)
+		resp2, success = make_api_request_with_retry(urlNow15min, headers)
+		if success:
+			json_data_15min = resp2.json()
+			#print(json_data_next_hour)
 		epoch_time = int(time.time())
 		json_data["PriceLimit"] = ALLOWPRICE
 		json_data["ComfortPriceLimit"] = COMFORTPRICE
@@ -99,13 +106,14 @@ def publishSpotData(json_data):
 		json_data["PriceWithTaxNextHour"] = json_data_next_hour["PriceWithTax"]
 		json_data["TotalPrice"] = getTransferPrice() + json_data["PriceWithTax"]
 		json_data["MonthlyFeePerHour"] = MONTHLYFEESPERHOUR
+		json_data["PriceWithTax15min"] = json_data_15min["PriceWithTax"]  
 		print(json_data)
 
 		payload_string = json.dumps(json_data)
 		print("MQTT payload sent:", payload_string)
 		publish.single("home/engineroom/spotprice", payload_string, retain=True, hostname=MQTT_BROKER_ADDR, auth=AUTH)
 
-resp, success = make_api_request_with_retry(url, headers)
+resp, success = make_api_request_with_retry(urlNow60min, headers)
 if success:
 	json_data = resp.json()
 	print (json_data)
