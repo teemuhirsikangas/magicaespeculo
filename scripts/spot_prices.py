@@ -40,6 +40,24 @@ headers = {
    'accept': 'application/json'
 }
 
+def make_api_request_with_retry(url, headers, max_retries=3, delay=30):
+    """Make API request with retry logic"""
+    for attempt in range(max_retries):
+        try:
+            resp = requests.get(url, headers=headers, timeout=10)
+            if resp.status_code == requests.codes.ok:
+                return resp, True
+            else:
+                print(f"API call failed with status {resp.status_code}, attempt {attempt + 1}/{max_retries}")
+        except requests.exceptions.RequestException as e:
+            print(f"API request exception: {e}, attempt {attempt + 1}/{max_retries}")
+        
+        if attempt < max_retries - 1:  # Don't sleep on the last attempt
+            print(f"Retrying in {delay} seconds...")
+            time.sleep(delay)
+    
+    return None, False
+
 def getTransferPrice():
     current_time = datetime.now().time()
 
@@ -66,12 +84,13 @@ def publishData(state):
 		publish.single("home/engineroom/heatpumpevu", payload_string, retain=True, hostname=MQTT_BROKER_ADDR, auth=AUTH)
 
 def publishSpotData(json_data):
-		# get next hour data
-		resp = requests.get(urlNextHour, headers=headers)
-		if resp.status_code == requests.codes.ok:
+		# get next hour data with retry logic
+		resp, success = make_api_request_with_retry(urlNextHour, headers)
+		if success:
 			json_data_next_hour = resp.json()
 			#print(json_data_next_hour)
 		else:
+			print("Failed to get next hour data after retries, using NA")
 			json_data_next_hour["PriceWithTax"] = "NA"
 		epoch_time = int(time.time())
 		json_data["PriceLimit"] = ALLOWPRICE
@@ -86,8 +105,8 @@ def publishSpotData(json_data):
 		print("MQTT payload sent:", payload_string)
 		publish.single("home/engineroom/spotprice", payload_string, retain=True, hostname=MQTT_BROKER_ADDR, auth=AUTH)
 
-resp = requests.get(url, headers=headers)
-if resp.status_code == requests.codes.ok:
+resp, success = make_api_request_with_retry(url, headers)
+if success:
 	json_data = resp.json()
 	print (json_data)
 	print("to allow heating, conditions must match;")
@@ -106,8 +125,6 @@ if resp.status_code == requests.codes.ok:
 
 	publishSpotData(json_data)
 else:
-	#TODO: retry after 1 min for 3x, and enable if cannot connect
-	#and then set HP as enabled if no connection
-	print(resp.status_code)
-	print ("Enable heating, (could not get prices)")
+	# Failed to get spot prices after retries, enable heating as fallback
+	print ("Enable heating, (could not get prices after 3 retries)")
 	publishData(1)
