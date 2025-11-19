@@ -6,6 +6,7 @@ data/homeautomation.db
 public/javascripts/config.js
 scripts/config.py
 scripts/config.pyc
+scripts/melcloud_daily_energy_state.json
 config.js
 scripts/__pycache__/
 secrets_config.h

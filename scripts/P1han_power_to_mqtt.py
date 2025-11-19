@@ -33,7 +33,7 @@ headers = {
     "Content-Type": "application/json",
 }
 
-# Sensor IDs
+# Sensor IDs, these are coming from home assistant P1 Han
 sensors = [
     "sensor.momentary_active_export",
     "sensor.momentary_active_import",
@@ -43,13 +43,19 @@ sensors = [
     "sensor.momentary_active_export_phase_1",
     "sensor.momentary_active_export_phase_2",
     "sensor.momentary_active_export_phase_3",
+    # Cumulative energy sensors (check your HA for exact names)
+    #"sensor.cumulative_active_import",  # Total imported energy
+    #"sensor.cumulative_active_export",  # Total exported energy
+    # Daily energy sensors (resets at midnight)
+    # these are set in homeassistant configuration.yaml as sensor
+    "sensor.daily_energy_import",
+    "sensor.daily_energy_export",
 ]
-
 # Function to fetch sensor data
 def fetch_sensor_data(sensor_id):
     url = f"{home_assistant_url}/api/states/{sensor_id}"
     #http://192.168.100.17:8123/api/states/sensor.momentary_active_export
-    #print(url);
+    #print(url)
     response = requests.get(url, headers=headers)
 
     if response.status_code == 200:

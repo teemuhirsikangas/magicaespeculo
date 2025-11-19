@@ -1,0 +1,40 @@
+
+# Configure a default setup of Home Assistant (frontend, api, etc)
+default_config:
+
+# Text to speech
+tts:
+  - platform: google_translate
+
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+recorder: 
+  db_url: mysql://admin:password@core-mariadb/homeassistant?charset=utf8mb4
+
+mqtt:
+  - binary_sensor:
+      name: "HPevu"
+      unique_id: "HP_evu"
+      state_topic: "home/engineroom/heatpumpevu"
+      payload_on: 1
+      payload_off: 0
+      qos: 0
+      device_class: opening
+      value_template: "{{ value_json.state }}"
+#rest:
+#  enabled: true
+
+# Utility meters for daily energy tracking
+utility_meter:
+  daily_energy_import:
+    source: sensor.cumulative_active_import
+    cycle: daily
+    name: Daily Energy Import
+  
+  daily_energy_export:
+    source: sensor.cumulative_active_export
+    cycle: daily
+    name: Daily Energy Export
+
+

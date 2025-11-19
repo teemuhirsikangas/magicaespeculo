@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 - Remove/refactor ifttt lib, as it's using deprecated punycode dep
 
+## [1.4.37] - 2025-11-19
+### Added
+- track daily energy import/export from HAN meter via home assistant REST api
+- fix melcloud mitshubishi heat pump energy usage reading
+
 ## [1.4.36] - 2025-10-02
 ### Added
 - fix spot-price 3rd party api to use 60min interval parameter for heatpump evu control

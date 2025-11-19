@@ -240,7 +240,7 @@ var priceNowSell = 0;
               case 'home/han/sensor.momentary_active_import':
                 $("#hanicon").html('<i class="fa-solid fa-plug" aria-hidden="true"></i> Osto');
 
-                $("#sensor.momentary_active_import").html(msg.payload + ' kw<br>' + ((msg.payload*totalPrice)+(monthlyFeePerHour)).toFixed(2) +' €/h<br>'+ ((msg.payload*totalPrice*24)+(monthlyFeePerHour*24)).toFixed(2) +' €/d');
+                $("#sensor.momentary_active_import").html(msg.payload + ' kw<br>' + ((msg.payload*totalPrice)+(monthlyFeePerHour)).toFixed(2) +' €/h<br>');
               break;
 
               case 'home/han/sensor.momentary_active_import_phase_1':
@@ -255,7 +255,7 @@ var priceNowSell = 0;
               case 'home/han/sensor.momentary_active_export':
                 //console.log(msg);
                 $("#hanicone").html('<i class="fa-solid fa-solar-panel" aria-hidden="true"></i> Myynti');
-                $("#sensor.momentary_active_export").html(msg.payload + ' kw<br>' + (msg.payload*priceNowSell).toFixed(2) +' €/h<br>' + (msg.payload*priceNowSell*24).toFixed(2) +' €/d');
+                $("#sensor.momentary_active_export").html(msg.payload + ' kw<br>' + (msg.payload*priceNowSell).toFixed(2) +' €/h<br>');
                 break;
               case 'home/han/sensor.momentary_active_export_phase_1':
                  $("#sensor.momentary_active_export_phase_1").html("L1: " + msg.payload + ' kw');
@@ -265,6 +265,12 @@ var priceNowSell = 0;
                 break;
               case 'home/han/sensor.momentary_active_export_phase_3':
                 $("#sensor.momentary_active_export_phase_3").html("L3: " + msg.payload + ' kw');
+                break;
+              case 'home/han/sensor.daily_energy_import':
+                $("#sensor.daily_energy_import").html("<i class='fa-solid fa-calendar-day' ></i>" + msg.payload + ' kwh');
+                break;
+              case 'home/han/sensor.daily_energy_export':
+                $("#sensor.daily_energy_export").html("<i class='fa-solid fa-calendar-day'></i> " + msg.payload + ' kwh');
                 break;
             default: 
               // console.log(`Error:no such MQTT topic handler in frontend UI. ${JSON.stringify(msg)}`);
