@@ -1,0 +1,26 @@
+# Template sensors for go-e charger phase monitoring
+# Add this to your configuration.yaml:
+#
+# template: !include goe_phase_limiter_templates.yaml
+
+- sensor:
+    - name: "Max Phase Current"
+      unique_id: max_phase_current
+      unit_of_measurement: "A"
+      state: >
+        {% set phase1 = states('sensor.current_phase_1') | float(0) %}
+        {% set phase2 = states('sensor.current_phase_2') | float(0) %}
+        {% set phase3 = states('sensor.current_phase_3') | float(0) %}
+        {{ ([phase1, phase2, phase3] | max) | round(1) }}
+      
+    - name: "Phase Overload Status"
+      unique_id: phase_overload_status
+      state: >
+        {% set max_current = states('sensor.max_phase_current') | float(0) %}
+        {% if max_current > 25 %}
+          overload
+        {% elif max_current < 22 %}
+          safe
+        {% else %}
+          normal
+        {% endif %}

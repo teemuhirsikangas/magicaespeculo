@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - track daily energy import/export from HAN meter via home assistant REST api
 - fix melcloud mitshubishi heat pump energy usage reading
+- Add https://github.com/syssi/homeassistant-goecharger-mqtt for go-e charger phase current limiting scripts via Home assistant and show car charging status in UI
 
 ## [1.4.36] - 2025-10-02
 ### Added

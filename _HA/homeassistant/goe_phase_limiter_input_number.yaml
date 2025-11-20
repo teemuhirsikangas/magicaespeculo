@@ -1,0 +1,12 @@
+# Input number for go-e charger target amperage tracking
+# Add this to your configuration.yaml:
+#
+# input_number: !include goe_phase_limiter_input_number.yaml
+
+goe_charger_target_amps:
+  name: "go-e: Target Amp"
+  min: 6
+  max: 16
+  step: 1
+  mode: box
+  icon: mdi:ev-station
