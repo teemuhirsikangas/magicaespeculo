@@ -1,0 +1,104 @@
+# Automations for go-e charger phase current limiting
+# Add to automations.yaml or import via:
+# automation: !include_dir_merge_list automations/
+
+# Initialize target amps when car starts charging
+- id: goe_init_target_amps
+  alias: "go-e: Set desired Target Amp"
+  trigger:
+    - platform: state
+      entity_id: sensor.go_echarger_225812_car
+      to: "Charging"
+  action:
+    - service: input_number.set_value
+      target:
+        entity_id: input_number.goe_charger_target_amps
+      data:
+        value: "{{ states('number.go_echarger_225812_amp') | float }}"
+
+# Reduce charging when phase overload detected
+- id: goe_reduce_on_overload
+  alias: "go-e: Reduce Charging on Overload >25A"
+  trigger:
+    - platform: state
+      entity_id: sensor.phase_overload_status
+      to: "overload"
+  condition:
+    - condition: state
+      entity_id: binary_sensor.go_echarger_225812_car
+      state: "on"
+    - condition: state
+      entity_id: sensor.go_echarger_225812_car
+      state: "Charging"
+    - condition: numeric_state
+      entity_id: number.go_echarger_225812_amp
+      above: 6
+  action:
+    - service: number.set_value
+      target:
+        entity_id: number.go_echarger_225812_amp
+      data:
+        value: >
+          {{ [states('number.go_echarger_225812_amp') | float - 2, 6] | max }}
+    - service: notify.persistent_notification
+      data:
+        title: "⚠️ go-e Charger Limited"
+        message: >
+          Phase overload detected ({{ states('sensor.max_phase_current') }}A > 25A).
+          Reduced charging to {{ [states('number.go_echarger_225812_amp') | float - 2, 6] | max }}A.
+
+# Increase charging when phases are safe
+- id: goe_increase_when_safe
+  alias: "go-e: Increase Charging When Safe"
+  trigger:
+    - platform: state
+      entity_id: sensor.phase_overload_status
+      to: "safe"
+      for:
+        seconds: 20
+  condition:
+    - condition: state
+      entity_id: binary_sensor.go_echarger_225812_car
+      state: "on"
+    - condition: state
+      entity_id: sensor.go_echarger_225812_car
+      state: "Charging"
+    - condition: template
+      value_template: >
+        {{ states('number.go_echarger_225812_amp') | float < 
+           states('input_number.goe_charger_target_amps') | float }}
+  action:
+    - service: number.set_value
+      target:
+        entity_id: number.go_echarger_225812_amp
+      data:
+        value: >
+          {{ [states('number.go_echarger_225812_amp') | float + 1, 
+              states('input_number.goe_charger_target_amps') | float] | min }}
+
+# Monitor every 20 seconds during charging
+- id: goe_monitor_phases
+  alias: "go-e: Monitor Phase Currents"
+  trigger:
+    - platform: time_pattern
+      seconds: "/20"
+  condition:
+    - condition: state
+      entity_id: binary_sensor.go_echarger_225812_car
+      state: "on"
+    - condition: state
+      entity_id: sensor.go_echarger_225812_car
+      state: "Charging"
+    - condition: numeric_state
+      entity_id: sensor.max_phase_current
+      above: 25
+    - condition: numeric_state
+      entity_id: number.go_echarger_225812_amp
+      above: 6
+  action:
+    - service: number.set_value
+      target:
+        entity_id: number.go_echarger_225812_amp
+      data:
+        value: >
+          {{ [states('number.go_echarger_225812_amp') | float - 2, 6] | max }}

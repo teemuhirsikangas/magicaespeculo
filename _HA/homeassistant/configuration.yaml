@@ -1,5 +1,8 @@
 
 # Configure a default setup of Home Assistant (frontend, api, etc)
+template: !include goe_phase_limiter_templates.yaml
+input_number: !include goe_phase_limiter_input_number.yaml
+
 default_config:
 
 # Text to speech
