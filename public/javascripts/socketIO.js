@@ -4,6 +4,9 @@ var latestWaterLeakReport;
 var totalPrice = 0;
 var monthlyFeePerHour = 0;
 var priceNowSell = 0;
+var goeCurrentAmps = null;
+var goeTargetAmps = null;
+var goePhaseStatus = '';
 
     socket.on('connect', function(data) {
        // console.log('connect to websocket..');
@@ -187,7 +190,7 @@ var priceNowSell = 0;
             // $("#last_seen").html(`${date}`);
               //if time > 1h, mark as red
             let ahptime_date = new Date(ahptime*1000);
-            console.log(ahptime_date);
+            //console.log(ahptime_date);
             if (!lessThanOneHourAgo(ahptime_date)) {
               $("#ahptime").html(`<span class="badge bg-danger">viimeisin tieto: ${ahptime_date}</span>`);
               console.log("Failed to get price info" +  ahptime_date);
@@ -272,6 +275,256 @@ var priceNowSell = 0;
               case 'home/han/sensor.daily_energy_export':
                 $("#sensor.daily_energy_export").html("<i class='fa-solid fa-calendar-day'></i> " + msg.payload + ' kwh');
                 break;
+
+              // go-e Charger phase limiter status from Home Assistant
+              // https://github.com/goecharger/go-eCharger-API-v2/blob/main/apikeys-en.md
+              case 'home/han/sensor.phase_overload_status':
+                if (msg.payload === 'safe') {
+                  goePhaseStatus = '<i class="fa-solid fa-circle-check" style="color: green;"></i>';
+                } else if (msg.payload === 'normal') {
+                  goePhaseStatus = '<i class="fa-solid fa-exclamation-triangle" style="color: orange;"></i>';
+                } else if (msg.payload === 'overload') {
+                  goePhaseStatus = '<i class="fa-solid fa-circle-xmark" style="color: red;"></i>';
+                }
+                // Update charging current display with phase status
+                if (goeCurrentAmps !== null) {
+                  let ampDisplay = goeTargetAmps !== null 
+                    ? `${goeCurrentAmps} A <span style="color: grey;">(${goeTargetAmps})</span>` 
+                    : `${goeCurrentAmps} A`;
+                  $("#goe_charging_current").html(`${ampDisplay} ${goePhaseStatus}`);
+                }
+                break;
+
+              case 'home/han/input_number.goe_charger_target_amps':
+                goeTargetAmps = parseFloat(msg.payload).toFixed(0);
+                // Update charging current display to show target in grey
+                if (goeCurrentAmps !== null) {
+                  let ampDisplay = `${goeCurrentAmps} A <span style="color: grey;">(${goeTargetAmps})</span>`;
+                  $("#goe_charging_current").html(`${ampDisplay} ${goePhaseStatus}`);
+                }
+                break;
+
+              // go-e Charger direct MQTT topics
+              case 'go-eCharger/225812/car':
+                // carState: null if internal error (Unknown/Error=0, Idle=1, Charging=2, WaitCar=3, Complete=4, Error=5)
+                const carState = parseInt(msg.payload);
+                let carIcon = '';
+                let carText = '';
+                let carColor = 'gray';
+                
+                // Physical connection status (Idle=1 means not connected)
+                if (carState === 1) {
+                  $("#goe_car_physical_connection").html('<i class="fa-solid fa-car" style="color: yellow;"></i> <i class="fa-solid fa-plug-circle-xmark" style="color: yellow;"></i> Latausjohto irti');
+                } else {
+                  $("#goe_car_physical_connection").html('<i class="fa-solid fa-car" style="color: green;"></i> <i class="fa-solid fa-plug-circle-check" style="color: green;"></i> Johto kiinni');
+                }
+                
+                // Charging state
+                if (carState === null || carState === 0) {
+                  carIcon = '<i class="fa-solid fa-car" style="color: red;"></i>';
+                  carText = 'Unknown/Error';
+                  carColor = 'red';
+                } else if (carState === 1) {
+                  carIcon = '<i class="fa-solid fa-car" style="color: orange;"></i>';
+                  carText = 'Odottaa';
+                  carColor = 'orange';
+                } else if (carState === 2) {
+                  carIcon = '<i class="fa-solid fa-charging-station" style="color: green;"></i>';
+                  carText = 'Lataa';
+                  carColor = 'green';
+                } else if (carState === 3) {
+                  carIcon = '<i class="fa-solid fa-car" style="color: yellow;"></i>';
+                  carText = 'Odottaa autoa';
+                  carColor = 'yellow';
+                } else if (carState === 4) {
+                  carIcon = '<i class="fa-solid fa-circle-check" style="color: green;"></i>';
+                  carText = 'Valmis';
+                  carColor = 'green';
+                } else if (carState === 5) {
+                  carIcon = '<i class="fa-solid fa-triangle-exclamation" style="color: red;"></i>';
+                  carText = 'Virhe';
+                  carColor = 'red';
+                } else {
+                  carIcon = '<i class="fa-solid fa-car" style="color: gray;"></i>';
+                  carText = 'Tuntematon';
+                  carColor = 'gray';
+                }
+                
+                $("#goe_car_connected").html(`${carIcon} ${carText}`);
+                $("#goe_car_state").html('');
+                break;
+
+              case 'go-eCharger/225812/amp':
+                goeCurrentAmps = parseFloat(msg.payload).toFixed(0);
+                let ampDisplay = goeTargetAmps !== null 
+                  ? `${goeCurrentAmps} A <span style="color: grey;">(${goeTargetAmps})</span>` 
+                  : `${goeCurrentAmps} A`;
+                $("#goe_charging_current").html(`${ampDisplay} ${goePhaseStatus}`);
+                break;
+
+              case 'go-eCharger/225812/nrg':
+                // nrg arrives as already parsed array from server
+                try {
+                  let nrgArray;
+                  // Check if it's already an array or needs parsing
+                  if (Array.isArray(msg.payload)) {
+                    nrgArray = msg.payload;
+                  } else if (typeof msg.payload === 'string') {
+                    nrgArray = JSON.parse(msg.payload);
+                  } else {
+                    console.error('Unexpected nrg payload type:', typeof msg.payload);
+                    break;
+                  }
+                  
+                  const totalPower = nrgArray[11]; // P_Total is at index 11
+                  const powerKw = (totalPower / 1000).toFixed(2);
+                  $("#goe_current_power").html(powerKw + ' kW');
+                } catch (e) {
+                  console.error('Failed to parse nrg array:', e, 'Payload:', msg.payload);
+                }
+                break;
+
+              case 'go-eCharger/225812/lmo':
+                // Charger mode: 3=Normal, 4=Eco, 5=Daily Trip
+                let chargerMode = 'Unknown';
+                const lmo = parseInt(msg.payload);
+                if (lmo === 3) chargerMode = 'Normal';
+                else if (lmo === 4) chargerMode = 'eco';
+                else if (lmo === 5) chargerMode = 'Daily Trip';
+                $("#goe_charger_mode").html(chargerMode);
+                break;
+
+              case 'go-eCharger/225812/wh':
+                // Charged amount in Wh, display as kWh
+                const chargedKwh = (parseFloat(msg.payload) / 1000).toFixed(2);
+                $("#goe_charged_amount").html(chargedKwh + ' kWh');
+                break;
+
+              case 'go-eCharger/225812/modelStatus':
+                // Model status: Reason why charging or not
+                console.log(`go-eCharger modelstatus: ${msg.payload}`);
+                const modelStatus = parseInt(msg.payload);
+                let statusText = '';
+                let statusIcon = '';
+                let statusColor = 'gray';
+                
+                switch(modelStatus) {
+                  case 0: statusText = 'Not charging because no charge ctrl data'; statusIcon = '<i class="fa-solid fa-circle-question"></i>'; statusColor = 'gray'; break;
+                  case 1: statusText = 'Not charging because overtemperature'; statusIcon = '<i class="fa-solid fa-temperature-high"></i>'; statusColor = 'red'; break;
+                  case 2: statusText = 'Not charging because access control wait'; statusIcon = '<i class="fa-solid fa-lock"></i>'; statusColor = 'orange'; break;
+                  case 3: statusText = 'Charging because force state on'; statusIcon = '<i class="fa-solid fa-circle-check"></i>'; statusColor = 'green'; break;
+                  case 4: statusText = 'Not charging because force state off'; statusIcon = '<i class="fa-solid fa-circle-xmark"></i>'; statusColor = 'red'; break;
+                  case 5: statusText = 'Not charging because scheduler'; statusIcon = '<i class="fa-solid fa-clock"></i>'; statusColor = 'orange'; break;
+                  case 6: statusText = 'Not charging because energy limit'; statusIcon = '<i class="fa-solid fa-battery-full"></i>'; statusColor = 'orange'; break;
+                  case 7: statusText = 'Charging because awattar price low'; statusIcon = '<i class="fa-solid fa-euro-sign"></i>'; statusColor = 'green'; break;
+                  case 8: statusText = 'Charging because automatic stop test ladung'; statusIcon = '<i class="fa-solid fa-vial"></i>'; statusColor = 'green'; break;
+                  case 9: statusText = 'Charging because automatic stop not enough time'; statusIcon = '<i class="fa-solid fa-hourglass-end"></i>'; statusColor = 'green'; break;
+                  case 10: statusText = 'Charging because automatic stop'; statusIcon = '<i class="fa-solid fa-hand"></i>'; statusColor = 'green'; break;
+                  case 11: statusText = 'Charging because automatic stop no clock'; statusIcon = '<i class="fa-solid fa-clock-rotate-left"></i>'; statusColor = 'green'; break;
+                  case 12: statusText = 'Charging because pv surplus'; statusIcon = '<i class="fa-solid fa-solar-panel"></i>'; statusColor = 'green'; break;
+                  case 13: statusText = 'Charging because fallback go e default'; statusIcon = '<i class="fa-solid fa-rotate-left"></i>'; statusColor = 'green'; break;
+                  case 14: statusText = 'Charging because fallback go e scheduler'; statusIcon = '<i class="fa-solid fa-calendar-check"></i>'; statusColor = 'green'; break;
+                  case 15: statusText = 'Charging because fallback default'; statusIcon = '<i class="fa-solid fa-rotate-left"></i>'; statusColor = 'green'; break;
+                  case 16: statusText = 'Not charging because fallback go e awattar'; statusIcon = '<i class="fa-solid fa-euro-sign"></i>'; statusColor = 'orange'; break;
+                  case 17: statusText = 'Not charging because fallback awattar'; statusIcon = '<i class="fa-solid fa-euro-sign"></i>'; statusColor = 'orange'; break;
+                  case 18: statusText = 'Not charging because fallback automatic stop'; statusIcon = '<i class="fa-solid fa-hand"></i>'; statusColor = 'orange'; break;
+                  case 19: statusText = 'Charging because car compatibility keep alive'; statusIcon = '<i class="fa-solid fa-heartbeat"></i>'; statusColor = 'green'; break;
+                  case 20: statusText = 'Charging because charge pause not allowed'; statusIcon = '<i class="fa-solid fa-ban"></i>'; statusColor = 'green'; break;
+                  case 22: statusText = 'Not charging because simulate unplugging'; statusIcon = '<i class="fa-solid fa-plug"></i>'; statusColor = 'orange'; break;
+                  case 23: statusText = 'Not charging because phase switch'; statusIcon = '<i class="fa-solid fa-arrow-right-arrow-left"></i>'; statusColor = 'orange'; break;
+                  case 24: statusText = 'Not charging because min pause duration'; statusIcon = '<i class="fa-solid fa-pause"></i>'; statusColor = 'orange'; break;
+                  case 26: statusText = 'Not charging because error'; statusIcon = '<i class="fa-solid fa-triangle-exclamation"></i>'; statusColor = 'red'; break;
+                  case 27: statusText = 'Not charging because load management doesnt want'; statusIcon = '<i class="fa-solid fa-gauge-high"></i>'; statusColor = 'orange'; break;
+                  case 28: statusText = 'Not charging because ocpp doesnt want'; statusIcon = '<i class="fa-solid fa-server"></i>'; statusColor = 'orange'; break;
+                  case 29: statusText = 'Not charging because reconnect delay'; statusIcon = '<i class="fa-solid fa-hourglass-half"></i>'; statusColor = 'orange'; break;
+                  case 30: statusText = 'Not charging because adapter blocking'; statusIcon = '<i class="fa-solid fa-plug-circle-xmark"></i>'; statusColor = 'orange'; break;
+                  case 31: statusText = 'Not charging because underfrequency control'; statusIcon = '<i class="fa-solid fa-wave-square"></i>'; statusColor = 'orange'; break;
+                  case 32: statusText = 'Not charging because unbalanced load'; statusIcon = '<i class="fa-solid fa-scale-unbalanced"></i>'; statusColor = 'orange'; break;
+                  case 33: statusText = 'Charging because discharging pv battery'; statusIcon = '<i class="fa-solid fa-battery-half"></i>'; statusColor = 'green'; break;
+                  case 34: statusText = 'Not charging because grid monitoring'; statusIcon = '<i class="fa-solid fa-tower-cell"></i>'; statusColor = 'orange'; break;
+                  case 35: statusText = 'Not charging because ocpp fallback'; statusIcon = '<i class="fa-solid fa-server"></i>'; statusColor = 'orange'; break;
+                  default: statusText = `Unknown (${modelStatus})`; statusIcon = '<i class="fa-solid fa-question"></i>'; statusColor = 'gray'; break;
+                }
+                
+                $("#goe_charger_status").html(`<span style="color: ${statusColor};">${statusIcon} ${statusText}</span>`);
+                break;
+
+              case 'go-eCharger/225812/alw':
+                // Allowed to charge: true or false
+                const alw = msg.payload === 'true' || msg.payload === true;
+                let alwText = '';
+                let alwColor = 'gray';
+                let alwIcon = '';
+                
+                if (alw) {
+                  alwText = 'Lataus sallittu';
+                  alwColor = 'green';
+                  alwIcon = '<i class="fa-solid fa-circle-check"></i>';
+                } else {
+                  alwText = 'Lataus estetty';
+                  alwColor = 'red';
+                  alwIcon = '<i class="fa-solid fa-circle-xmark"></i>';
+                }
+                
+                $("#goe_charging_allowed").html(`<span style="color: ${alwColor};"><i class="fa-solid fa-angles-right"></i> ${alwIcon} ${alwText}</span>`);
+                break;
+
+              case 'go-eCharger/225812/eto':
+                // Total energy in Wh, display as kWh
+                const totalKwh = (parseFloat(msg.payload) / 1000).toFixed(2);
+                $("#goe_total_energy").html(totalKwh + ' kWh');
+                break;
+
+              case 'go-eCharger/225812/cdi':
+                // Charging duration info: null=no charging, type=0 counter, type=1 duration in ms
+                try {
+                  let cdiData;
+                  if (typeof msg.payload === 'string') {
+                    cdiData = JSON.parse(msg.payload);
+                  } else {
+                    cdiData = msg.payload;
+                  }
+                  
+                  if (cdiData === null || cdiData.value === null) {
+                    $("#goe_charging_duration").html('No charging in progress');
+                  } else if (cdiData.type === 1) {
+                    // Duration in milliseconds, convert to hours and minutes
+                    const durationMs = cdiData.value;
+                    const totalSeconds = Math.floor(durationMs / 1000);
+                    const hours = Math.floor(totalSeconds / 3600);
+                    const minutes = Math.floor((totalSeconds % 3600) / 60);
+                    const seconds = totalSeconds % 60;
+                    $("#goe_charging_duration").html(`${hours}h ${minutes}m ${seconds}s`);
+                  } else if (cdiData.type === 0) {
+                    // Counter type
+                    $("#goe_charging_duration").html(`Counter: ${cdiData.value}`);
+                  }
+                } catch (e) {
+                  console.error('Failed to parse cdi data:', e, 'Payload:', msg.payload);
+                }
+                break;
+
+              case 'go-eCharger/225812/utc':
+
+              
+                // UTC timestamp, format as readable datetime
+                try {
+                  const utcTime = msg.payload.replace(/"/g, ''); // Remove quotes if present
+                  const date = new Date(utcTime);
+                  const formattedTime = date.toLocaleString('fi-FI', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
+                  });
+                  $("#goe_last_update").html(formattedTime);
+                } catch (e) {
+                  console.error('Failed to parse UTC time:', e);
+                }
+                break;
+
             default: 
               // console.log(`Error:no such MQTT topic handler in frontend UI. ${JSON.stringify(msg)}`);
               break;

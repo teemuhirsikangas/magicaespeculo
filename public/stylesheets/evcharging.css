@@ -1,0 +1,103 @@
+#evcharging {
+    position: absolute;
+    right: 10px;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    bottom: 750px;
+    width: 200px;
+    color: white;
+}
+
+#evchargingtitle {
+    font: 16px "Lucida Grande", Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    color: white
+    margin-bottom: 10px;
+}
+
+#evstatus {
+    position: relative;
+    margin-bottom: 15px;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+}
+
+#evstatustitle {
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    color: #64B5F6;
+    margin-bottom: 10px;
+}
+
+#goe_car_physical_connection {
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    margin-bottom: 5px;
+}
+
+#goe_car_connected {
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    margin-bottom: 5px;
+}
+
+#goe_charger_status {
+    font: 12px "Lucida Grande", Helvetica, Arial, sans-serif;
+    margin-bottom: 8px;
+}
+
+.evrow {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 5px;
+}
+
+.evlabel {
+    font: 12px "Lucida Grande", Helvetica, Arial, sans-serif;
+    color: white;
+    flex-shrink: 0;
+}
+
+.evvalue {
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    color: white;
+    text-align: right;
+    margin-left: 10px;
+}
+
+#goe_charging_current,
+#goe_current_power {
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    color: white;
+}
+
+#goe_phase_status {
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+#evstatistics {
+    position: relative;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+}
+
+#evstatisticstitle {
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    color: #81C784;
+    margin-bottom: 8px;
+}
+
+#goe_charger_mode,
+#goe_charged_amount,
+#goe_charging_duration,
+#goe_total_energy {
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    color: white;
+}
+
+#goe_last_update {
+    font: 11px "Lucida Grande", Helvetica, Arial, sans-serif;
+    color: #B0BEC5;
+}

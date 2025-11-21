@@ -37,7 +37,10 @@ io.on('connection', function(socket){
             const JSONMessage = JSON.parse(message);
             socket.emit('mqtt', {'topic'  : topic, 'payload' : JSONMessage});
         } catch(err) {
-            console.log(`MQTT topic: ${topic} message: ${message} not JSON: ${err}`);
+            // Not JSON, send as plain string (for messages like phase_overload_status)
+            const stringMessage = message.toString();
+            socket.emit('mqtt', {'topic'  : topic, 'payload' : stringMessage});
+            //console.log(`MQTT topic: ${topic} message: ${stringMessage} sent as string`);
         }
         
       });
@@ -45,7 +48,9 @@ io.on('connection', function(socket){
     //MQTT connected
     socket.mqttClient.on('connect', function () {
         console.log('mqtt client connected');
-        socket.mqttClient.subscribe('home/#')
+        socket.mqttClient.subscribe('home/#');
+        socket.mqttClient.subscribe('go-eCharger/225812/#');
+        
     });
 
     //MQTT closed
