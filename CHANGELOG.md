@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 - Remove/refactor ifttt lib, as it's using deprecated punycode dep
 
+## [1.4.38] - 2025-11-20
+### Added
+- EV charging status from go-e charger via MQTT to show if charging is allowed or limited due to phase current limiter script and other status info
+
 ## [1.4.37] - 2025-11-19
 ### Added
 - track daily energy import/export from HAN meter via home assistant REST api

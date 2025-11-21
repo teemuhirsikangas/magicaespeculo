@@ -50,6 +50,9 @@ sensors = [
     # these are set in homeassistant configuration.yaml as sensor
     "sensor.daily_energy_import",
     "sensor.daily_energy_export",
+    # go-e Charger phase limiter status sensors
+    "sensor.phase_overload_status",
+    "input_number.goe_charger_target_amps",
 ]
 # Function to fetch sensor data
 def fetch_sensor_data(sensor_id):
@@ -84,7 +87,12 @@ mqtt_client.connect(MQTT_HOST, mqtt_port, 60)
 for sensor_id in sensors:
     sensor_id, state = fetch_sensor_data(sensor_id)
     if state is not None:
-        state = round(float(state), 3)
+        # Skip rounding for non-numeric sensors (like phase_overload_status)
+        try:
+            state = round(float(state), 3)
+        except ValueError:
+            # Keep string value as-is for non-numeric sensors
+            pass
         publish_to_mqtt(mqtt_client, sensor_id, state)
         #time.sleep(0.1)
     else:

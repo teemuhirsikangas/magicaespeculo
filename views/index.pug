@@ -147,6 +147,46 @@ block content
             #sensor.momentary_active_export_phase_3
             #sensor.daily_energy_export
 
+    #evcharging
+        #evchargingtitle
+            span(style="font-size: 1.2em;") 
+                i.fa-solid.fa-charging-station
+                |  EV Lataus
+        #evstatus
+            
+            #goe_car_physical_connection
+            #goe_car_connected
+            #goe_charger_status
+            #goe_charging_allowed
+            .evrow
+                .evlabel Lataus mode:
+                .evvalue
+                    #goe_charger_mode
+            .evrow
+                .evlabel Latausvirta:
+                .evvalue
+                    #goe_charging_current
+            .evrow
+                .evlabel Teho:
+                .evvalue
+                    #goe_current_power
+            .evrow
+                .evlabel Viimeisin lataus:
+                .evvalue
+                    #goe_charged_amount
+            .evrow
+                .evlabel Latausaika:
+                .evvalue
+                    #goe_charging_duration
+            .evrow
+                .evlabel Yhteensä:
+                .evvalue
+                    #goe_total_energy
+            .evrow
+                .evlabel Päivitetty:
+                .evvalue
+                    #goe_last_update
+
     #saunaairheatpump
         #basics     
             #name
