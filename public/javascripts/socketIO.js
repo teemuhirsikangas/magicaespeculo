@@ -504,27 +504,6 @@ var goePhaseStatus = '';
                 }
                 break;
 
-              case 'go-eCharger/225812/utc':
-
-              
-                // UTC timestamp, format as readable datetime
-                try {
-                  const utcTime = msg.payload.replace(/"/g, ''); // Remove quotes if present
-                  const date = new Date(utcTime);
-                  const formattedTime = date.toLocaleString('fi-FI', {
-                    day: '2-digit',
-                    month: '2-digit',
-                    year: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    second: '2-digit'
-                  });
-                  $("#goe_last_update").html(formattedTime);
-                } catch (e) {
-                  console.error('Failed to parse UTC time:', e);
-                }
-                break;
-
             default: 
               // console.log(`Error:no such MQTT topic handler in frontend UI. ${JSON.stringify(msg)}`);
               break;
