@@ -21,6 +21,8 @@
     background-color: rgba(0, 0, 0, 0.3);
     border-radius: 5px;
     top: 10px;
+    font-weight: bold;
+
 }
 
 #evstatustitle {
@@ -33,16 +35,19 @@
 #goe_car_physical_connection {
     font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
     margin-bottom: 5px;
+    font-weight: bold;
 }
 
 #goe_car_connected {
     font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
     margin-bottom: 5px;
+    font-weight: bold;
 }
 
 #goe_charger_status {
-    font: 12px "Lucida Grande", Helvetica, Arial, sans-serif;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
     margin-bottom: 8px;
+    font-weight: bold;
 }
 
 .evrow {
@@ -53,9 +58,10 @@
 }
 
 .evlabel {
-    font: 12px "Lucida Grande", Helvetica, Arial, sans-serif;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
     color: white;
     flex-shrink: 0;
+    font-weight: bold;
 }
 
 .evvalue {
@@ -63,16 +69,19 @@
     color: white;
     text-align: right;
     margin-left: 10px;
+    font-weight: bold;
 }
 
 #goe_charging_current,
 #goe_current_power {
     font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
     color: white;
+    font-weight: bold;
 }
 
 #goe_phase_status {
     font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    font-weight: bold;
 }
 
 #evstatistics {
@@ -80,6 +89,8 @@
     padding: 10px;
     background-color: rgba(0, 0, 0, 0.3);
     border-radius: 5px;
+    font-weight: bold;
+    
 }
 
 #evstatisticstitle {
@@ -87,6 +98,7 @@
     font-weight: bold;
     color: #81C784;
     margin-bottom: 8px;
+    font-weight: bold;
 }
 
 #goe_charger_mode,
@@ -95,5 +107,6 @@
 #goe_total_energy {
     font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
     color: white;
+    font-weight: bold;
 }
 
