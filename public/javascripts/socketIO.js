@@ -531,12 +531,12 @@ var goeChargingTimerInterval = null;
               case 'go-eCharger/225812/tab':
                 // Device boot time in milliseconds (epoch)
                 goeDeviceBootTime = parseInt(msg.payload);
-                console.log('Device boot time set:', goeDeviceBootTime);
                 break;
 
               case 'go-eCharger/225812/cdi':
                 // Charging duration info: null=no charging, type=0 counter, type=1 duration in ms
                 try {
+                  console.log("CDIIIIIIIIIIIII");
                   console.log(msg.payload);
                   let cdiData;
                   if (typeof msg.payload === 'string') {
@@ -545,10 +545,16 @@ var goeChargingTimerInterval = null;
                     cdiData = msg.payload;
                   }
                   
+                  // Clear any existing interval when receiving new cdi data
+                  if (goeChargingTimerInterval) {
+                    clearInterval(goeChargingTimerInterval);
+                    goeChargingTimerInterval = null;
+                  }
+                  
                   if (cdiData === null || cdiData.value === null) {
                     $("#goe_charging_duration").html('No charging in progress');
                   } else if (cdiData.type === 1) {
-                    // Duration in milliseconds, convert to hours and minutes
+                    // Type 1: Active charging duration in milliseconds - use the value directly, no live timer
                     const durationMs = cdiData.value;
                     const totalSeconds = Math.floor(durationMs / 1000);
                     const hours = Math.floor(totalSeconds / 3600);
@@ -556,17 +562,10 @@ var goeChargingTimerInterval = null;
                     const seconds = totalSeconds % 60;
                     $("#goe_charging_duration").html(`${hours}h ${minutes}m ${seconds}s`);
                   } else if (cdiData.type === 0) {
-                    // Counter type: tab + cdi.value = charging start timestamp
+                    // Type 0: Counter - calculate elapsed time and update live every second
                     if (goeDeviceBootTime !== null) {
-                      // Calculate charging start time: device boot time + counter value
                       goeChargingStartTime = goeDeviceBootTime + cdiData.value;
                       
-                      // Clear any existing interval
-                      if (goeChargingTimerInterval) {
-                        clearInterval(goeChargingTimerInterval);
-                      }
-                      
-                      // Function to update the display
                       const updateChargingDuration = () => {
                         const currentTimeMs = Date.now();
                         const elapsedMs = currentTimeMs - goeChargingStartTime;
@@ -577,10 +576,7 @@ var goeChargingTimerInterval = null;
                         $("#goe_charging_duration").html(`${hours}h ${minutes}m ${seconds}s`);
                       };
                       
-                      // Update immediately
                       updateChargingDuration();
-                      
-                      // Update every second
                       goeChargingTimerInterval = setInterval(updateChargingDuration, 1000);
                     } else {
                       $("#goe_charging_duration").html('Waiting for device boot time...');
