@@ -144,7 +144,7 @@ var goeChargingTimerInterval = null;
 
             case 'home/sauna/airheatpump':
               //{'ahptime': 1728049983, 'name': 'Pihasauna', 'serial': '2126811457', 'last_seen': '2024-10-04 13:52:55.091000+00:00', 'power': False, 'operation_mode': 'heat', 'daily_energy_consumed': 0.4, 'total_energy_consumed': 3401.6, 'room_temperature': 10.0, 'target_temperature': 10.0, 'target_temperature_min': 10.0, 'target_temperature_max': 31.0, 'fan_speed': 'auto', 'vane_horizontal': '2', 'vane_vertical': 'auto'}
-              console.log(`Sauna AHP: ${JSON.stringify(msg.payload)}`);
+              //console.log(`Sauna AHP: ${JSON.stringify(msg.payload)}`);
               const {
                 ahptime,
                 name,
@@ -207,7 +207,7 @@ var goeChargingTimerInterval = null;
               break;
 
             case 'home/engineroom/heatpumpmode':
-              console.log(`HPmode state: ${JSON.stringify(msg.payload)}`);
+              //console.log(`HPmode state: ${JSON.stringify(msg.payload)}`);
               //{"time":1697022061,"state":1}
               const { hptime, hpmode, hpintegral, hpoutdoorTemp , hptargetTemp} = msg.payload;
               if (hpmode == "ECO") {
@@ -261,7 +261,6 @@ var goeChargingTimerInterval = null;
                 $("#sensor.momentary_active_import_phase_3").html("L3: " + msg.payload);
                 break;
               case 'home/han/sensor.momentary_active_export':
-                //console.log(msg);
                 $("#hanicone").html('<i class="fa-solid fa-solar-panel" aria-hidden="true"></i> Myynti');
                 $("#sensor.momentary_active_export").html(msg.payload + ' kw<br>' + (msg.payload*priceNowSell).toFixed(2) +' €/h<br>');
                 break;
@@ -455,7 +454,6 @@ var goeChargingTimerInterval = null;
 
               case 'go-eCharger/225812/modelStatus':
                 // Model status: Reason why charging or not
-                console.log(`go-eCharger modelstatus: ${msg.payload}`);
                 const modelStatus = parseInt(msg.payload);
                 let statusText = '';
                 let statusIcon = '';
@@ -536,8 +534,6 @@ var goeChargingTimerInterval = null;
               case 'go-eCharger/225812/cdi':
                 // Charging duration info: null=no charging, type=0 counter, type=1 duration in ms
                 try {
-                  console.log("CDIIIIIIIIIIIII");
-                  console.log(msg.payload);
                   let cdiData;
                   if (typeof msg.payload === 'string') {
                     cdiData = JSON.parse(msg.payload);
