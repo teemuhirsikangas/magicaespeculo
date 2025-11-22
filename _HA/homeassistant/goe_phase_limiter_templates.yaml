@@ -24,3 +24,11 @@
         {% else %}
           normal
         {% endif %}
+
+    - name: "Solar Surplus"
+      unique_id: solar_surplus
+      unit_of_measurement: "kW"
+      state: >
+        {% set export_power = states('sensor.momentary_active_export') | float(0) %}
+        {% set import_power = states('sensor.momentary_active_import') | float(0) %}
+        {{ (export_power - import_power) | round(1) }}

@@ -50,6 +50,7 @@ sensors = [
     # these are set in homeassistant configuration.yaml as sensor
     "sensor.daily_energy_import",
     "sensor.daily_energy_export",
+    "sensor.solar_surplus",
     # go-e Charger phase limiter status sensors
     "sensor.phase_overload_status",
     "input_number.goe_charger_target_amps",

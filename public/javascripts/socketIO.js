@@ -7,6 +7,11 @@ var priceNowSell = 0;
 var goeCurrentAmps = null;
 var goeTargetAmps = null;
 var goePhaseStatus = '';
+var goePhaseIndicator = '';
+var goePhaseIndicator = '';
+var goeDeviceBootTime = null;
+var goeChargingStartTime = null;
+var goeChargingTimerInterval = null;
 
     socket.on('connect', function(data) {
        // console.log('connect to websocket..');
@@ -275,6 +280,9 @@ var goePhaseStatus = '';
               case 'home/han/sensor.daily_energy_export':
                 $("#sensor.daily_energy_export").html("<i class='fa-solid fa-calendar-day'></i> " + msg.payload + ' kwh');
                 break;
+              case 'home/han/sensor.solar_surplus':
+                $("#sensor.solar_surplus").html(msg.payload + ' kw');
+                break;
 
               // go-e Charger phase limiter status from Home Assistant
               // https://github.com/goecharger/go-eCharger-API-v2/blob/main/apikeys-en.md
@@ -288,9 +296,10 @@ var goePhaseStatus = '';
                 }
                 // Update charging current display with phase status
                 if (goeCurrentAmps !== null) {
+                  let phasePrefix = goePhaseIndicator ? `<span style="color: grey;">${goePhaseIndicator}</span>` : '';
                   let ampDisplay = goeTargetAmps !== null 
-                    ? `${goeCurrentAmps} A <span style="color: grey;">(${goeTargetAmps})</span>` 
-                    : `${goeCurrentAmps} A`;
+                    ? `${phasePrefix}${goeCurrentAmps} A <span style="color: grey;">(${goeTargetAmps})</span>` 
+                    : `${phasePrefix}${goeCurrentAmps} A`;
                   $("#goe_charging_current").html(`${ampDisplay} ${goePhaseStatus}`);
                 }
                 break;
@@ -299,7 +308,8 @@ var goePhaseStatus = '';
                 goeTargetAmps = parseFloat(msg.payload).toFixed(0);
                 // Update charging current display to show target in grey
                 if (goeCurrentAmps !== null) {
-                  let ampDisplay = `${goeCurrentAmps} A <span style="color: grey;">(${goeTargetAmps})</span>`;
+                  let phasePrefix = goePhaseIndicator ? `<span style="color: grey;">${goePhaseIndicator}</span>` : '';
+                  let ampDisplay = `${phasePrefix}${goeCurrentAmps} A <span style="color: grey;">(${goeTargetAmps})</span>`;
                   $("#goe_charging_current").html(`${ampDisplay} ${goePhaseStatus}`);
                 }
                 break;
@@ -356,10 +366,53 @@ var goePhaseStatus = '';
 
               case 'go-eCharger/225812/amp':
                 goeCurrentAmps = parseFloat(msg.payload).toFixed(0);
+                let phasePrefix = goePhaseIndicator ? `<span style="color: grey;">${goePhaseIndicator}</span>` : '';
                 let ampDisplay = goeTargetAmps !== null 
-                  ? `${goeCurrentAmps} A <span style="color: grey;">(${goeTargetAmps})</span>` 
-                  : `${goeCurrentAmps} A`;
+                  ? `${phasePrefix}${goeCurrentAmps} A <span style="color: grey;">(${goeTargetAmps})</span>` 
+                  : `${phasePrefix}${goeCurrentAmps} A`;
                 $("#goe_charging_current").html(`${ampDisplay} ${goePhaseStatus}`);
+                break;
+
+              case 'go-eCharger/225812/pha':
+                // Phase array: [L1, L2, L3, L1, L2, L3] - first 3 indicate active phases, last 3 allowed phases
+                try {
+                  let phaArray;
+                  if (Array.isArray(msg.payload)) {
+                    phaArray = msg.payload;
+                  } else if (typeof msg.payload === 'string') {
+                    phaArray = JSON.parse(msg.payload);
+                  } else {
+                    console.error('Unexpected pha payload type:', typeof msg.payload);
+                    break;
+                  }
+                  
+                  // Check first 3 values for active phases
+                  const phase1 = phaArray[0];
+                  const phase2 = phaArray[1];
+                  const phase3 = phaArray[2];
+                  
+                  if (!phase1 && !phase2 && !phase3) {
+                    // All phases are false - not charging
+                    goePhaseIndicator = '';
+                  } else if (phase1 && phase2 && phase3) {
+                    // All three phases active
+                    goePhaseIndicator = '3x';
+                  } else {
+                    // One phase active
+                    goePhaseIndicator = '1x';
+                  }
+                  
+                  // Update the charging current display with phase indicator
+                  if (goeCurrentAmps !== null) {
+                    let phasePrefix = goePhaseIndicator ? `<span style="color: grey;">${goePhaseIndicator}</span>` : '';
+                    let ampDisplay = goeTargetAmps !== null 
+                      ? `${phasePrefix}${goeCurrentAmps} A <span style="color: grey;">(${goeTargetAmps})</span>` 
+                      : `${phasePrefix}${goeCurrentAmps} A`;
+                    $("#goe_charging_current").html(`${ampDisplay} ${goePhaseStatus}`);
+                  }
+                } catch (e) {
+                  console.error('Failed to parse pha array:', e, 'Payload:', msg.payload);
+                }
                 break;
 
               case 'go-eCharger/225812/nrg':
@@ -475,9 +528,16 @@ var goePhaseStatus = '';
                 $("#goe_total_energy").html(totalKwh + ' kWh');
                 break;
 
+              case 'go-eCharger/225812/tab':
+                // Device boot time in milliseconds (epoch)
+                goeDeviceBootTime = parseInt(msg.payload);
+                console.log('Device boot time set:', goeDeviceBootTime);
+                break;
+
               case 'go-eCharger/225812/cdi':
                 // Charging duration info: null=no charging, type=0 counter, type=1 duration in ms
                 try {
+                  console.log(msg.payload);
                   let cdiData;
                   if (typeof msg.payload === 'string') {
                     cdiData = JSON.parse(msg.payload);
@@ -496,8 +556,35 @@ var goePhaseStatus = '';
                     const seconds = totalSeconds % 60;
                     $("#goe_charging_duration").html(`${hours}h ${minutes}m ${seconds}s`);
                   } else if (cdiData.type === 0) {
-                    // Counter type
-                    $("#goe_charging_duration").html(`Counter: ${cdiData.value}`);
+                    // Counter type: tab + cdi.value = charging start timestamp
+                    if (goeDeviceBootTime !== null) {
+                      // Calculate charging start time: device boot time + counter value
+                      goeChargingStartTime = goeDeviceBootTime + cdiData.value;
+                      
+                      // Clear any existing interval
+                      if (goeChargingTimerInterval) {
+                        clearInterval(goeChargingTimerInterval);
+                      }
+                      
+                      // Function to update the display
+                      const updateChargingDuration = () => {
+                        const currentTimeMs = Date.now();
+                        const elapsedMs = currentTimeMs - goeChargingStartTime;
+                        const totalSeconds = Math.floor(elapsedMs / 1000);
+                        const hours = Math.floor(totalSeconds / 3600);
+                        const minutes = Math.floor((totalSeconds % 3600) / 60);
+                        const seconds = totalSeconds % 60;
+                        $("#goe_charging_duration").html(`${hours}h ${minutes}m ${seconds}s`);
+                      };
+                      
+                      // Update immediately
+                      updateChargingDuration();
+                      
+                      // Update every second
+                      goeChargingTimerInterval = setInterval(updateChargingDuration, 1000);
+                    } else {
+                      $("#goe_charging_duration").html('Waiting for device boot time...');
+                    }
                   }
                 } catch (e) {
                   console.error('Failed to parse cdi data:', e, 'Payload:', msg.payload);

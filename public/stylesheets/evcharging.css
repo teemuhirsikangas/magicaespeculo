@@ -1,6 +1,6 @@
 #evcharging {
     position: absolute;
-    right: 10px;
+    right: 0px;
     font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
     font-weight: bold;
     bottom: 750px;
@@ -18,9 +18,9 @@
 #evstatus {
     position: relative;
     margin-bottom: 15px;
-    padding: 10px;
     background-color: rgba(0, 0, 0, 0.3);
     border-radius: 5px;
+    top: 10px;
 }
 
 #evstatustitle {

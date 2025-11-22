@@ -56,3 +56,11 @@
 #sensor.momentary_active_export_phase_3 {
     color: grey;
 }
+
+#sensor.solar_surplus_title {
+    color: white;
+}
+
+#sensor.solar_surplus {
+    color: white;
+}
