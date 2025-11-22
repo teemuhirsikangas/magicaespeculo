@@ -1,34 +1,31 @@
 #han {
     position: absolute;
     right: 0px;
-    font: 14px "Luc§ida Grande", Helvetica, Arial, sans-serif;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
     font-weight: bold;
-    bottom: 545px;
-    width:  200px;
-    
+    bottom: 400px;
+    width: 165px;
     color: white;
+    text-align: right;
 }
 
 #hanimport {
-    position: absolute;
-    left: 30px;
+    position: relative;
     font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
     font-weight: bold;
-    /* bottom: 480px; */
-    width:  80px;
-    /* height: 25px; */
+    width: 80px;
     color: white;
+    float: left;
+    text-align: left;
 }
 
 #hanexport {
-    position: absolute;
-    right: 0px;
+    position: relative;
     font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
     font-weight: bold;
-    /* bottom: 480px; */
-    width:  90px;
-    /* height: 25px; */
+    width: 85px;
     color: white;
+    float: right;
 }
 
 #sensor.momentary_active_import{
