@@ -61,3 +61,8 @@
 #sensor.solar_surplus {
     color: white;
 }
+
+#sensor.daily_energy_import {
+    position: absolute;
+    left: -15px;
+}

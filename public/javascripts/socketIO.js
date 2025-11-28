@@ -274,7 +274,7 @@ var goeChargingTimerInterval = null;
                 $("#sensor.momentary_active_export_phase_3").html("L3: " + msg.payload + ' kw');
                 break;
               case 'home/han/sensor.daily_energy_import':
-                $("#sensor.daily_energy_import").html("<i class='fa-solid fa-calendar-day' ></i>" + msg.payload + ' kwh');
+                $("#sensor.daily_energy_import").html("<i class='fa-solid fa-calendar-day' ></i> " + msg.payload + ' kwh');
                 break;
               case 'home/han/sensor.daily_energy_export':
                 $("#sensor.daily_energy_export").html("<i class='fa-solid fa-calendar-day'></i> " + msg.payload + ' kwh');
