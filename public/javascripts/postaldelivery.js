@@ -49,7 +49,7 @@ function displayPostalDelivery(deliveryDates) {
     // Finnish weekday abbreviations
     const weekdaysFi = ['Su', 'Ma', 'Ti', 'Ke', 'To', 'Pe', 'La'];
     
-    let html = '<h3><img src="/images/Posti_Orange_rgb.png" class="posti-logo" alt="Posti"> Jakelupäivä</h3>';
+    let html = '<h3><img src="/images/Posti_Orange_rgb.png" class="posti-logo" alt="Posti">jakelupäivä</h3>';
     html += '<table><tbody>';
     
     futureDates.forEach((date, index) => {
