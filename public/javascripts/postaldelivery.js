@@ -84,7 +84,5 @@ function displayPostalDelivery(deliveryDates) {
 // Initialize on page load
 $(document).ready(function() {
     fetchPostalDelivery();
-    
-    // Update every hour
-    setInterval(fetchPostalDelivery, 3600000);
+
 });
