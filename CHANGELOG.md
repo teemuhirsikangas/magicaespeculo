@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 - Remove/refactor ifttt lib, as it's using deprecated punycode dep
 
+## [1.4.40] - 2026-01-02
+### Added
+- Added postal delivery dates display using Posti API
+- Added posti.fi logo from https://digilibrary.emmi.fi/f/FJPx
+- Update deps
+
 ## [1.4.39] - 2025-11-22
 ### Added
 - EV charging duration display with live timer updates for go-e charger (tab + cdi registers)

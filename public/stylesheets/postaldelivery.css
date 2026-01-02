@@ -1,0 +1,34 @@
+#postaldelivery {
+	position: absolute;
+	left: 0px;
+	top: 550px;
+	font: 16px "Lucida Grande", Helvetica, Arial, sans-serif;
+	font-weight: bold;
+	color: white;
+}
+
+#postaldelivery h3 {
+	margin: 0;
+	font: 16px "Lucida Grande", Helvetica, Arial, sans-serif;
+	font-weight: bold;
+}
+
+#postaldelivery table {
+    border-collapse: separate;
+    border-spacing: 7px 0px;
+    padding: 0px;
+}
+
+#postaldelivery tr.secondary {
+    color: grey;
+}
+
+#postaldelivery td {
+    padding: 0px;
+}
+
+#postaldelivery .posti-logo {
+    height: 1.5em;
+    width: auto;
+    vertical-align: middle;
+}
