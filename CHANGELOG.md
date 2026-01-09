@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 - Remove/refactor ifttt lib, as it's using deprecated punycode dep
 
+## [1.4.41] - 2026-01-09
+### Added
+- Added script to check garage temperature every 2mins and notify via Gotify when it goes to low (to prevent accidental garage door left open in winter)
+
 ## [1.4.40] - 2026-01-02
 ### Added
 - Added postal delivery dates display using Posti API
