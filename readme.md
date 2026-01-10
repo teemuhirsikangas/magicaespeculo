@@ -101,48 +101,46 @@ Note: data loggers needs to be configured to send the data to backend, otherwise
 # Frontend (MIRROR)
 Raspberry Pi 3 connected to monitor in the back of the two-way mirror with [Infrared sensor](http://www.ebay.com/itm/HC-SR505-Mini-Infrared-PIR-Motion-Sensor-Precise-Infrared-Detector-Module-/201322916809?hash=item2edfc7ebc9:g:BpMAAOSwNSxVHjYw) to turn monitor on/off for energy saving
 
+Debian Trixie
 #### Configure
-Change display orientation (use 1 or 3):
-`sudo nano /boot/config.txt`
-```    
-    display_rotate=3
-```
-For hiding cursor: `sudo apt install unclutter`
-
-Install browser:`sudo apt install firefox-esr` and python3
-(Run Firefox in Fullscreen: Once installed, go to Tools > Add-ons > Extensions. Select/find MA Full screen
-
-Scripts to run on startup:
-`sudo nano /etc/xdg/lxsession/LXDE-pi/autostart`
-
-```
-@lxpanel --profile LXDE-pi
-@pcmanfm --desktop --profile LXDE-pi
-@xset s noblank
-@xset s off
-@xset -dpms 
-@firefox http://[hostname of backend].local:3333      #e.g. http://numberpi.local:3333
-@unclutter -idle 0.1 -root                              #hides mouse cursor if no movement
-@/usr/bin/python3 /home/pi/magicaespeculo/scripts/pir.py         #starts infrared sensor to turn of monitor to save energy
-```
-
-or crontab
-```
-@reboot /usr/bin/python3 /home/pi/magicaespeculo/scripts/pir.py  
-
-```
+Change display orientation (use 90):
+`sudo apt install wlr-randr`
+test with:
+`wlr-randr --output HDMI-A-1 --transform 90`
 
 
-#### cronjobs
-Autoconnect to wifi if connection goes down
-`sudo crontab -e`
+`mkdir -p ~/.config/autostart`
+
+`nano ~/.config/autostart/rotate.desktop`
 ```
-*/5 *   * * *   sudo sh /home/pi/magicaspeculo/scripts/wlan-monitor.sh > /dev/null 2>&1
+[Desktop Entry]
+Type=Application
+Name=Rotate Screen
+Exec=wlr-randr --output HDMI-A-1 --transform 90
 ```
+Autostart firefox in fullscreen mode after 5 seconds delay (to allow network to come up)
+`nano ~/.config/autostart/firefox-kiosk.desktop`
+```
+[Desktop Entry]
+Type=Application
+Name=Firefox Kiosk
+Exec=sh -c 'sleep 5 && firefox --fullscreen http://192.168.100.3:3333'
+X-GNOME-Autostart-enabled=true
+```
+
+For hiding cursor: TODO: unclutter does not work with Trixie Wayland
+
+
+Turn screen off/on based on PIR motion sensor:
+
+crontab -e
+
+`@reboot sleep 15 && /usr/bin/python3 /home/pi/magicaespeculo/scripts/pir.py`
+
 -------------------------------------------------------------
 # Ground Heat Pump
 
-Raspberry Pi 2 b+ mounted to ground heatpump with [ThermIQ](http://www.thermiq.net/) data logger
+Raspberry Pi 3 mounted to ground heatpump with [ThermIQ](http://www.thermiq.net/) data logger
 #### Configure
 [ThermIQ](http://www.thermiq.net/product/thermiq-2/?lang=en) data logger is using sqlite3 db ([how install ThermIQ on raspberry Stretch](http://www.thermiq.net/wp-conteny/uploads/ThermIQ-installation-for-Raspberry-PI.pdf))
 
