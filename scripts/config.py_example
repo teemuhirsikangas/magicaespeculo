@@ -25,3 +25,11 @@ HA_TOKEN = ""
 #Mitsubishi heat pump melCloud credentials
 melusername = "user@email.tld"
 melpassword = ""
+
+#go-e charger identifier
+GOE_CHARGER_ID = "xxxxxx"
+
+#Gotify notification server for garege temperature alarm.py
+TEMP_ENDPOINT = "http://192.168.100.3:3333/garage/temperature"
+GOTIFY_URL = "http://192.168.100.18/message"
+GOTIFY_TOKEN = "xxxxxxxx"

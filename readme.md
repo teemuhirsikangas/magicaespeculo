@@ -37,7 +37,7 @@ This project outgrew a bit from the original design, so db schemas etc needs ref
 ### Backend
 Debian Bookworm running in Proxmox
 
-node.js 22:
+node.js 24:
 ```
 https://github.com/nodesource/distributions#debian-versions
 ```
