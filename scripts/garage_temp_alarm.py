@@ -4,7 +4,7 @@ Garage Temperature Monitor with Gotify Notifications
 Monitors garage temperature and sends alerts via Gotify when temperature
 drops below 15°C and recovery notification when it goes above 17°C.
 
-Run via cron every 2 minutes:
+Run via cron every 5 minutes:
 */2 * * * * /usr/bin/python3 /path/to/garage_temp_alarm.py > /dev/null 2>&1
 """
 
@@ -22,8 +22,8 @@ TEMP_ENDPOINT = config.TEMP_ENDPOINT
 STATE_FILE = "/tmp/garage_temp_alarm_state.json"
 
 # Temperature thresholds
-TEMP_LOW_THRESHOLD = 15.0
-TEMP_HIGH_THRESHOLD = 17.0
+TEMP_LOW_THRESHOLD = 12.0
+TEMP_HIGH_THRESHOLD = 13.0
 
 def send_gotify_notification(title, message, priority=5):
     """Send notification via Gotify"""
