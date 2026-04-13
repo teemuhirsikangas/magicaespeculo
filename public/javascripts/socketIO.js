@@ -282,7 +282,11 @@ var goeSpotPriceLimit = null;
                 $("#sensor.daily_energy_export").html("<i class='fa-solid fa-calendar-day'></i> " + msg.payload + ' kwh');
                 break;
               case 'home/han/sensor.solar_surplus':
-                $("#sensor.solar_surplus").html(msg.payload + ' kw');
+                if (parseFloat(msg.payload) > 0) {
+                  $("#sensor.solar_surplus").html(`<span class="badge bg-success">${msg.payload} kW</span>`);
+                } else {
+                  $("#sensor.solar_surplus").html(msg.payload + ' kW');
+                }
                 break;
 
               // go-e Charger phase limiter status from Home Assistant

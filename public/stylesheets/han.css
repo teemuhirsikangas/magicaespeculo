@@ -28,6 +28,10 @@
     float: right;
 }
 
+#hanicon {
+    margin-left: -15px;
+}
+
 #sensor.momentary_active_import{
     font: 18px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
@@ -56,13 +60,23 @@
 
 #sensor.solar_surplus_title {
     color: white;
+    margin-left: -15px;
+    padding-top: 3px;
+    padding-bottom: 3px;
 }
 
 #sensor.solar_surplus {
     color: white;
+    padding-top: 3px;
+    padding-bottom: 3px;
 }
 
 #sensor.daily_energy_import {
     position: absolute;
     left: -15px;
+    padding-top: 3px;
+}
+
+#sensor.daily_energy_export {
+    padding-top: 3px;
 }
