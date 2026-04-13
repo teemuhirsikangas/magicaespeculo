@@ -1,22 +1,6 @@
 #!/usr/bin/python
 # run this in cronjob:
-#sleep 10 secs, as thermiq polls every minute, trying to avoid collisions
-# 5,20,35,50 * * * * sleep 15; python3 /home/pi/magicaespeculo/scripts/thermia.py > /dev/null 2>&1
-
-#Using ThermIQ to control Thermia diplomat (danfoss) ground heat pump
-# when spot price is under configurable value in config.py (5c)  and heat pump integral is >-150 and out side temp <10, change room target temp to 20 )(+2 increase is curve), otherwise keep or change back to 19 (+0)
-# run script every 15mins
-# integral must be >= -150, otherwise the Aux. heater 3 kW might come on, avoid that
-# and comfort heat mode allowed between 22-07 only
-# check status every 15mins, 05,20,35,50 (5 past so spot prices etc have been updated)
-#read spot value from MQTT topic
-### default config
-# ALLOWED_START ="22:00"
-# ALLOWED_STOP ="07:00"
-# TARGET_TEMP = 20
-# ECO_TEMP = 19
-# INTEGRAL_LIMIT = -150
-# COMFORTDISABLETEMP = 10
+# 5,20,35,50 * * * * python3 /home/pi/magicaespeculo/scripts/thermia.py > /dev/null 2>&1
 
 
 import requests
@@ -30,8 +14,16 @@ from datetime import datetime
 import json
 import config #passwords for mqtt, url etc from config.py
 
-ALLOWED_START = config.ALLOWED_START
-ALLOWED_STOP = config.ALLOWED_STOP
+# Seasonal time window settings
+SUMMER_START_MONTH = config.SUMMER_START_MONTH
+SUMMER_START_DAY = config.SUMMER_START_DAY
+WINTER_START_MONTH = config.WINTER_START_MONTH
+WINTER_START_DAY = config.WINTER_START_DAY
+SUMMER_ALLOWED_START = config.SUMMER_ALLOWED_START
+SUMMER_ALLOWED_STOP = config.SUMMER_ALLOWED_STOP
+WINTER_ALLOWED_START = config.WINTER_ALLOWED_START
+WINTER_ALLOWED_STOP = config.WINTER_ALLOWED_STOP
+
 TARGET_TEMP = config.TARGET_TEMP
 ECO_TEMP = config.ECO_TEMP
 INTEGRAL_LIMIT = config.INTEGRAL_LIMIT
@@ -199,22 +191,40 @@ def writeById(ser, value, id):
         print("successfully wrote", res)
     return stat,res
 
+def is_summer():
+    today = datetime.now()
+    summer_start = datetime(today.year, SUMMER_START_MONTH, SUMMER_START_DAY)
+    winter_start = datetime(today.year, WINTER_START_MONTH, WINTER_START_DAY)
+    return summer_start <= today < winter_start
+
+def get_allowed_times():
+    if is_summer():
+        return SUMMER_ALLOWED_START, SUMMER_ALLOWED_STOP
+    return WINTER_ALLOWED_START, WINTER_ALLOWED_STOP
+
 def allowedToRunClock():
     current_time = datetime.now().time()
+    allowed_start, allowed_stop = get_allowed_times()
 
     # Define the boundaries for the night time range
-    start_night_time = datetime.strptime(ALLOWED_START, "%H:%M").time()  # 22:00 (10:00 PM)
-    end_night_time = datetime.strptime(ALLOWED_STOP, "%H:%M").time()    # 07:00 (7:00 AM)
+    start_night_time = datetime.strptime(allowed_start, "%H:%M").time()
+    end_night_time = datetime.strptime(allowed_stop, "%H:%M").time()
 
     # Check if the time falls between 22:00 and 07:00 (overnight)
-    if current_time >= start_night_time or current_time <= end_night_time:
-        print(f"Time check ALLOW: The time {current_time} is between 22:00 and 07:00.")
+    if start_night_time <= end_night_time:
+        # Normal case (e.g. 10:00 18:00)
+        allowed = start_night_time <= current_time <= end_night_time
+    else:
+        # Overnight case (e.g. 22:00 07:00)
+        allowed = current_time >= start_night_time or current_time <= end_night_time
+
+    if allowed:
+        print(f"Time check ALLOW: The time {current_time} is between {start_night_time} and {end_night_time}.")
         return True
     else:
-        print(f"Time check DENY: The time {current_time} is not between 22:00 and 07:00.")
-
+        print(f"Time check DENY: The time {current_time} is not between {start_night_time} and {end_night_time}.")
         return False
-    
+
 def priceUnderThreshold():
     #Get spot price
     msg = subscribe.simple("home/engineroom/spotprice", hostname=MQTT_HOST, auth=AUTH)
@@ -359,3 +369,10 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+# when spot price is under 5c  and integral is >-150, change room target temp to 20 )(+2), otherwise keep or change back to 19 (+0)
+# run script every 15mins
+# integral must be >= -150, otherwise the Aux. heater 3 kW might come on, avoid that
+# and between 22-07 only
+# check status every 15mins, 05,20,35,50 (5 past so spot prices etc have been updated)
+#read spot value from MQTT topic
