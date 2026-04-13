@@ -6,8 +6,19 @@ TRANSFERPRICEDAY = 0.0736 # 07-22 electricity transferprice including tax
 TRANSFERPRICENIGHT = 0.0559 # 22-07, night time price
 MONTHLYFEESPERHOUR = (39.58 + 5.00) / 730 # Elenia + Helen monthy payments per hour 730h in month
 #Thermia store energy logic, used by Thermia.py in konehuone.local
-ALLOWED_START ="22:00" #time 10pm
-ALLOWED_STOP ="07:00" # time 7am
+ALLOWED_START ="22:00" #time 10pm  # kept for spot_prices.py compatibility
+ALLOWED_STOP ="07:00" # time 7am   # kept for spot_prices.py compatibility
+
+# Seasonal time window configuration for Thermia
+SUMMER_START_MONTH = 4   # April
+SUMMER_START_DAY = 1
+WINTER_START_MONTH = 10  # October
+WINTER_START_DAY = 1
+SUMMER_ALLOWED_START = "22:00"
+SUMMER_ALLOWED_STOP = "07:00"
+WINTER_ALLOWED_START = "22:00"
+WINTER_ALLOWED_STOP = "07:00"
+
 TARGET_TEMP = 20
 ECO_TEMP = 19
 INTEGRAL_LIMIT = -150
