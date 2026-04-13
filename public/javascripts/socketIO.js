@@ -446,6 +446,16 @@ var goeChargingTimerInterval = null;
                 $("#goe_charger_mode").html(chargerMode);
                 break;
 
+              case 'go-eCharger/225812/fup':
+                // PV surplus charging enabled/disabled
+                console.log(msg.payload);
+                if (msg.payload === true || msg.payload === 'true' || msg.payload === '1') {
+                  $("#goe_solar_mode_status").html('<i class="fa-solid fa-solar-panel" style="color:#FFD600"></i> Enabled');
+                } else {
+                  $("#goe_solar_mode_status").html('<i class="fa-solid fa-solar-panel" style="color:gray"></i> Disabled');
+                }
+                break;
+
               case 'go-eCharger/225812/wh':
                 // Charged amount in Wh, display as kWh
                 const chargedKwh = (parseFloat(msg.payload) / 1000).toFixed(2);
