@@ -3,6 +3,11 @@
 template: !include goe_phase_limiter_templates.yaml
 input_number: !include goe_phase_limiter_input_number.yaml
 
+input_boolean:
+  goe_solar_mode:
+    name: "go-e: Solar Surplus Mode"
+    icon: mdi:solar-power
+
 default_config:
 
 # Text to speech

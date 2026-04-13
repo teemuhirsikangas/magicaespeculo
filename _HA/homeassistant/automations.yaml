@@ -102,3 +102,63 @@
       data:
         value: >
           {{ [states('number.go_echarger_225812_amp') | float - 2, 6] | max }}
+
+# Solar surplus charging using native go-e ECO mode (firmware >= 0.55.6)
+# The charger handles current adjustment and 1<->3 phase switching automatically.
+# pGrid: positive = importing from grid, negative = exporting (surplus available).
+# Must be updated every <10s. Phase switch threshold is configured via spl3 entity.
+- id: goe_solar_feed_pgrid
+  alias: "go-e: Feed pGrid for Solar Surplus Charging"
+  trigger:
+    - platform: time_pattern
+      seconds: "/5"
+  condition:
+    - condition: state
+      entity_id: input_boolean.goe_solar_mode
+      state: "on"
+    - condition: state
+      entity_id: binary_sensor.go_echarger_225812_car
+      state: "on"
+  action:
+    - service: mqtt.publish
+      data:
+        topic: go-eCharger/225812/ids/set
+        retain: false
+        payload: >
+          {% set import_kw = states('sensor.momentary_active_import') | float(0) %}
+          {% set export_kw = states('sensor.momentary_active_export') | float(0) %}
+          {"pGrid": {{ ((import_kw - export_kw) * 1000) | round(0) | int }}}
+
+# Enable ECO mode and PV surplus when solar mode toggle is turned on
+- id: goe_solar_mode_on
+  alias: "go-e: Enable Solar ECO Mode"
+  trigger:
+    - platform: state
+      entity_id: input_boolean.goe_solar_mode
+      to: "on"
+  action:
+    - service: goecharger_mqtt.set_config_key
+      data:
+        serial_number: "225812"
+        key: lmo
+        value: 4
+    - service: switch.turn_on
+      target:
+        entity_id: switch.go_echarger_225812_fup
+
+# Disable ECO mode and PV surplus when solar mode toggle is turned off
+- id: goe_solar_mode_off
+  alias: "go-e: Disable Solar ECO Mode"
+  trigger:
+    - platform: state
+      entity_id: input_boolean.goe_solar_mode
+      to: "off"
+  action:
+    - service: switch.turn_off
+      target:
+        entity_id: switch.go_echarger_225812_fup
+    - service: goecharger_mqtt.set_config_key
+      data:
+        serial_number: "225812"
+        key: lmo
+        value: 3
