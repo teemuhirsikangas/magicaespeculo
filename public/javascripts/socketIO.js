@@ -12,6 +12,8 @@ var goePhaseIndicator = '';
 var goeDeviceBootTime = null;
 var goeChargingStartTime = null;
 var goeChargingTimerInterval = null;
+var goeCurrentSpotPrice = null;
+var goeSpotPriceLimit = null;
 
     socket.on('connect', function(data) {
        // console.log('connect to websocket..');
@@ -444,6 +446,11 @@ var goeChargingTimerInterval = null;
                 else if (lmo === 4) chargerMode = 'eco';
                 else if (lmo === 5) chargerMode = 'Daily Trip';
                 $("#goe_charger_mode").html(chargerMode);
+                if (lmo === 4) {
+                  $("#goe_spot_price").closest('.evrow').show();
+                } else {
+                  $("#goe_spot_price").closest('.evrow').hide();
+                }
                 break;
 
               case 'go-eCharger/225812/fup':
@@ -454,6 +461,11 @@ var goeChargingTimerInterval = null;
                 } else {
                   $("#goe_solar_mode_status").html('<i class="fa-solid fa-solar-panel" style="color:gray"></i> Disabled');
                 }
+                break;
+
+              case 'go-eCharger/225812/awp':
+                // Awattar max price threshold in cents
+                $("#goe_spot_price").html(parseFloat(msg.payload).toFixed(2) + ' snt');
                 break;
 
               case 'go-eCharger/225812/wh':
