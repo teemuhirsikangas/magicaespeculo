@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 - Remove/refactor ifttt lib, as it's using deprecated punycode dep
 
+## [1.4.43] - 2026-04-13
+### Changed
+- Homeassistant <-> go-echarger solar surplus mode automation with toggle button & status display in UI
+- Thermiq to add summer/wintermode for heatpump control, to enabled conformt mode only when outdoor temp is below 10 degrees, and enabled comformed mode in summer during solar surplus in day time.
+- Update deps
+
 ## [1.4.42] - 2026-01-10
 ### Changed
 - nodejs 24.x
