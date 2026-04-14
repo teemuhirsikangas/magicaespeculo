@@ -1,0 +1,1 @@
+omxplayer rtsp://admin:Hirsi12b@192.168.100.8:554/Streaming/Channels/102 -o local --no-osd --win 0,600,1080,1208 --aspect-mode Letterbox

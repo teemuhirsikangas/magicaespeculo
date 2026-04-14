@@ -137,6 +137,11 @@
       entity_id: input_boolean.goe_solar_mode
       to: "on"
   action:
+    - service: number.set_value
+      target:
+        entity_id: number.go_echarger_225812_ama
+      data:
+        value: 16
     - service: goecharger_mqtt.set_config_key
       data:
         serial_number: "225812"
@@ -162,3 +167,8 @@
         serial_number: "225812"
         key: lmo
         value: 3
+    - service: number.set_value
+      target:
+        entity_id: number.go_echarger_225812_ama
+      data:
+        value: 10
