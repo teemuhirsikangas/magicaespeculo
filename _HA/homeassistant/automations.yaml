@@ -127,9 +127,16 @@
         payload: >
           {% set import_kw = states('sensor.momentary_active_import') | float(0) %}
           {% set export_kw = states('sensor.momentary_active_export') | float(0) %}
-          {"pGrid": {{ ((import_kw - export_kw) * 1000) | round(0) | int }}}
+          {% set pgrid = ((import_kw - export_kw) * 1000) | round(0) | int %}
+          {% set hour = now().hour %}
+          {% if hour >= 10 and hour < 17 %}
+          {"pGrid": {{ [pgrid, -1410] | min }}}
+          {% else %}
+          {"pGrid": {{ pgrid }}}
+          {% endif %}
 
 # Enable ECO mode and PV surplus when solar mode toggle is turned on
+# use only single phase
 - id: goe_solar_mode_on
   alias: "go-e: Enable Solar ECO Mode"
   trigger:
@@ -137,16 +144,16 @@
       entity_id: input_boolean.goe_solar_mode
       to: "on"
   action:
-    - service: number.set_value
-      target:
-        entity_id: number.go_echarger_225812_ama
-      data:
-        value: 16
     - service: goecharger_mqtt.set_config_key
       data:
         serial_number: "225812"
         key: lmo
         value: 4
+    - service: goecharger_mqtt.set_config_key
+      data:
+        serial_number: "225812"
+        key: psm
+        value: 1
     - service: switch.turn_on
       target:
         entity_id: switch.go_echarger_225812_fup
@@ -167,8 +174,14 @@
         serial_number: "225812"
         key: lmo
         value: 3
+    - service: goecharger_mqtt.set_config_key
+      data:
+        serial_number: "225812"
+        key: psm
+        value: 0
     - service: number.set_value
       target:
-        entity_id: number.go_echarger_225812_ama
+        entity_id: number.go_echarger_225812_amp
       data:
         value: 10
+
