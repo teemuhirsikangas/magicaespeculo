@@ -33,6 +33,15 @@ mqtt:
 #rest:
 #  enabled: true
 
+sensor:
+  - platform: statistics
+    name: "Solar Surplus 2min Average"
+    unique_id: solar_surplus_2min_avg
+    entity_id: sensor.solar_pgrid_watts
+    state_characteristic: mean
+    max_age:
+      minutes: 2
+
 # Utility meters for daily energy tracking
 utility_meter:
   daily_energy_import:
