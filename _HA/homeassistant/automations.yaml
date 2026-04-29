@@ -2,6 +2,85 @@
 # Add to automations.yaml or import via:
 # automation: !include_dir_merge_list automations/
 
+# Auto-start charging when solar export exceeds 1400W and solar mode is on
+- id: goe_solar_auto_start
+  alias: "go-e: Auto Start Charging on Solar Surplus >1400W"
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.solar_surplus_2min_average
+      above: 1400
+  condition:
+    - condition: state
+      entity_id: input_boolean.goe_solar_mode
+      state: "on"
+    - condition: state
+      entity_id: binary_sensor.go_echarger_225812_car
+      state: "on"
+    - condition: not
+      conditions:
+        - condition: state
+          entity_id: sensor.go_echarger_225812_car
+          state: "Charging"
+  action:
+    - service: number.set_value
+      target:
+        entity_id: number.go_echarger_225812_amp
+      data:
+        value: 6
+    - service: switch.turn_on
+      target:
+        entity_id: switch.go_echarger_225812_alw
+
+# Manual solar ramp control using 2-minute average of solar surplus
+# Increases/decreases amp by 1A based on rolling average, single phase only
+- id: goe_ev_charge_ramp
+  alias: "go-e: EV Charge Ramp (2min avg solar)"
+  description: "Ramp charging amps up/down based on 2-minute average solar surplus"
+  mode: single
+  trigger:
+    - platform: time_pattern
+      seconds: "/30"
+  condition:
+    - condition: state
+      entity_id: binary_sensor.go_echarger_225812_car
+      state: "on"
+    - condition: state
+      entity_id: sensor.go_echarger_225812_car
+      state: "Charging"
+    - condition: state
+      entity_id: input_boolean.goe_solar_mode
+      state: "on"
+  action:
+    - choose:
+        - conditions:
+            - condition: numeric_state
+              entity_id: sensor.go_echarger_225812_acu
+              below: 16
+            - condition: numeric_state
+              entity_id: sensor.solar_surplus_2min_average
+              above: 150
+          sequence:
+            - service: number.set_value
+              target:
+                entity_id: number.go_echarger_225812_amp
+              data:
+                value: >-
+                  {{ (states('number.go_echarger_225812_amp') | float | round(0) + 1) | int }}
+        - conditions:
+            - condition: numeric_state
+              entity_id: sensor.solar_surplus_2min_average
+              below: -100
+            - condition: numeric_state
+              entity_id: sensor.go_echarger_225812_acu
+              above: 6
+          sequence:
+            - service: number.set_value
+              target:
+                entity_id: number.go_echarger_225812_amp
+              data:
+                value: >-
+                  {{ (states('number.go_echarger_225812_amp') | float | round(0) - 1) | int }}
+
 # Initialize target amps when car starts charging
 - id: goe_init_target_amps
   alias: "go-e: Set desired Target Amp"
@@ -103,39 +182,7 @@
         value: >
           {{ [states('number.go_echarger_225812_amp') | float - 2, 6] | max }}
 
-# Solar surplus charging using native go-e ECO mode (firmware >= 0.55.6)
-# The charger handles current adjustment and 1<->3 phase switching automatically.
-# pGrid: positive = importing from grid, negative = exporting (surplus available).
-# Must be updated every <10s. Phase switch threshold is configured via spl3 entity.
-- id: goe_solar_feed_pgrid
-  alias: "go-e: Feed pGrid for Solar Surplus Charging"
-  trigger:
-    - platform: time_pattern
-      seconds: "/5"
-  condition:
-    - condition: state
-      entity_id: input_boolean.goe_solar_mode
-      state: "on"
-    - condition: state
-      entity_id: binary_sensor.go_echarger_225812_car
-      state: "on"
-  action:
-    - service: mqtt.publish
-      data:
-        topic: go-eCharger/225812/ids/set
-        retain: false
-        payload: >
-          {% set import_kw = states('sensor.momentary_active_import') | float(0) %}
-          {% set export_kw = states('sensor.momentary_active_export') | float(0) %}
-          {% set pgrid = ((import_kw - export_kw) * 1000) | round(0) | int %}
-          {% set hour = now().hour %}
-          {% if hour >= 10 and hour < 17 %}
-          {"pGrid": {{ [pgrid, -1410] | min }}}
-          {% else %}
-          {"pGrid": {{ pgrid }}}
-          {% endif %}
-
-# Enable ECO mode and PV surplus when solar mode toggle is turned on
+# Enable PV surplus when solar mode toggle is turned on
 # use only single phase
 - id: goe_solar_mode_on
   alias: "go-e: Enable Solar ECO Mode"
@@ -147,16 +194,13 @@
     - service: goecharger_mqtt.set_config_key
       data:
         serial_number: "225812"
-        key: lmo
-        value: 4
-    - service: goecharger_mqtt.set_config_key
-      data:
-        serial_number: "225812"
         key: psm
         value: 1
-    - service: switch.turn_on
+    - service: number.set_value
       target:
-        entity_id: switch.go_echarger_225812_fup
+        entity_id: number.go_echarger_225812_amp
+      data:
+        value: 6
 
 # Disable ECO mode and PV surplus when solar mode toggle is turned off
 - id: goe_solar_mode_off
@@ -166,9 +210,6 @@
       entity_id: input_boolean.goe_solar_mode
       to: "off"
   action:
-    - service: switch.turn_off
-      target:
-        entity_id: switch.go_echarger_225812_fup
     - service: goecharger_mqtt.set_config_key
       data:
         serial_number: "225812"
