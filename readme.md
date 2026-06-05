@@ -133,9 +133,52 @@ For hiding cursor: TODO: unclutter does not work with Trixie Wayland
 
 Turn screen off/on based on PIR motion sensor:
 
-crontab -e
+## PIR setup (Speculo mirror)
 
-`@reboot sleep 15 && /usr/bin/python3 /home/pi/magicaespeculo/scripts/pir.py`
+Files are under:
+`/home/pi/magicaespeculo/scripts/pir/`
+
+Main files:
+1. `pir2.py` - PIR monitor on/off controller
+2. `pir2.service` - silent systemd service
+3. `pir2-debug.service` - debug systemd service (journald logs enabled)
+4. `install_pir2_service.sh` - installer script
+
+Install and start (recommended):
+
+`cd /home/pi/magicaespeculo`
+
+`./scripts/pir/install_pir2_service.sh`
+
+Edit environment if needed (display session variables):
+
+`nano /home/pi/.config/pir2.env`
+
+Then restart service:
+
+`sudo systemctl restart pir2.service`
+
+Check status:
+
+`sudo systemctl status pir2.service`
+
+Enable debug mode for troubleshooting:
+
+`sudo systemctl disable --now pir2.service`
+
+`sudo systemctl enable --now pir2-debug.service`
+
+`sudo journalctl -u pir2-debug.service -f`
+
+Switch back to silent mode:
+
+`sudo systemctl disable --now pir2-debug.service`
+
+`sudo systemctl enable --now pir2.service`
+
+Legacy cron alternative (not recommended):
+
+`@reboot sleep 20 && /usr/bin/python3 /home/pi/magicaespeculo/scripts/pir/pir2.py >/dev/null 2>&1`
 
 -------------------------------------------------------------
 # Ground Heat Pump
