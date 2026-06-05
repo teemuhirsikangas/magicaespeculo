@@ -1,0 +1,27 @@
+[Unit]
+Description=PIR monitor power controller (pir2.py)
+After=multi-user.target graphical.target
+Wants=graphical.target
+
+[Service]
+Type=simple
+User=pi
+Group=pi
+WorkingDirectory=/home/pi/magicaespeculo/scripts/pir
+EnvironmentFile=-/home/pi/.config/pir2.env
+Environment=PYTHONUNBUFFERED=1
+ExecStartPre=/bin/sleep 30
+ExecStart=/usr/bin/python3 /home/pi/magicaespeculo/scripts/pir/pir2.py
+Restart=always
+RestartSec=5
+StandardOutput=null
+StandardError=null
+
+# Hardening (safe defaults for this script)
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=false
+
+[Install]
+WantedBy=multi-user.target

@@ -2,7 +2,7 @@
 """Reliable PIR motion monitor control for Raspberry Pi. (By Ai)
 
 Usage example (crontab):
-@reboot sleep 20 && /usr/bin/python3 /home/pi/magicaespeculo/scripts/pir2.py
+@reboot sleep 20 && /usr/bin/python3 /home/pi/magicaespeculo/scripts/pir/pir2.py
 """
 
 import signal
