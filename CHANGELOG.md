@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 - Remove/refactor ifttt lib, as it's using deprecated punycode dep
 
+## [1.4.44] - 2026-06-05
+### Changed
+- Mirror PIR motion sensor script to new pir2.py, and add systemd service for it.
+- Update deps
+
 ## [1.4.43] - 2026-04-13
 ### Changed
 - Homeassistant <-> go-echarger solar surplus mode automation with toggle button & status display in UI
