@@ -18,9 +18,8 @@
       state: "on"
     - condition: not
       conditions:
-        - condition: state
-          entity_id: sensor.go_echarger_225812_car
-          state: "Charging"
+        - condition: template
+          value_template: "{{ states('sensor.go_echarger_225812_car') | lower == 'charging' }}"
   action:
     - service: number.set_value
       target:
@@ -44,9 +43,8 @@
     - condition: state
       entity_id: binary_sensor.go_echarger_225812_car
       state: "on"
-    - condition: state
-      entity_id: sensor.go_echarger_225812_car
-      state: "Charging"
+    - condition: template
+      value_template: "{{ states('sensor.go_echarger_225812_car') | lower == 'charging' }}"
     - condition: state
       entity_id: input_boolean.goe_solar_mode
       state: "on"
@@ -87,7 +85,9 @@
   trigger:
     - platform: state
       entity_id: sensor.go_echarger_225812_car
-      to: "Charging"
+  condition:
+    - condition: template
+      value_template: "{{ states('sensor.go_echarger_225812_car') | lower == 'charging' }}"
   action:
     - service: input_number.set_value
       target:
@@ -106,9 +106,8 @@
     - condition: state
       entity_id: binary_sensor.go_echarger_225812_car
       state: "on"
-    - condition: state
-      entity_id: sensor.go_echarger_225812_car
-      state: "Charging"
+    - condition: template
+      value_template: "{{ states('sensor.go_echarger_225812_car') | lower == 'charging' }}"
     - condition: numeric_state
       entity_id: number.go_echarger_225812_amp
       above: 6
@@ -119,7 +118,7 @@
       data:
         value: >
           {{ [states('number.go_echarger_225812_amp') | float - 2, 6] | max }}
-    - service: notify.persistent_notification
+    - service: persistent_notification.create
       data:
         title: "⚠️ go-e Charger Limited"
         message: >
@@ -139,9 +138,8 @@
     - condition: state
       entity_id: binary_sensor.go_echarger_225812_car
       state: "on"
-    - condition: state
-      entity_id: sensor.go_echarger_225812_car
-      state: "Charging"
+    - condition: template
+      value_template: "{{ states('sensor.go_echarger_225812_car') | lower == 'charging' }}"
     - condition: template
       value_template: >
         {{ states('number.go_echarger_225812_amp') | float < 
@@ -165,9 +163,8 @@
     - condition: state
       entity_id: binary_sensor.go_echarger_225812_car
       state: "on"
-    - condition: state
-      entity_id: sensor.go_echarger_225812_car
-      state: "Charging"
+    - condition: template
+      value_template: "{{ states('sensor.go_echarger_225812_car') | lower == 'charging' }}"
     - condition: numeric_state
       entity_id: sensor.max_phase_current
       above: 25
@@ -191,11 +188,11 @@
       entity_id: input_boolean.goe_solar_mode
       to: "on"
   action:
-    - service: goecharger_mqtt.set_config_key
+    - service: select.select_option
+      target:
+        entity_id: select.go_echarger_225812_psm
       data:
-        serial_number: "225812"
-        key: psm
-        value: 1
+        option: one_phase
     - service: number.set_value
       target:
         entity_id: number.go_echarger_225812_amp
@@ -210,16 +207,16 @@
       entity_id: input_boolean.goe_solar_mode
       to: "off"
   action:
-    - service: goecharger_mqtt.set_config_key
+    - service: select.select_option
+      target:
+        entity_id: select.go_echarger_225812_lmo
       data:
-        serial_number: "225812"
-        key: lmo
-        value: 3
-    - service: goecharger_mqtt.set_config_key
+        option: default
+    - service: select.select_option
+      target:
+        entity_id: select.go_echarger_225812_psm
       data:
-        serial_number: "225812"
-        key: psm
-        value: 0
+        option: auto
     - service: number.set_value
       target:
         entity_id: number.go_echarger_225812_amp
