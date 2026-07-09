@@ -1,4 +1,4 @@
-# Template sensors for go-e charger phase monitoring
+# Template sensors for go-e charger phase monitoring (goecharger-mqtt 2.x)
 # Add this to your configuration.yaml:
 #
 # template: !include goe_phase_limiter_templates.yaml
