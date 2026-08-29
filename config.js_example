@@ -19,7 +19,10 @@ const config = {
         apikey: "open weather apikey" // https://openweathermap.org/darksky-openweather-3#match
     },
     watermeter: {
-        pricePerCubicMeter: 7.45  // €/m³ (same as €/1000L)
+        pricePerCubicMeter: 7.45,  // €/m³ (same as €/1000L)
+        // ESP32 AI-on-the-edge water meter device
+        // Uses mDNS hostname - more reliable than DHCP IP
+        deviceUrl: 'http://watermeter.local'
     },
 }
 
