@@ -24,7 +24,6 @@ function updateEvPhaseBar(phase, powerKw) {
     const powerW = powerKw * 1000;
     const fillPercent = Math.min(100, (powerW / MAX_PHASE_POWER_W) * 100);
     const fillEl = document.getElementById(`ev-phase-${phase}-fill`);
-    const pctEl = document.getElementById(`ev-phase-${phase}-pct`);
     
     if (fillEl) {
         fillEl.style.height = fillPercent + '%';
@@ -37,10 +36,6 @@ function updateEvPhaseBar(phase, powerKw) {
         } else {
             fillEl.style.backgroundColor = '#00FF00'; // Green
         }
-    }
-    
-    if (pctEl) {
-        pctEl.textContent = Math.round(fillPercent) + '%';
     }
     
     // Update max indicator
