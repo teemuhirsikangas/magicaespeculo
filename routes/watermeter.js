@@ -78,11 +78,23 @@ router.get('/summary', async function (req, res) {
         const monthAgo = new Date(now);
         monthAgo.setDate(monthAgo.getDate() - 30);
 
-        // Fetch current meter value and flow rate
-        const [currentMeterValue, flowRate] = await Promise.all([
-            getSensorState('sensor.watermeter_value').catch(() => null),
+        // Fetch current meter value and flow rate (with full data for last_updated)
+        const [meterData, flowRate] = await Promise.all([
+            getSensorData('sensor.watermeter_value').catch(() => null),
             getSensorState('sensor.watermeter_rate_per_time_unit').catch(() => null)
         ]);
+
+        const currentMeterValue = meterData ? parseFloat(meterData.state) || null : null;
+
+        // Check for stale data (no update in 6 hours)
+        let staleMinutes = null;
+        if (meterData && meterData.last_updated) {
+            const lastUpdated = new Date(meterData.last_updated);
+            const minutesAgo = Math.floor((now - lastUpdated) / 60000);
+            if (minutesAgo >= 360) { // 6 hours
+                staleMinutes = minutesAgo;
+            }
+        }
 
         // Get meter value at midnight today (for today's consumption)
         // Query from midnight to now - first entry gives us the midnight baseline
@@ -181,6 +193,7 @@ router.get('/summary', async function (req, res) {
             currentMeterM3: currentMeterValue,
             currentRateLitersPerMinute: flowRateLiters,
             status: status,
+            staleMinutes: staleMinutes,
             updated: now.toISOString()
         });
     } catch (error) {

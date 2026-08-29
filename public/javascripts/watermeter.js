@@ -25,8 +25,17 @@ var watermeterData = function () {
         // Cost display
         const costValue = data.todayCostEur !== null ? data.todayCostEur.toFixed(2) : '-';
 
+        // Stale data warning (no update in 15+ minutes)
+        let staleWarning = '';
+        if (data.staleMinutes !== null) {
+            const hours = Math.floor(data.staleMinutes / 60);
+            const mins = data.staleMinutes % 60;
+            const timeStr = hours > 0 ? hours + 'h ' + mins + 'min' : mins + 'min';
+            staleWarning = ' <span style="color:#FFA500" title="Ei dataa ' + timeStr + '"><i class="fa-solid fa-triangle-exclamation"></i></span>';
+        }
+
         // Icon stays white, liters value colored by status, cost and rate always white (rate red if >10)
-        $("#liters_today").html('<i class="fa-solid fa-faucet-drip" aria-hidden="true" style="color:white"></i> <span style="color:' + valueColor + '">' + todayValue + ' L</span> <span style="color:white">(' + costValue + '€)</span> | <span style="color:' + rateColor + '">' + rateValue + ' L/min</span>');
+        $("#liters_today").html('<i class="fa-solid fa-faucet-drip" aria-hidden="true" style="color:white"></i> <span style="color:' + valueColor + '">' + todayValue + ' L</span> <span style="color:white">(' + costValue + '€)</span> | <span style="color:' + rateColor + '">' + rateValue + ' L/min</span>' + staleWarning);
         todayEl.style.color = 'white';
 
         // Hide the separate flow rate element
