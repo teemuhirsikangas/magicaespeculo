@@ -164,8 +164,13 @@ router.get('/summary', async function (req, res) {
         // m³/h * 1000 = L/h, then / 60 = L/min
         const flowRateLiters = flowRate !== null ? (flowRate * 1000) / 60 : null;
 
+        // Calculate cost: liters * price per liter (price is €/m³ = €/1000L)
+        const pricePerLiter = (config.watermeter?.pricePerCubicMeter || 7.45) / 1000;
+        const todayCostEur = todayLiters !== null ? todayLiters * pricePerLiter : null;
+
         res.json({
             todayLiters: todayLiters !== null ? Math.round(todayLiters) : null,
+            todayCostEur: todayCostEur !== null ? Math.round(todayCostEur * 100) / 100 : null,
             yesterdayLiters: yesterdayLiters !== null ? Math.round(yesterdayLiters) : null,
             projectedDailyLiters: projectedDaily !== null ? Math.round(projectedDaily) : null,
             weeklyAvgLiters: weeklyAvg !== null ? Math.round(weeklyAvg) : null,
