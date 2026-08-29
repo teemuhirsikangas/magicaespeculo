@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 - Remove/refactor ifttt lib, as it's using deprecated punycode dep
 
+## [1.5.0] - 2026-08-30
+### Added
+- Water meter dashboard with Home Assistant REST API integration
+- Today's consumption with cost display (€) using configurable water price
+- Rolling 7-day and 30-day averages (instead of calendar-based)
+- Yearly average from utility meter
+- Visual level bar showing projected daily usage vs 30-day average
+- Color-coded status: blue (normal), yellow (>1.1× avg), red (>1.5× avg)
+- Clickable title linking to ESP32 AI-on-the-edge device (mDNS: watermeter.local)
+- Documentation for water meter device setup
+
+### Changed
+- Water meter config moved to config.js (pricePerCubicMeter, deviceUrl)
+
 ## [1.4.44] - 2026-06-05
 ### Changed
 - Mirror PIR motion sensor script to new pir2.py, and add systemd service for it.
