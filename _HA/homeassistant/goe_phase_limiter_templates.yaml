@@ -40,3 +40,37 @@
         {% set import_kw = states('sensor.momentary_active_import') | float(0) %}
         {% set export_kw = states('sensor.momentary_active_export') | float(0) %}
         {{ ((export_kw - import_kw) * 1000) | round(0) | int }}
+
+    # Water Meter Sensors
+    - name: "Water Meter Total"
+      unique_id: water_meter_total_m3
+      state: "{{ states('sensor.watermeter_value') | float(0) }}"
+      unit_of_measurement: "m³"
+      device_class: water
+      state_class: total_increasing
+
+    - name: "Water Flow Rate"
+      unique_id: water_flow_rate
+      state: "{{ states('sensor.watermeter_rate') | float(0) }}"
+      unit_of_measurement: "m³/min"
+      device_class: water
+      state_class: measurement
+
+    # Water consumption in liters
+    - name: "Water Daily Liters"
+      unique_id: water_daily_liters
+      state: "{{ (states('sensor.water_daily') | float(0) * 1000) | round(0) | int }}"
+      unit_of_measurement: "L"
+      icon: mdi:water
+
+    - name: "Water Monthly Liters"
+      unique_id: water_monthly_liters
+      state: "{{ (states('sensor.water_monthly') | float(0) * 1000) | round(0) | int }}"
+      unit_of_measurement: "L"
+      icon: mdi:water
+
+    - name: "Water Yearly Liters"
+      unique_id: water_yearly_liters
+      state: "{{ (states('sensor.water_yearly') | float(0) * 1000) | round(0) | int }}"
+      unit_of_measurement: "L"
+      icon: mdi:water

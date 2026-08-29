@@ -1,84 +1,57 @@
 'use strict';
 var watermeterData = function () {
+    $.getJSON('/watermeter/summary', function (data) {
+        // Today's usage with flow rate on same line
+        const todayEl = document.getElementById("liters_today");
+        const todayValue = data.todayLiters !== null ? data.todayLiters : '-';
+        const rateValue = data.currentRateLitersPerMinute !== null ? Math.round(data.currentRateLitersPerMinute) : 0;
+        const rateColor = rateValue > 10 ? '#ff0000' : 'white';
+        $("#liters_today").html('<i class="fa-solid fa-droplet" aria-hidden="true"></i> ' + todayValue + ' L | <span style="color:' + rateColor + '">' + rateValue + ' L/min</span>');
 
-    $.getJSON('/watermeter/today', function (watermeterData) {
-        try {
-            $("#liters_today").html('<i class="fa fa-tint fa-lg" aria-hidden="true"></i>  ' + watermeterData[0].liters  + ' l');
-            document.getElementById("liters_today").style.color = "#FFFFFF";
-            checkIfDataIsStalefrom(watermeterData[0].timestamp, 180);
-        } catch (e) {
-            if (e instanceof NoNewDataException) {
-                document.getElementById("liters_today").style.color = "#ff0000";
-            } else {
-                $("#liters_today").html("-");
-            }
+        // Color based on status (green = ok, yellow = trending over average)
+        if (data.status === 'yellow') {
+            todayEl.style.color = "#FFD700"; // Yellow
+            todayEl.classList.add('warning');
+        } else if (data.todayLiters === null) {
+            todayEl.style.color = "#ff0000"; // Red for error/no data
+            todayEl.classList.remove('warning');
+        } else {
+            todayEl.style.color = "#00FF00"; // Green
+            todayEl.classList.remove('warning');
         }
-    });
 
-};
+        // Hide the separate flow rate element
+        $("#liters_current").hide();
 
-var watermeterDataYesterday = function () {
+        // Yesterday's usage + weekly average on same line
+        const yesterdayValue = data.yesterdayLiters !== null ? data.yesterdayLiters : '-';
+        const weeklyAvg = data.weeklyAvgLiters !== null ? data.weeklyAvgLiters : '-';
+        $("#liters_yesterday").html('Eilen: ' + yesterdayValue + ' L | Ka: ' + weeklyAvg + ' L/pv');
 
-    $.getJSON('/watermeter/yesterday', function (watermeterData) {
-        try {
+        // Hide the separate weekly avg element
+        $("#liters_weekly_avg").hide();
 
-            $("#liters_yesterday").html('('+ watermeterData[0].liters + ')');
+        // Monthly + Yearly average on same line
+        const monthlyAvg = data.monthlyAvgLiters !== null ? data.monthlyAvgLiters : '-';
+        const yearlyAvg = data.yearlyAvgLiters !== null ? data.yearlyAvgLiters : '-';
+        $("#liters_monthly_avg").html('Kk ka: ' + monthlyAvg + ' L/pv | V ka: ' + yearlyAvg + ' L/pv');
 
-        } catch (e) {
-
-            if (e) {
-                $("#liters_yesterday").html("-");
-            }
+        // Projected daily (optional display)
+        if (data.projectedDailyLiters !== null && document.getElementById("liters_projected")) {
+            $("#liters_projected").html('Arvio: ' + data.projectedDailyLiters + ' L');
         }
-    });
-};
 
-var watermeterDataMontlyAvarage = function () {
-
-    $.getJSON('/watermeter/thirtydayavarage', function (watermeterData) {
-        try {
-
-            $("#liters_thirtydayavarage").html(watermeterData[0].liters + ' x&#x0304l');
-
-        } catch (e) {
-
-            if (e) {
-                $("#liters_thirtydayavarage").html("-");
-            }
-        }
+    }).fail(function () {
+        $("#liters_today").html('<i class="fa-solid fa-droplet" aria-hidden="true"></i> -');
+        $("#liters_current, #liters_yesterday, #liters_weekly_avg, #liters_monthly_avg").html("-");
+        document.getElementById("liters_today").style.color = "#ff0000";
     });
 };
 
 
 $(document).ready(function () {
-
-    var d = document.getElementById("liters_today");
-    d.onclick = function () {
-        generateChart('/watermeter/minutes');
-    };
-
-    var d = document.getElementById("liters_yesterday");
-    d.onclick = function () {
-        generateChart('/watermeter/hourly');
-    };
-
-    var d = document.getElementById("liters_thirtydayavarage");
-    d.onclick = function () {
-        generateChart('/watermeter/dailyusage');
-    };
-
     if (config.watermeter.show) {
         watermeterData();
-        //every 1h to check stale data, as realtime update are triggered by mqtt messages
-        setInterval(watermeterData, 3600000);
-
-        watermeterDataYesterday();
-        //every 6hours
-        setInterval(watermeterDataYesterday, 21600000);
-        
-        watermeterDataMontlyAvarage();
-        //every 6hours
-        setInterval(watermeterDataMontlyAvarage, 21600000);
-
+        setInterval(watermeterData, 60000); // Update every minute
     }
 });

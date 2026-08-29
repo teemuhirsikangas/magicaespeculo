@@ -38,11 +38,13 @@ var config = {
         styleid : "calendar",
         styleid2 : "calendartwo"
     },
-        envoy : { //Emphase envoy solar Inverter
+    envoy : { //Emphase envoy solar Inverter
         show : false, //enable-disable
         publicUrl : 'https://' //your public profile url for Enphase envoy
     },
     watermeter : {
-        show : true, //enable-disable
+        show : true //enable-disable
+        // Data fetched from Home Assistant REST API
+        // Configure homeAssistant in server config.js
     }
 };
