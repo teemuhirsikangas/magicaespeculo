@@ -43,6 +43,7 @@ https://github.com/nodesource/distributions#debian-versions
 ```
 
 SQLite3:
+`npm install-scripts approve sqlite3`
 `sudo apt install sqlite3`
 
 get sources:

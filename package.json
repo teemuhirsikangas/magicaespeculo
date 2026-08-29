@@ -25,5 +25,8 @@
     "pug": "3.0.4",
     "socket.io": "4.8.3",
     "sqlite3": "6.0.1"
+  },
+  "allowScripts": {
+    "sqlite3@6.0.1": true
   }
 }
