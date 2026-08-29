@@ -23,18 +23,18 @@ var watermeterData = function () {
         // Hide the separate flow rate element
         $("#liters_current").hide();
 
-        // Yesterday's usage + weekly average on same line
+        // Yesterday's usage + rolling 7-day average on same line
         const yesterdayValue = data.yesterdayLiters !== null ? data.yesterdayLiters : '-';
         const weeklyAvg = data.weeklyAvgLiters !== null ? data.weeklyAvgLiters : '-';
-        $("#liters_yesterday").html('Eilen: ' + yesterdayValue + ' L | Ka: ' + weeklyAvg + ' L/pv');
+        $("#liters_yesterday").html('Eilen: ' + yesterdayValue + ' L | 7pv: ' + weeklyAvg + ' L/pv');
 
         // Hide the separate weekly avg element
         $("#liters_weekly_avg").hide();
 
-        // Monthly + Yearly average on same line
+        // Rolling 30-day + Yearly average on same line
         const monthlyAvg = data.monthlyAvgLiters !== null ? data.monthlyAvgLiters : '-';
         const yearlyAvg = data.yearlyAvgLiters !== null ? data.yearlyAvgLiters : '-';
-        $("#liters_monthly_avg").html('Kk ka: ' + monthlyAvg + ' L/pv | V ka: ' + yearlyAvg + ' L/pv');
+        $("#liters_monthly_avg").html('30pv: ' + monthlyAvg + ' L/pv | V ka: ' + yearlyAvg + ' L/pv');
 
         // Projected daily (optional display)
         if (data.projectedDailyLiters !== null && document.getElementById("liters_projected")) {
