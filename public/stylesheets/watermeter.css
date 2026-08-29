@@ -15,6 +15,16 @@
     margin-bottom: 2px;
 }
 
+#watermeter-device-link {
+    color: white;
+    text-decoration: none;
+}
+
+#watermeter-device-link:hover {
+    color: #87CEFA;
+    text-decoration: underline;
+}
+
 #watermetertitle .fa-droplet {
     color: #87CEFA;
 }
@@ -23,9 +33,34 @@
     position: relative;
     background-color: rgba(0, 0, 0, 0.3);
     border-radius: 5px;
-    padding: 10px 0px 10px 10px;
+    padding: 10px 10px 10px 10px;
     top: 0px;
     font-weight: bold;
+    display: flex;
+    flex-direction: row;
+}
+
+#water-level-bar {
+    width: 6px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+    margin-right: 10px;
+    position: relative;
+    min-height: 60px;
+}
+
+#water-level-fill {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    border-radius: 3px;
+    background-color: #87CEFA;
+    transition: height 0.5s ease, background-color 0.5s ease;
+}
+
+#water-content {
+    flex: 1;
 }
 
 .waterrow {
@@ -57,15 +92,11 @@
     font: 18px "Lucida Grande", Helvetica, Arial, sans-serif;
     font-weight: bold;
     margin-bottom: 5px;
-    color: #00FF00;
+    color: #87CEFA;
 }
 
 #liters_today.warning {
     color: #FFD700;
-}
-
-#liters_today:hover {
-    cursor: pointer;
 }
 
 #liters_current {

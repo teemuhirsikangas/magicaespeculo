@@ -158,15 +158,18 @@ block content
 
     #watermeter
         #watermetertitle
-            span(style="font-size: 1.2em;")
+            a#watermeter-device-link(href="#" target="_blank" style="font-size: 1.2em; color: white; text-decoration: none;")
                 i.fa-solid.fa-droplet
                 |  Veden kulutus
         #waterstatus
-            #liters_today
-            #liters_current
-            #liters_yesterday
-            #liters_weekly_avg
-            #liters_monthly_avg
+            #water-level-bar
+                #water-level-fill
+            #water-content
+                #liters_today
+                #liters_current
+                #liters_yesterday
+                #liters_weekly_avg
+                #liters_monthly_avg
 
     #evcharging
         #evchargingtitle

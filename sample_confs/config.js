@@ -43,7 +43,10 @@ var config = {
         publicUrl : 'https://' //your public profile url for Enphase envoy
     },
     watermeter : {
-        show : true //enable-disable
+        show : true, //enable-disable
+        // ESP32 AI-on-the-edge water meter device
+        // Uses mDNS hostname - more reliable than DHCP IP
+        deviceUrl : 'http://watermeter.local'
         // Data fetched from Home Assistant REST API
         // Configure homeAssistant in server config.js
     }

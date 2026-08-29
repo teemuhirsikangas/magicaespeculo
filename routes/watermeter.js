@@ -152,10 +152,12 @@ router.get('/summary', async function (req, res) {
         const projectedDaily = (hoursElapsed > 1 && todayLiters !== null) ? (todayLiters / hoursElapsed) * 24 : null;
 
         // Determine color status
-        // Green = on track or below average, Yellow = trending over average
-        let status = 'green';
+        // Blue = on track or below average, Yellow = trending over average, Red = way over
+        let status = 'blue';
         if (projectedDaily !== null && monthlyAvg !== null) {
-            if (projectedDaily > monthlyAvg * 1.1) { // 10% over average
+            if (projectedDaily > monthlyAvg * 1.5) { // 50% over average
+                status = 'red';
+            } else if (projectedDaily > monthlyAvg * 1.1) { // 10% over average
                 status = 'yellow';
             }
         }
