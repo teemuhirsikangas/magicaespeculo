@@ -17,19 +17,31 @@ var goeSpotPriceLimit = null;
 
 // Phase power tracking for EV charging bars (in kW)
 var phasePower = { L1: 0, L2: 0, L3: 0 };
+var phaseExport = { L1: 0, L2: 0, L3: 0 };
 var MAX_PHASE_POWER_W = 5750; // 25A @ 230V
 
 // Update EV phase bar display
 function updateEvPhaseBar(phase, powerKw) {
-    const powerW = powerKw * 1000;
+    const phaseKey = 'L' + phase;
+    const exportKw = phaseExport[phaseKey] || 0;
+    const importKw = phasePower[phaseKey] || 0;
+    
+    // Net power: positive = importing, negative = exporting
+    const netPowerKw = importKw - exportKw;
+    const isExporting = netPowerKw < 0;
+    
+    // Use absolute value for bar height
+    const powerW = Math.abs(netPowerKw) * 1000;
     const fillPercent = Math.min(100, (powerW / MAX_PHASE_POWER_W) * 100);
     const fillEl = document.getElementById(`ev-phase-${phase}-fill`);
     
     if (fillEl) {
         fillEl.style.height = fillPercent + '%';
         
-        // Color: green < 75%, yellow 75-90%, red >= 90%
-        if (fillPercent >= 90) {
+        if (isExporting) {
+            // Blue for solar export
+            fillEl.style.backgroundColor = '#00BFFF'; // Deep Sky Blue
+        } else if (fillPercent >= 90) {
             fillEl.style.backgroundColor = '#ff0000'; // Red
         } else if (fillPercent >= 75) {
             fillEl.style.backgroundColor = '#FFD700'; // Yellow
@@ -320,12 +332,18 @@ function updateEvPhaseMaxIndicator() {
                 break;
               case 'home/han/sensor.momentary_active_export_phase_1':
                  $("#sensor.momentary_active_export_phase_1").html("L1: " + msg.payload + ' kw');
+                 phaseExport.L1 = parseFloat(msg.payload) || 0;
+                 updateEvPhaseBar(1, phasePower.L1);
                 break;
               case 'home/han/sensor.momentary_active_export_phase_2':
                 $("#sensor.momentary_active_export_phase_2").html("L2: " + msg.payload + ' kw');
+                phaseExport.L2 = parseFloat(msg.payload) || 0;
+                updateEvPhaseBar(2, phasePower.L2);
                 break;
               case 'home/han/sensor.momentary_active_export_phase_3':
                 $("#sensor.momentary_active_export_phase_3").html("L3: " + msg.payload + ' kw');
+                phaseExport.L3 = parseFloat(msg.payload) || 0;
+                updateEvPhaseBar(3, phasePower.L3);
                 break;
               case 'home/han/sensor.daily_energy_import':
                 $("#sensor.daily_energy_import").html("<i class='fa-solid fa-calendar-day' ></i> " + msg.payload + ' kwh');
