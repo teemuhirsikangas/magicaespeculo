@@ -15,6 +15,57 @@ var goeChargingTimerInterval = null;
 var goeCurrentSpotPrice = null;
 var goeSpotPriceLimit = null;
 
+// Phase power tracking for EV charging bars (in kW)
+var phasePower = { L1: 0, L2: 0, L3: 0 };
+var MAX_PHASE_POWER_W = 5750; // 25A @ 230V
+
+// Update EV phase bar display
+function updateEvPhaseBar(phase, powerKw) {
+    const powerW = powerKw * 1000;
+    const fillPercent = Math.min(100, (powerW / MAX_PHASE_POWER_W) * 100);
+    const fillEl = document.getElementById(`ev-phase-${phase}-fill`);
+    const pctEl = document.getElementById(`ev-phase-${phase}-pct`);
+    
+    if (fillEl) {
+        fillEl.style.height = fillPercent + '%';
+        
+        // Color: green < 75%, yellow 75-90%, red >= 90%
+        if (fillPercent >= 90) {
+            fillEl.style.backgroundColor = '#ff0000'; // Red
+        } else if (fillPercent >= 75) {
+            fillEl.style.backgroundColor = '#FFD700'; // Yellow
+        } else {
+            fillEl.style.backgroundColor = '#00FF00'; // Green
+        }
+    }
+    
+    if (pctEl) {
+        pctEl.textContent = Math.round(fillPercent) + '%';
+    }
+    
+    // Update max indicator
+    updateEvPhaseMaxIndicator();
+}
+
+function updateEvPhaseMaxIndicator() {
+    const percents = [
+        Math.min(100, (phasePower.L1 * 1000 / MAX_PHASE_POWER_W) * 100),
+        Math.min(100, (phasePower.L2 * 1000 / MAX_PHASE_POWER_W) * 100),
+        Math.min(100, (phasePower.L3 * 1000 / MAX_PHASE_POWER_W) * 100)
+    ];
+    const maxPercent = Math.max(...percents);
+    const maxEl = document.getElementById('ev-phase-max-pct');
+    const barsEl = document.getElementById('ev-phase-bars');
+    
+    if (maxEl && barsEl) {
+        maxEl.textContent = Math.round(maxPercent) + '%';
+        // Use the bars container height for positioning
+        const barsHeight = barsEl.offsetHeight;
+        const pixelPos = (maxPercent / 100) * barsHeight;
+        maxEl.style.bottom = pixelPos + 'px';
+    }
+}
+
     socket.on('connect', function(data) {
        // console.log('connect to websocket..');
        // socket.emit('join', 'Hello World from client');
@@ -255,12 +306,18 @@ var goeSpotPriceLimit = null;
 
               case 'home/han/sensor.momentary_active_import_phase_1':
                 $("#sensor.momentary_active_import_phase_1").html("L1: " + msg.payload);
+                phasePower.L1 = parseFloat(msg.payload) || 0;
+                updateEvPhaseBar(1, phasePower.L1);
                 break;
               case 'home/han/sensor.momentary_active_import_phase_2':
                 $("#sensor.momentary_active_import_phase_2").html("L2: " + msg.payload);
+                phasePower.L2 = parseFloat(msg.payload) || 0;
+                updateEvPhaseBar(2, phasePower.L2);
                 break;              
               case 'home/han/sensor.momentary_active_import_phase_3':
                 $("#sensor.momentary_active_import_phase_3").html("L3: " + msg.payload);
+                phasePower.L3 = parseFloat(msg.payload) || 0;
+                updateEvPhaseBar(3, phasePower.L3);
                 break;
               case 'home/han/sensor.momentary_active_export':
                 $("#hanicone").html('<i class="fa-solid fa-solar-panel" aria-hidden="true"></i> Myynti');

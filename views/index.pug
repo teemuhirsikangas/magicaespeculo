@@ -177,43 +177,58 @@ block content
                 i.fa-solid.fa-charging-station
                 |  EV Lataus
         #evstatus
-            
-            #goe_car_physical_connection
-            #goe_car_connected
-            #goe_charger_status
-            #goe_charging_allowed
-            .evrow
-                .evlabel Lataus mode:
-                .evvalue
-                    #goe_charger_mode
-            .evrow
-                .evlabel Solar mode:
-                .evvalue
-                    #goe_solar_mode_status
-            .evrow(style="display:none")
-                .evlabel hintaraja:
-                .evvalue
-                    #goe_spot_price
-            .evrow
-                .evlabel Latausvirta:
-                .evvalue
-                    #goe_charging_current
-            .evrow
-                .evlabel Teho:
-                .evvalue
-                    #goe_current_power
-            .evrow
-                .evlabel Viimeisin lataus:
-                .evvalue
-                    #goe_charged_amount
-            .evrow
-                .evlabel Latausaika:
-                .evvalue
-                    #goe_charging_duration
-            .evrow
-                .evlabel Yhteensä:
-                .evvalue
-                    #goe_total_energy
+            #ev-phase-bars-wrapper
+                span#ev-phase-max-pct 0%
+                #ev-phase-bars
+                    .ev-phase-bar
+                        .ev-phase-pct#ev-phase-1-pct 0%
+                        .ev-phase-fill#ev-phase-1-fill
+                        .ev-phase-label L1
+                    .ev-phase-bar
+                        .ev-phase-pct#ev-phase-2-pct 0%
+                        .ev-phase-fill#ev-phase-2-fill
+                        .ev-phase-label L2
+                    .ev-phase-bar
+                        .ev-phase-pct#ev-phase-3-pct 0%
+                        .ev-phase-fill#ev-phase-3-fill
+                        .ev-phase-label L3
+            #ev-content
+                #goe_car_physical_connection
+                #goe_car_connected
+                #goe_charger_status
+                #goe_charging_allowed
+                .evrow
+                    .evlabel Lataus mode:
+                    .evvalue
+                        #goe_charger_mode
+                .evrow
+                    .evlabel Solar mode:
+                    .evvalue
+                        #goe_solar_mode_status
+                .evrow(style="display:none")
+                    .evlabel hintaraja:
+                    .evvalue
+                        #goe_spot_price
+                .evrow
+                    .evlabel Latausvirta:
+                    .evvalue
+                        #goe_charging_current
+                .evrow
+                    .evlabel Teho:
+                    .evvalue
+                        #goe_current_power
+                .evrow
+                    .evlabel Viimeisin lataus:
+                    .evvalue
+                        #goe_charged_amount
+                .evrow
+                    .evlabel Latausaika:
+                    .evvalue
+                        #goe_charging_duration
+                .evrow
+                    .evlabel Yhteensä:
+                    .evvalue
+                        #goe_total_energy
 
     #saunaairheatpump
         #basics     
