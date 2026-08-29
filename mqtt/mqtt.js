@@ -100,13 +100,8 @@ const init = function () {
 
     const client  = mqtt.connect(config.mqtt.host, options);
 
-    client.on('connect', (connack) => {
-        if (connack.sessionPresent) {
-            //console.log('Already subscribed, nop');
-        } else {
-            //console.log('First session.');
-            client.subscribe('home/#', { qos: 1 })
-          }
+    client.on('connect', () => {
+        client.subscribe('home/#', { qos: 1 });
       });
 
       client.on('message', (topic, message) => {

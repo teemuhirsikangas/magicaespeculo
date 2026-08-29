@@ -9,12 +9,15 @@ const config = {
         host: 'http://192.168.100.3',
         clientId: 'mqtt_nodejs-testdev'
     },
+    homeAssistant: {
+        url: 'http://192.168.100.17:8123',
+        token: 'your-long-lived-access-token-here'
+    },
     weather : {
         unit : "si",  //si system -> celcius
         location : "40.7127837,-74.0059413", //city http://simpleweatherjs.com/
         apikey: "open weather apikey" // https://openweathermap.org/darksky-openweather-3#match
     },
-
 }
 
 module.exports = config;

@@ -1,149 +1,181 @@
 "use strict";
 const express = require('express');
 const router = express.Router();
-const moment = require('moment');
-const sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database('./data/homeautomation.db');
+const config = require('../config');
 
-/* GET last values. */
-router.get('/', function (req, res, next) {
-
-    db.all('SELECT timestamp,litercount FROM WATERMETER ORDER BY timestamp ASC', function (err, row) {
-        if (err !== null) {
-            res.json(err);
-        } else {
-            res.status(200).json(row);
+// Home Assistant REST API helper
+async function fetchHA(endpoint) {
+    const response = await fetch(`${config.homeAssistant.url}${endpoint}`, {
+        headers: {
+            'Authorization': `Bearer ${config.homeAssistant.token}`,
+            'Content-Type': 'application/json'
         }
     });
-});
+    if (!response.ok) {
+        throw new Error(`HA API error: ${response.status}`);
+    }
+    return response.json();
+}
 
-/* GET minute liter values for start of minute */
-router.get('/minutes', function (req, res, next) {
+// Get sensor state from Home Assistant
+async function getSensorState(entityId) {
+    const data = await fetchHA(`/api/states/${entityId}`);
+    return parseFloat(data.state) || 0;
+}
 
-    db.all('SELECT strftime("%Y-%m-%d %H:%M:00", timestamp/1000, "unixepoch", "localtime") as date, sum(litercount) as liters FROM WATERMETER GROUP BY date ORDER BY date ASC', function (err, row) {
-        if (err !== null) {
-            res.json(err);
-        } else {
-            res.status(200).json(row);
+// Get full sensor data including attributes
+async function getSensorData(entityId) {
+    return await fetchHA(`/api/states/${entityId}`);
+}
+
+
+// Get history from Home Assistant
+async function getHistory(entityId, startTime, endTime) {
+    const start = startTime.toISOString();
+    const end = endTime ? `&end_time=${endTime.toISOString()}` : '';
+    const data = await fetchHA(`/api/history/period/${start}?filter_entity_id=${entityId}${end}&minimal_response`);
+    return data[0] || [];
+}
+
+// Get the meter value at start of a time range from history
+// HA history API returns the state at start_time as first entry, then subsequent changes
+async function getMeterValueAtStart(entityId, startTime, endTime) {
+    const history = await getHistory(entityId, startTime, endTime);
+
+    if (!history || history.length === 0) return null;
+
+    // First entry in history represents state at or just after startTime
+    return parseFloat(history[0].state) || null;
+}
+
+// Calculate consumption between two times
+async function getConsumption(entityId, startTime, endTime) {
+    const history = await getHistory(entityId, startTime, endTime);
+    if (!history || history.length < 2) return null;
+
+    const firstValue = parseFloat(history[0].state) || 0;
+    const lastValue = parseFloat(history[history.length - 1].state) || 0;
+
+    return Math.max(0, lastValue - firstValue);
+}
+
+// Main summary endpoint using Home Assistant
+router.get('/summary', async function (req, res) {
+    try {
+        const now = new Date();
+
+        // Calculate time boundaries
+        const todayMidnight = new Date(now);
+        todayMidnight.setHours(0, 0, 0, 0);
+
+        const yesterdayMidnight = new Date(todayMidnight);
+        yesterdayMidnight.setDate(yesterdayMidnight.getDate() - 1);
+
+        // Fetch current meter value and flow rate
+        const [currentMeterValue, flowRate] = await Promise.all([
+            getSensorState('sensor.watermeter_value').catch(() => null),
+            getSensorState('sensor.watermeter_rate_per_time_unit').catch(() => null)
+        ]);
+
+        // Get meter value at midnight today (for today's consumption)
+        // Query from midnight to now - first entry gives us the midnight baseline
+        const midnightValue = await getMeterValueAtStart('sensor.watermeter_value', todayMidnight, now).catch(() => null);
+
+        // Calculate today's consumption
+        let todayLiters = null;
+        if (currentMeterValue !== null && midnightValue !== null) {
+            todayLiters = Math.max(0, (currentMeterValue - midnightValue) * 1000);
         }
-    });
-});
 
-
-/* GET hourly liter values for start of hour */
-router.get('/hourly', function (req, res, next) {
-
-    db.all('SELECT strftime("%Y-%m-%d %H:00:00", timestamp/1000, "unixepoch", "localtime") as date, sum(litercount) as liters FROM WATERMETER GROUP BY date ORDER BY date ASC', function (err, row) {
-        if (err !== null) {
-            res.json(err);
-        } else {
-            res.status(200).json(row);
+        // Get yesterday's consumption
+        let yesterdayLiters = null;
+        try {
+            const yesterdayConsumption = await getConsumption('sensor.watermeter_value', yesterdayMidnight, todayMidnight);
+            if (yesterdayConsumption !== null) {
+                yesterdayLiters = yesterdayConsumption * 1000;
+            }
+        } catch (e) {
+            // Ignore
         }
-    });
-});
 
-
-/* GET daily water usage */
-router.get('/dailyusage', function (req, res, next) {
-
-    db.all('SELECT date(timestamp/1000, "unixepoch", "localtime") as date, sum(litercount) as liters FROM WATERMETER GROUP BY date ORDER BY date ASC', function (err, row) {
-        if (err !== null) {
-            res.json(err);
-        } else {
-            res.status(200).json(row);
+        // Calculate weekly average using utility meter (efficient - single state query)
+        let weeklyAvg = null;
+        try {
+            const weeklyTotal = await getSensorState('sensor.water_weekly'); // m³ since Monday
+            if (weeklyTotal !== null && weeklyTotal > 0) {
+                const dayOfWeek = now.getDay() || 7; // 1=Mon, 7=Sun (JS: 0=Sun, convert)
+                const daysElapsed = Math.max(1, dayOfWeek);
+                weeklyAvg = (weeklyTotal * 1000) / daysElapsed; // Liters per day
+            }
+        } catch (e) {
+            // Ignore
         }
-    });
-});
 
-/* GET last values. */
-router.get('/:starttime/:endtime', function (req, res, next) {
-
-    const starttime = req.params.starttime;
-    const endtime = req.params.endtime;
-    db.all('SELECT litercount FROM WATERMETER WHERE timestamp BETWEEN ' + starttime.getTime() + ' AND ' + endtime.getTime(), function (err, row) {
-        if (err !== null) {
-            res.json(err);
-        } else {
-            res.status(200).json(row);
+        // Calculate monthly average using utility meter (efficient - single state query)
+        let monthlyAvg = null;
+        try {
+            const monthlyTotal = await getSensorState('sensor.water_monthly'); // m³ since 1st of month
+            if (monthlyTotal !== null && monthlyTotal > 0) {
+                const daysElapsed = Math.max(1, now.getDate()); // Day of month (1-31)
+                monthlyAvg = (monthlyTotal * 1000) / daysElapsed; // Liters per day
+            }
+        } catch (e) {
+            // Ignore
         }
-    });
-});
 
-
-router.get('/today', function (req, res, next) {
-
-    let starttime = new Date();
-    starttime.setHours(0,0,0,0);
-    let endtime = new Date();
-    endtime.setHours(24,0,0,0);
-    db.all('SELECT timestamp, COUNT(litercount) as liters FROM WATERMETER WHERE timestamp BETWEEN ' + starttime.getTime() + ' AND ' + endtime.getTime(), function (err, row) {
-        if (err !== null) {
-            res.json(err);
-        } else {
-            res.status(200).json(row);
+        // Calculate yearly average using utility meter
+        let yearlyAvg = null;
+        try {
+            const yearlyData = await getSensorData('sensor.water_yearly');
+            const yearlyTotal = parseFloat(yearlyData.state) || 0;
+            const lastReset = yearlyData.attributes?.last_reset ? new Date(yearlyData.attributes.last_reset) : null;
+            
+            if (yearlyTotal > 0 && lastReset) {
+                // Calculate days since last reset (when utility meter started tracking)
+                const daysElapsed = Math.max(1, Math.floor((now - lastReset) / (24 * 60 * 60 * 1000)));
+                // Sanity check: if average > 5000 L/day, utility meter probably has bad data
+                const avgCandidate = (yearlyTotal * 1000) / daysElapsed;
+                if (avgCandidate < 5000) {
+                    yearlyAvg = avgCandidate;
+                }
+            }
+        } catch (e) {
+            // Ignore
         }
-    });
-});
 
-router.get('/yesterday', function (req, res, next) {
+        // Calculate projected daily usage based on current pace
+        const hoursElapsed = now.getHours() + now.getMinutes() / 60;
+        const projectedDaily = (hoursElapsed > 1 && todayLiters !== null) ? (todayLiters / hoursElapsed) * 24 : null;
 
-    let today = new Date();
-    today.setHours(0,0,0,0);
-    const msecPerDay = 24 * 60 * 60 * 1000;
-    const startOfYesterday = new Date(today.getTime() - msecPerDay);
-    today.setHours(24,0,0,0);
-    const endOfYesterday = new Date(today.getTime() - msecPerDay);
-
-    db.all('SELECT COUNT(litercount) as liters FROM WATERMETER WHERE timestamp BETWEEN ' + startOfYesterday.getTime() + ' AND ' + endOfYesterday.getTime(), function (err, row) {
-        if (err !== null) {
-            res.json(err);
-        } else {
-            res.status(200).json(row);
+        // Determine color status
+        // Green = on track or below average, Yellow = trending over average
+        let status = 'green';
+        if (projectedDaily !== null && monthlyAvg !== null) {
+            if (projectedDaily > monthlyAvg * 1.1) { // 10% over average
+                status = 'yellow';
+            }
         }
-    });
-});
 
-//this year
+        // Flow rate: sensor is in m³/h, convert to L/min
+        // m³/h * 1000 = L/h, then / 60 = L/min
+        const flowRateLiters = flowRate !== null ? (flowRate * 1000) / 60 : null;
 
-//last 30day daily avarage
-router.get('/thirtydayavarage', function (req, res, next) {
-
-    let today = new Date();
-    today.setHours(0,0,0,0);
-    const msecPerDay = 24 * 60 * 60 * 1000;
-    const thirty1daysago = new Date(today.getTime() - msecPerDay * 31);
-    today.setHours(24,0,0,0);
-    const endOfYesterday = new Date(today.getTime() - msecPerDay);
-
-    db.all('SELECT ROUND(SUM(litercount)/30,1) as liters FROM WATERMETER WHERE timestamp BETWEEN ' + thirty1daysago.getTime() + ' AND ' + endOfYesterday.getTime(), function (err, row) {
-        if (err !== null) {
-            res.json(err);
-        } else {
-            res.status(200).json(row);
-        }
-    });
-});
-
-
-/*
- * POST to add watermeter data
- */
-router.post('/', function (req, res) {
-
-    const litercount = req.body.litercount;
-    const timestamp = new Date().getTime();
-    //date = moment(new Date());
-    //var datetime =  date.format("YYYY-MM-DD HH:mm:ss");
-    const sqlRequest = "INSERT INTO 'WATERMETER' (timestamp, litercount) " +
-                 "VALUES('" + timestamp + "','" + litercount + "')";
-    //console.log(sqlRequest);             
-    db.run(sqlRequest, function (err) {
-        if (err !== null) {
-            res.json(err);
-        } else {
-            res.json(201);
-        }
-    });
+        res.json({
+            todayLiters: todayLiters !== null ? Math.round(todayLiters) : null,
+            yesterdayLiters: yesterdayLiters !== null ? Math.round(yesterdayLiters) : null,
+            projectedDailyLiters: projectedDaily !== null ? Math.round(projectedDaily) : null,
+            weeklyAvgLiters: weeklyAvg !== null ? Math.round(weeklyAvg) : null,
+            monthlyAvgLiters: monthlyAvg !== null ? Math.round(monthlyAvg) : null,
+            yearlyAvgLiters: yearlyAvg !== null ? Math.round(yearlyAvg) : null,
+            currentMeterM3: currentMeterValue,
+            currentRateLitersPerMinute: flowRateLiters,
+            status: status,
+            updated: now.toISOString()
+        });
+    } catch (error) {
+        console.error('Water meter HA API error:', error.message);
+        res.status(500).json({ error: 'Could not fetch water meter data from Home Assistant' });
+    }
 });
 
 module.exports = router;

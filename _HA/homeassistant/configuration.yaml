@@ -17,7 +17,7 @@ tts:
 automation: !include automations.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
-recorder: 
+recorder:
   db_url: mysql://admin:password@core-mariadb/homeassistant?charset=utf8mb4
 
 mqtt:
@@ -48,10 +48,30 @@ utility_meter:
     source: sensor.cumulative_active_import
     cycle: daily
     name: Daily Energy Import
-  
+
   daily_energy_export:
     source: sensor.cumulative_active_export
     cycle: daily
     name: Daily Energy Export
 
+# Utility meters for water tracking
+  water_daily:
+    source: sensor.watermeter_value
+    name: "Water Daily"
+    cycle: daily
+
+  water_weekly:
+    source: sensor.watermeter_value
+    name: "Water Weekly"
+    cycle: weekly
+
+  water_monthly:
+    source: sensor.watermeter_value
+    name: "Water Monthly"
+    cycle: monthly
+
+  water_yearly:
+    source: sensor.watermeter_value
+    name: "Water Yearly"
+    cycle: yearly
 
