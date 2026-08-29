@@ -16,11 +16,3 @@ Data is sent to Home Assistant via MQTT and exposed as sensors:
 ### Configuration in magicaespeculo
 - **Server config** (`config.js`): `watermeter.pricePerCubicMeter` - water price €/m³
 - **Frontend config** (`public/javascripts/config.js`): `watermeter.deviceUrl` - ESP32 web UI URL
-
----
-
-## Legacy: ESP8266 LDR-based Reader
-
-The `watermeter.ino` file contains legacy code for an ESP8266 with LDR sensor approach.
-This method used a light sensor to detect the rotating dial on the water meter.
-**Not currently in use** - replaced by AI-on-the-edge camera solution.
