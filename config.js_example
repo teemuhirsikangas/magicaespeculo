@@ -18,6 +18,9 @@ const config = {
         location : "40.7127837,-74.0059413", //city http://simpleweatherjs.com/
         apikey: "open weather apikey" // https://openweathermap.org/darksky-openweather-3#match
     },
+    watermeter: {
+        pricePerCubicMeter: 7.45  // €/m³ (same as €/1000L)
+    },
 }
 
 module.exports = config;

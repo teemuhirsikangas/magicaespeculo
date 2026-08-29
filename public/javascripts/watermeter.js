@@ -6,19 +6,25 @@ var watermeterData = function () {
         const todayValue = data.todayLiters !== null ? data.todayLiters : '-';
         const rateValue = data.currentRateLitersPerMinute !== null ? Math.round(data.currentRateLitersPerMinute) : 0;
         const rateColor = rateValue > 10 ? '#ff0000' : 'white';
-        $("#liters_today").html('<i class="fa-solid fa-droplet" aria-hidden="true"></i> ' + todayValue + ' L | <span style="color:' + rateColor + '">' + rateValue + ' L/min</span>');
 
-        // Color based on status (green = ok, yellow = trending over average)
+        // Determine value color based on status
+        let valueColor = '#00FF00'; // Green default
         if (data.status === 'yellow') {
-            todayEl.style.color = "#FFD700"; // Yellow
+            valueColor = '#FFD700'; // Yellow
             todayEl.classList.add('warning');
         } else if (data.todayLiters === null) {
-            todayEl.style.color = "#ff0000"; // Red for error/no data
+            valueColor = '#ff0000'; // Red for error/no data
             todayEl.classList.remove('warning');
         } else {
-            todayEl.style.color = "#00FF00"; // Green
             todayEl.classList.remove('warning');
         }
+
+        // Cost display
+        const costValue = data.todayCostEur !== null ? data.todayCostEur.toFixed(2) : '-';
+
+        // Icon stays white, only value changes color
+        $("#liters_today").html('<i class="fa-solid fa-faucet-drip" aria-hidden="true" style="color:white"></i> <span style="color:' + valueColor + '">' + todayValue + ' L (' + costValue + '€)</span> | <span style="color:' + rateColor + '">' + rateValue + ' L/min</span>');
+        todayEl.style.color = 'white';
 
         // Hide the separate flow rate element
         $("#liters_current").hide();
@@ -42,9 +48,8 @@ var watermeterData = function () {
         }
 
     }).fail(function () {
-        $("#liters_today").html('<i class="fa-solid fa-droplet" aria-hidden="true"></i> -');
+        $("#liters_today").html('<i class="fa-solid fa-faucet-drip" aria-hidden="true" style="color:white"></i> <span style="color:#ff0000">-</span>');
         $("#liters_current, #liters_yesterday, #liters_weekly_avg, #liters_monthly_avg").html("-");
-        document.getElementById("liters_today").style.color = "#ff0000";
     });
 };
 
