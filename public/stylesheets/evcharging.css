@@ -1,10 +1,10 @@
 #evcharging {
     position: absolute;
-    right: 20px;
+    right: 10px;
     font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
     font-weight: bold;
     bottom: 780px;
-    width: 260px;
+    width: 290px;
     color: white;
 }
 
@@ -32,7 +32,7 @@
     flex-direction: row;
     position: relative;
     margin-right: 10px;
-    height: 270px;
+    height: 219px;
 }
 
 #ev-phase-max-pct {
@@ -50,7 +50,7 @@
     display: flex;
     flex-direction: row;
     gap: 6px;
-    height: 270px;
+    height: 219px;
     margin-left: 30px;
 }
 
