@@ -71,6 +71,13 @@ router.get('/summary', async function (req, res) {
         const yesterdayMidnight = new Date(todayMidnight);
         yesterdayMidnight.setDate(yesterdayMidnight.getDate() - 1);
 
+        // Rolling period boundaries
+        const weekAgo = new Date(now);
+        weekAgo.setDate(weekAgo.getDate() - 7);
+
+        const monthAgo = new Date(now);
+        monthAgo.setDate(monthAgo.getDate() - 30);
+
         // Fetch current meter value and flow rate
         const [currentMeterValue, flowRate] = await Promise.all([
             getSensorState('sensor.watermeter_value').catch(() => null),
@@ -98,26 +105,23 @@ router.get('/summary', async function (req, res) {
             // Ignore
         }
 
-        // Calculate weekly average using utility meter (efficient - single state query)
+        // Calculate rolling 7-day average (history API)
         let weeklyAvg = null;
         try {
-            const weeklyTotal = await getSensorState('sensor.water_weekly'); // m³ since Monday
-            if (weeklyTotal !== null && weeklyTotal > 0) {
-                const dayOfWeek = now.getDay() || 7; // 1=Mon, 7=Sun (JS: 0=Sun, convert)
-                const daysElapsed = Math.max(1, dayOfWeek);
-                weeklyAvg = (weeklyTotal * 1000) / daysElapsed; // Liters per day
+            const weekConsumption = await getConsumption('sensor.watermeter_value', weekAgo, now);
+            if (weekConsumption !== null) {
+                weeklyAvg = (weekConsumption * 1000) / 7; // Liters per day
             }
         } catch (e) {
             // Ignore
         }
 
-        // Calculate monthly average using utility meter (efficient - single state query)
+        // Calculate rolling 30-day average (history API)
         let monthlyAvg = null;
         try {
-            const monthlyTotal = await getSensorState('sensor.water_monthly'); // m³ since 1st of month
-            if (monthlyTotal !== null && monthlyTotal > 0) {
-                const daysElapsed = Math.max(1, now.getDate()); // Day of month (1-31)
-                monthlyAvg = (monthlyTotal * 1000) / daysElapsed; // Liters per day
+            const monthConsumption = await getConsumption('sensor.watermeter_value', monthAgo, now);
+            if (monthConsumption !== null) {
+                monthlyAvg = (monthConsumption * 1000) / 30; // Liters per day
             }
         } catch (e) {
             // Ignore
