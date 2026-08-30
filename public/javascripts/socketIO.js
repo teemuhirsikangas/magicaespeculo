@@ -188,13 +188,24 @@ function updateEvPhaseMaxIndicator() {
               console.log(`spotprice: ${JSON.stringify(msg.payload)}`);
               //{"Rank":12,"DateTime":"2023-10-11T14:00:00+03:00","PriceNoTax":-0.0001,"PriceWithTax":-0.0001,"PriceLimit":0.05,"RankLimit":12,"PriceWithTaxNextHour":0}
               const { Rank, DateTime, PriceWithTax, PriceWithTax15min, PriceWithTaxNextHour, PriceLimit, ComfortPriceLimit, RankLimit, TotalPrice, MonthlyFeePerHour} = msg.payload;
-              $("#spotpriceicon").html('<i class="fa-solid fa-plug" aria-hidden="true"></i> Pörssisähkö');
-              $("#spotpricenow").html((spotIndexPlainer((PriceWithTax15min*100).toFixed(2))) + ' snt/kwh');
-              $("#spotpricenext").html((spotIndexPlainer((PriceWithTaxNextHour*100).toFixed(2))) + ' snt/kwh (+1h)');
+              
+              // Store values for later use
+              window.spotData = { Rank, RankLimit, PriceWithTax15min, PriceWithTaxNextHour, PriceLimit, ComfortPriceLimit };
+              
+              // Right side: Pörssisähkö - just prices
+              $("#spotpriceicon").html('<i class="fa-solid fa-bolt"></i> Pörssisähkö');
+              $("#spotpricenow").html(spotIndexPlainer((PriceWithTax15min*100).toFixed(1)) + ' snt');
+              $("#spotpricenext").html(`<span style="color:grey">${(PriceWithTaxNextHour*100).toFixed(1)} snt (+1h)</span>`);
 
-              $("#evutitle").html('<i class="fa-solid fa-arrow-trend-up"></i> Pörssisähkö ohjaus (EVU)');
-              $("#evuinfo").html( "Tunti Rank:" + Rank + " limit(" + RankLimit+")");
-              $("#evuprice").html("Hintakatto:" + Math.floor(PriceLimit*100) + " snt, Comfort " + Math.floor(ComfortPriceLimit*100));
+              // Left side: EVU Ohjaus with Rank
+              const rankOk = Rank <= RankLimit;
+              const rankIcon = rankOk ? '<span style="color:#90EE90">✓</span>' : '<span style="color:#FFB6C1">✗</span>';
+              const priceNow15 = (PriceWithTax15min * 100).toFixed(1);
+              const priceOk = PriceWithTax15min <= PriceLimit;
+              const priceColor = priceOk ? '#90EE90' : '#FFB6C1';
+              $("#evutitle").html('<i class="fa-solid fa-plug-circle-bolt"></i> EVU Ohjaus pörssisähkö');
+              $("#evuinfo").html(`├─ Rank: ${Rank}/${RankLimit} ${rankIcon}`);
+              $("#evuprice").html(`└─ Hintaraja: ${Math.floor(PriceLimit*100)} snt  <span style="color:${priceColor}">${priceNow15} snt</span>`);
 
               //store this as global varibale, will be used later when the data populates from mqtt
               totalPrice = TotalPrice;
@@ -270,15 +281,35 @@ function updateEvPhaseMaxIndicator() {
               //console.log(`HPmode state: ${JSON.stringify(msg.payload)}`);
               //{"time":1697022061,"state":1}
               const { hptime, hpmode, hpintegral, hpoutdoorTemp , hptargetTemp} = msg.payload;
+              
+              // Get current hour for time window check
+              const currentHour = new Date().getHours();
+              const isNightWindow = (currentHour >= 22 || currentHour < 7);
+              const timeWindowText = isNightWindow ? 'yö 22-07' : 'päivä 07-22';
+              
+              // Check price condition using stored spot data
+              const spotData = window.spotData || {};
+              const comfortPriceOk = spotData.PriceWithTax15min ? (spotData.PriceWithTax15min <= spotData.ComfortPriceLimit) : true;
+              const currentPrice = spotData.PriceWithTax15min ? (spotData.PriceWithTax15min * 100).toFixed(1) : '?';
+              const comfortLimit = spotData.ComfortPriceLimit ? Math.floor(spotData.ComfortPriceLimit * 100) : '?';
+              
               if (hpmode == "ECO") {
-                $("#hpmode").html(`Lämmitys: <span class="badge bg-success">ECO -1&deg;</span>`);
+                $("#hpmode").html(`
+                  <div><i class="fa-solid fa-temperature-low"></i> <span class="badge bg-success">ECO ${hptargetTemp}&deg;C</span></div>
+                  <div style="font-size:11px;color:#aaa">├─ Comfort: OFF (${timeWindowText})</div>
+                  <div style="font-size:11px;color:#aaa">└─ Hinta: ${currentPrice} / ${comfortLimit} snt</div>
+                `);
               } else {
-                $("#hpmode").html(`Lämmitys: <span class="badge bg-warning text-dark">COMFORT +2&deg;</span>`);
+                $("#hpmode").html(`
+                  <div><i class="fa-solid fa-temperature-high"></i> <span class="badge bg-warning text-dark">COMFORT ${hptargetTemp}&deg;C</span></div>
+                  <div style="font-size:11px;color:#90EE90">├─ Aika OK ✓ (${timeWindowText})</div>
+                  <div style="font-size:11px;color:#90EE90">└─ Hinta OK ✓ (${currentPrice} < ${comfortLimit})</div>
+                `);
               }
         
               let hpmsg_date = new Date(hptime*1000);
               if (!lessThanOneHourAgo(hpmsg_date)) {
-                $("#evustate").html(`<span class="badge bg-danger">hintatietojen haku epäonnistu: ${hpmsg_date}</span>`);
+                $("#hpmode").html(`<span class="badge bg-danger"><i class="fa-solid fa-triangle-exclamation"></i> Ei tietoja</span>`);
                 console.log("Failed get info heatpumpmode mqtt" +  hpmsg_date);
               } else {
                 //$("#evustate").addClass('badge bg-warning')
@@ -290,15 +321,15 @@ function updateEvPhaseMaxIndicator() {
               //{"time":1697022061,"state":1}
               const { time, state } = msg.payload;
               if (state == 1) {
-                $("#evustate").html(`<span class="badge bg-success">Running</span>`);
+                $("#evustate").html(`<span class="badge bg-success"><i class="fa-solid fa-circle-check"></i> P\u00c4\u00c4LL\u00c4</span>`);
               } else {
-                $("#evustate").html(`<span class="badge bg-danger">EVU stop</span>`);
+                $("#evustate").html(`<span class="badge bg-danger"><i class="fa-solid fa-circle-xmark"></i> POIS</span>`);
               }
 
               //if time > 1h, mark as red
               let msg_date = new Date(time*1000);
               if (!lessThanOneHourAgo(msg_date)) {
-                $("#evustate").html(`<span class="badge bg-danger">hintatietojen haku epäonnistu: ${msg_date}</span>`);
+                $("#evustate").html(`<span class="badge bg-danger"><i class="fa-solid fa-triangle-exclamation"></i> Ei tietoja</span>`);
                 console.log("Failed to get price info" +  msg_date);
               } else {
                 //$("#evustate").addClass('badge bg-warning')
