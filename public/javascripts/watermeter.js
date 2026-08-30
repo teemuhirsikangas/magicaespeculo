@@ -1,5 +1,8 @@
 'use strict';
 var watermeterData = function () {
+    // Daily limit: 460L (3 persons × ~153L/person)
+    const DAILY_LIMIT_LITERS = 460;
+
     $.getJSON('/watermeter/summary', function (data) {
         // Today's usage with flow rate on same line
         const todayEl = document.getElementById("liters_today");
@@ -7,17 +10,22 @@ var watermeterData = function () {
         const rateValue = data.currentRateLitersPerMinute !== null ? Math.round(data.currentRateLitersPerMinute) : 0;
         const rateColor = rateValue > 10 ? '#ff0000' : 'white';
 
-        // Determine value color based on status
+        // Determine value color based on projected usage vs 460L limit
         let valueColor = '#87CEFA'; // Light blue default
-        if (data.status === 'red') {
-            valueColor = '#ff0000'; // Red - way over average
-            todayEl.classList.remove('warning');
-        } else if (data.status === 'yellow') {
-            valueColor = '#FFD700'; // Yellow
-            todayEl.classList.add('warning');
-        } else if (data.todayLiters === null) {
+        if (data.todayLiters === null) {
             valueColor = '#ff0000'; // Red for error/no data
             todayEl.classList.remove('warning');
+        } else if (data.projectedDailyLiters !== null) {
+            if (data.projectedDailyLiters >= DAILY_LIMIT_LITERS) {
+                valueColor = '#FFA500'; // Amber - over limit
+                todayEl.classList.add('warning');
+            } else if (data.projectedDailyLiters >= DAILY_LIMIT_LITERS * 0.8) {
+                valueColor = '#FFD700'; // Yellow - approaching limit (80%+)
+                todayEl.classList.add('warning');
+            } else {
+                valueColor = '#87CEFA'; // Blue - under limit
+                todayEl.classList.remove('warning');
+            }
         } else {
             todayEl.classList.remove('warning');
         }
@@ -61,19 +69,18 @@ var watermeterData = function () {
 
         // Update water level bar
         const levelFill = document.getElementById("water-level-fill");
-        if (levelFill && data.projectedDailyLiters !== null && data.monthlyAvgLiters !== null && data.monthlyAvgLiters > 0) {
-            // Calculate fill percentage: 100% = 1.5x average (red zone)
-            const ratio = data.projectedDailyLiters / data.monthlyAvgLiters;
-            const fillPercent = Math.min(100, (ratio / 1.5) * 100);
+        if (levelFill && data.projectedDailyLiters !== null) {
+            // Calculate fill percentage: 100% = 460L daily limit
+            const fillPercent = Math.min(100, (data.projectedDailyLiters / DAILY_LIMIT_LITERS) * 100);
             levelFill.style.height = fillPercent + '%';
 
-            // Set color based on ratio
-            if (ratio >= 1.5) {
-                levelFill.style.backgroundColor = '#ff0000'; // Red
-            } else if (ratio >= 1.1) {
-                levelFill.style.backgroundColor = '#FFD700'; // Yellow
+            // Set color based on projection vs limit
+            if (data.projectedDailyLiters >= DAILY_LIMIT_LITERS) {
+                levelFill.style.backgroundColor = '#FFA500'; // Amber - over limit
+            } else if (data.projectedDailyLiters >= DAILY_LIMIT_LITERS * 0.8) {
+                levelFill.style.backgroundColor = '#FFD700'; // Yellow - approaching limit (80%+)
             } else {
-                levelFill.style.backgroundColor = '#87CEFA'; // Blue
+                levelFill.style.backgroundColor = '#87CEFA'; // Blue - under limit
             }
         } else if (levelFill) {
             // No data - show empty bar
