@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 - Remove/refactor ifttt lib, as it's using deprecated punycode dep
 
+## [1.6.0] - 2026-08-30
+### Added
+- EVU / spot price panel redesigned: tree layout with Rank vs RankLimit, price-limit line showing live 15min price colored green/red against the limit
+- Heat pump mode panel shows ECO/COMFORT with time-window (yö 22-07 / päivä 07-22) and price conditions; ECO badge now green
+- Ground heat pump "yesterday" stats compacted into a single badge-style block (outdoor/water temps with ▲▼, compressor runtime/starts/energy, hot water)
+- pm2 helper npm scripts (`pm2:start`, `pm2:restart`, `pm2:stop`, `pm2:logs`, `pm2:save`) and `dev`/`prod` scripts
+- Dependency tooling scripts (`deps:check`, `deps:upgrade`) with nodemon + npm-check-updates as devDependencies
+- `nodemon.json` to ignore `public/**` and `data/**` during development
+
+### Changed
+- Performance (Raspberry Pi 3): added gzip `compression` middleware and env-aware static asset caching (7-day cache in production, disabled in development)
+- Expose only the required node_modules (bootstrap, highcharts) instead of the entire tree
+- Full-page auto-reload interval increased from 2h to 24h
+- Added SQLite index `idx_temperature_timestamp` to speed up hourly temperature aggregation
+- Documented `NODE_ENV=production` requirement for pm2 in readme
+
 ## [1.5.0] - 2026-08-30
 ### Added
 - Water meter dashboard with Home Assistant REST API integration

@@ -6,6 +6,6 @@ function refresh() {
 }
 
 $(document).ready(function () {
-    //every 2hours
-    setInterval(refresh, 7200000);
+    //every 24hours
+    setInterval(refresh, 86400000);
 });

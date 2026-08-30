@@ -78,6 +78,11 @@ npm ci
 npm start
 ```
 
+**Production note:** set `NODE_ENV=production` so static assets (JS/CSS) are served with the 7-day browser cache. When `NODE_ENV` is unset, Express runs in development mode and disables that cache (handy for development, so edited files load without a hard refresh).
+```
+NODE_ENV=production npm start
+```
+
 ### autostart after reboot
 
 Install pm2:
@@ -86,11 +91,32 @@ Install pm2:
 Autostart pm2 on reboot:
 `sudo pm2 startup`
 
-Start magic mirror:
-`pm2 start index.js`
+Start magic mirror (set production env so asset caching is enabled):
+`NODE_ENV=production pm2 start index.js --name speculo`
+
+pm2 captures the environment at start time. If you already started it without the variable, apply it with:
+`NODE_ENV=production pm2 restart speculo --update-env`
 
 Save status to enable autostart after reboot:
 `pm2 save`
+
+#### pm2 helper scripts
+
+To avoid remembering the flags, npm scripts wrap the pm2 commands (all set `NODE_ENV=production`):
+
+| Command | Action |
+| --- | --- |
+| `npm run pm2:start` | Start under pm2 as `speculo` with production env |
+| `npm run pm2:restart` | Restart `speculo`, re-applying env |
+| `npm run pm2:stop` | Stop `speculo` |
+| `npm run pm2:logs` | Tail logs |
+| `npm run pm2:save` | Persist process list for autostart |
+
+Typical first run:
+```
+npm run pm2:start
+npm run pm2:save
+```
 
 You can now access the Speculo web page from http://localhost:3333 or http://[hostname].local:/3333
 
