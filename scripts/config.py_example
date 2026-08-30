@@ -1,46 +1,80 @@
-#spot price configs used by spot_prices.py in numberpi.local
-CHEAPESTHOURS = 8 # only enable xx cheapest hours
-ALLOWPRICE = 0.05 # or allow if price is lower than this (eur cents)
-COMFORTPRICE = 0.05 # heatpump will rise target temp by +2 degrees, when this is hit
-TRANSFERPRICEDAY = 0.0736 # 07-22 electricity transferprice including tax
-TRANSFERPRICENIGHT = 0.0559 # 22-07, night time price
-MONTHLYFEESPERHOUR = (39.58 + 5.00) / 730 # Elenia + Helen monthy payments per hour 730h in month
-#Thermia store energy logic, used by Thermia.py in konehuone.local
-ALLOWED_START ="22:00" #time 10pm  # kept for spot_prices.py compatibility
-ALLOWED_STOP ="07:00" # time 7am   # kept for spot_prices.py compatibility
+# ============================================================================
+# SPOT PRICE & EVU SETTINGS (used by spot_prices.py)
+# Controls when heat pump EVU (compressor block) is enabled based on spot price
+# ============================================================================
 
-# Seasonal time window configuration for Thermia
-SUMMER_START_MONTH = 4   # April
+# EVU Enable Logic: heating allowed if RANK <= CHEAPESTHOURS OR price <= ALLOWPRICE
+CHEAPESTHOURS = 8     # Allow heating during X cheapest hours of day (1-24). Set 24 to always allow
+ALLOWPRICE = 0.05     # Always allow heating if spot price <= this (EUR/kWh, e.g. 0.05 = 5 snt)
+
+# Comfort price limit - published to MQTT for thermia.py to use
+COMFORTPRICE = 0.05   # thermia.py enables comfort heating (+2°C) when spot <= this (EUR/kWh)
+
+# Transfer price (siirtohinta) - for TotalPrice display calculation only, not used in heating logic
+TRANSFERPRICEDAY = 0.0736     # Day tariff 07:00-22:00 (EUR/kWh)
+TRANSFERPRICENIGHT = 0.0559   # Night tariff 22:00-07:00 (EUR/kWh)
+ALLOWED_START = "22:00"       # Night tariff starts (for transfer price calc)
+ALLOWED_STOP = "07:00"        # Night tariff ends (for transfer price calc)
+
+# Monthly fees for total cost display
+MONTHLYFEESPERHOUR = (39.58 + 5.00) / 730  # (Elenia + Helen monthly fees) / hours per month
+
+# TIP: For fixed electricity contract, manually set CHEAPESTHOURS=24 and COMFORTPRICE=0.50
+#      to allow heating 24h and always enable comfort mode during allowed time windows
+
+# ============================================================================
+# THERMIA HEAT PUMP SETTINGS (used by thermia.py)
+# Controls comfort vs eco mode based on time windows and conditions
+# ============================================================================
+
+# Season definitions - determines which time window to use
+SUMMER_START_MONTH = 4    # Summer starts April 1
 SUMMER_START_DAY = 1
-WINTER_START_MONTH = 10  # October
+WINTER_START_MONTH = 10   # Winter starts October 1
 WINTER_START_DAY = 1
-SUMMER_ALLOWED_START = "22:00"
+
+# Time windows when COMFORT heating is allowed (thermia.py)
+# Outside these windows: ECO mode (lower target temp)
+SUMMER_ALLOWED_START = "22:00"   # Summer: comfort allowed 22:00-07:00
 SUMMER_ALLOWED_STOP = "07:00"
-WINTER_ALLOWED_START = "22:00"
+WINTER_ALLOWED_START = "22:00"   # Winter: comfort allowed 22:00-07:00 (night)
 WINTER_ALLOWED_STOP = "07:00"
 
-TARGET_TEMP = 20
-ECO_TEMP = 19
-INTEGRAL_LIMIT = -150
-COMFORTDISABLETEMP = 10 #summertime, if temp is over this, don't have comfort heating on, disable this
+# Target temperatures for heat pump
+TARGET_TEMP = 20          # COMFORT mode target (°C)
+ECO_TEMP = 19             # ECO mode target (°C)
 
-#mqtt username and pw and addr of MQTT broker
-#copy this file to config.py
+# Safety limits
+INTEGRAL_LIMIT = -150     # Don't enable comfort if integral < this (prevents aux heater 3kW)
+COMFORTDISABLETEMP = 10   # Disable comfort heating if outdoor temp > this (summer)
+
+# ============================================================================
+# MQTT BROKER (used by most scripts)
+# ============================================================================
 username = "xxxx"
 password = "yyyy"
 MQTT_ADDRESS = "192.168.100.3"
-#home assistant:
+
+# ============================================================================
+# HOME ASSISTANT (used by P1han_power_to_mqtt.py)
+# ============================================================================
 HA_ADDRESS = "http://192.168.100.17:8123"
 HA_TOKEN = ""
 
-#Mitsubishi heat pump melCloud credentials
+# ============================================================================
+# MITSUBISHI MELCLOUD (used by melCloud.py)
+# ============================================================================
 melusername = "user@email.tld"
 melpassword = ""
 
-#go-e charger identifier
+# ============================================================================
+# GO-E EV CHARGER
+# ============================================================================
 GOE_CHARGER_ID = "xxxxxx"
 
-#Gotify notification server for garege temperature alarm.py
+# ============================================================================
+# GOTIFY NOTIFICATIONS (used by garage_temp_alarm.py)
+# ============================================================================
 TEMP_ENDPOINT = "http://192.168.100.3:3333/garage/temperature"
 GOTIFY_URL = "http://192.168.100.18/message"
 GOTIFY_TOKEN = "xxxxxxxx"
