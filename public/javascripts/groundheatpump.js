@@ -4,34 +4,40 @@ var daydata = function () {
     $.getJSON('/homeautomation/datastoreday', function (daydata) {
 
         var d = moment(new Date(daydata[0].TID * 1000));
-        $("#d_TID").html(texts.d_TOPIC);
-        $("#d_TID_value").html(d.locale(config.locale).format('L'));
-        $("#d_T_UTE").html(texts.d_T_UTE);
-        $("#d_T_UTE_value").html(daydata[0].T_UTE + '&deg; [' + daydata[0].T_UTE_MAX + '&deg;,' + daydata[0].T_UTE_MIN + '&deg;]');
-        $("#d_T_VATTEN").html(texts.d_T_VATTEN);
-        $("#d_T_VATTEN_value").html(daydata[0].T_VATTEN + '&deg; [' + daydata[0].T_VATTEN_MAX + '&deg;,' + daydata[0].T_VATTEN_MIN + '&deg;]' );
-
-        var hours = Math.floor(daydata[0].KOMPR_H),
-            minutes = daydata[0].KOMPR_H * 60 % 60;
-        $("#d_KOMPR_H").html(texts.d_KOMPR_H);
-        $("#d_KOMPR_H_value").html(hours + texts.hour + minutes.toFixed(0) + texts.min);
-        if(daydata[0].VARMVATTEN_H > 1) {
-            hours = Math.floor(daydata[0].VARMVATTEN_H);
-            minutes = daydata[0].VARMVATTEN_H * 60 % 60;
-            $("#d_VARMVATTEN_H").html(texts.d_VARMVATTEN_H);
-            $("#d_VARMVATTEN_H_value").html(hours + texts.hour + minutes.toFixed(0) + texts.min);
-        } else {
-            $("#d_VARMVATTEN_H").html(texts.d_VARMVATTEN_H);
-            $("#d_VARMVATTEN_H_value").html((daydata[0].VARMVATTEN_H * 60).toFixed(0) + texts.min);
-        }
-        $("#d_COMPR_STARTS").html(texts.d_COMPR_STARTS);
-        $("#d_COMPR_STARTS_value").html(daydata[0].COMPR_STARTS);
-        $("#d_TSTOP_E").html(texts.d_TSTOP_E);
-        $("#d_TSTOP_E_value").html((daydata[0].KOMPR_H * config.groundheatpump.avaragepowerusage + daydata[0].TS_E).toFixed(1) + texts.kWh);
-        if (d_TS_E > 0) {
-            $("#d_TS_E").html(texts.d_TS_E);
-            $("#d_TS_E_value").html(daydata[0].TS_E + texts.kWh);
-        }
+        
+        // Option 3: Compact badge-style layout
+        var komprHours = Math.floor(daydata[0].KOMPR_H);
+        var komprMinutes = Math.floor(daydata[0].KOMPR_H * 60 % 60);
+        var lvMinutes = Math.floor(daydata[0].VARMVATTEN_H * 60);
+        var energy = (daydata[0].KOMPR_H * config.groundheatpump.avaragepowerusage + daydata[0].TS_E).toFixed(1);
+        
+        // Header with date
+        $("#d_TID").html('<i class="fa-solid fa-chart-line"></i> Eilen ' + d.locale(config.locale).format('D.M'));
+        $("#d_TID_value").html('');
+        
+        // Outdoor temp with arrows
+        $("#d_T_UTE").html(`├─ <i class="fa-solid fa-temperature-half"></i> Ulko ${daydata[0].T_UTE}&deg; <span style="color:#90EE90">▲${daydata[0].T_UTE_MAX}&deg;</span> <span style="color:#FFB6C1">▼${daydata[0].T_UTE_MIN}&deg;</span>`);
+        $("#d_T_UTE_value").html('');
+        
+        // Water temp with arrows
+        $("#d_T_VATTEN").html(`├─ <i class="fa-solid fa-droplet"></i> Vesi ${daydata[0].T_VATTEN}&deg; <span style="color:#90EE90">▲${daydata[0].T_VATTEN_MAX}&deg;</span> <span style="color:#FFB6C1">▼${daydata[0].T_VATTEN_MIN}&deg;</span>`);
+        $("#d_T_VATTEN_value").html('');
+        
+        // Compressor line: runtime / starts / energy
+        $("#d_KOMPR_H").html(`├─ <i class="fa-solid fa-gear"></i> Kompr ${komprHours}h${komprMinutes}m / ${daydata[0].COMPR_STARTS}× / ${energy} kWh`);
+        $("#d_KOMPR_H_value").html('');
+        
+        // Hot water production
+        $("#d_VARMVATTEN_H").html(`└─ <i class="fa-solid fa-fire"></i> LV ${lvMinutes} min`);
+        $("#d_VARMVATTEN_H_value").html('');
+        
+        // Hide unused rows
+        $("#d_COMPR_STARTS").html('');
+        $("#d_COMPR_STARTS_value").html('');
+        $("#d_TSTOP_E").html('');
+        $("#d_TSTOP_E_value").html('');
+        $("#d_TS_E").html('');
+        $("#d_TS_E_value").html('');
     });
 };
 
