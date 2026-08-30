@@ -194,8 +194,8 @@ function updateEvPhaseMaxIndicator() {
               
               // Right side: Pörssisähkö - just prices
               $("#spotpriceicon").html('<i class="fa-solid fa-bolt"></i> Pörssisähkö');
-              $("#spotpricenow").html(spotIndexPlainer((PriceWithTax15min*100).toFixed(1)) + ' snt');
-              $("#spotpricenext").html(`<span style="color:grey">${(PriceWithTaxNextHour*100).toFixed(1)} snt (+1h)</span>`);
+              $("#spotpricenow").html((spotIndexPlainer((PriceWithTax15min*100).toFixed(2))) + ' snt/kwh');
+              $("#spotpricenext").html((spotIndexPlainer((PriceWithTaxNextHour*100).toFixed(2))) + ' snt/kwh (+1h)');
 
               // Left side: EVU Ohjaus with Rank
               const rankOk = Rank <= RankLimit;
