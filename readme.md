@@ -96,6 +96,21 @@ You can now access the Speculo web page from http://localhost:3333 or http://[ho
 
 Use the `config.js` to enable/disable features with `show: true` or `show: false`
 
+### Disabled Features
+
+**Envoy Solar Inverter** (`envoy`):
+- Currently disabled due to multiple issues:
+  1. **PLC Communication Issues**: Poor powerline communication between microinverters and Envoy gateway - rarely gets data from inverters. Needs phase coupler installation to improve signal across electrical phases.
+  2. **API Breaking Changes**: Enphase changed the Envoy gateway local API, breaking the current implementation. Requires full refactor to work with new authentication/endpoints.
+- Will be refactored after PLC issues are resolved with phase coupler installation
+- Data collection script renamed to `scripts/send_envoy.py.disabled`
+- To re-enable UI: Set `envoy.show: true` in `public/javascripts/config.js`
+- To re-enable data collection: Rename `scripts/send_envoy.py.disabled` back to `send_envoy.py`, fix tab/space issues, and update for new Envoy API
+
+**Electricity Monitoring** (`electricity`):
+- Currently disabled - needs review
+- To re-enable UI: Set `electricity.show: true` in `public/javascripts/config.js`
+
 Note: data loggers needs to be configured to send the data to backend, otherwise only Calendars and weather forecast works
 
 -------------------------------------------------------------
