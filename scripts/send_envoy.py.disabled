@@ -1,4 +1,17 @@
 #!/usr/bin/python
+# DISABLED: Envoy hardware broken, needs full review before re-enabling
+# Set ENABLED = True to re-enable data collection
+# NOTE: This file has pre-existing tab/space issues that need fixing before re-enabling
+ENABLED = False
+
+import sys
+if not ENABLED:
+    print("send_envoy.py is disabled. Set ENABLED = True to re-enable.")
+    sys.exit(0)
+
+# --- Original code below (disabled) ---
+exec(open(__file__.replace('.py', '_impl.py')).read()) if False else None
+
 import time
 import os
 import json
