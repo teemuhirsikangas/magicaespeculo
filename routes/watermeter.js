@@ -159,6 +159,20 @@ router.get('/summary', async function (req, res) {
             // Ignore
         }
 
+        // Get current month total and day of month for progress tracking
+        let monthlyTotalLiters = null;
+        let dayOfMonth = now.getDate();
+        let daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+        try {
+            const monthlyData = await getSensorData('sensor.water_monthly');
+            const monthlyTotal = parseFloat(monthlyData.state) || 0;
+            if (monthlyTotal >= 0) {
+                monthlyTotalLiters = monthlyTotal * 1000; // Convert m³ to liters
+            }
+        } catch (e) {
+            // Ignore
+        }
+
         // Calculate projected daily usage based on current pace
         const hoursElapsed = now.getHours() + now.getMinutes() / 60;
         const projectedDaily = (hoursElapsed > 1 && todayLiters !== null) ? (todayLiters / hoursElapsed) * 24 : null;
@@ -190,6 +204,9 @@ router.get('/summary', async function (req, res) {
             weeklyAvgLiters: weeklyAvg !== null ? Math.round(weeklyAvg) : null,
             monthlyAvgLiters: monthlyAvg !== null ? Math.round(monthlyAvg) : null,
             yearlyAvgLiters: yearlyAvg !== null ? Math.round(yearlyAvg) : null,
+            monthlyTotalLiters: monthlyTotalLiters !== null ? Math.round(monthlyTotalLiters) : null,
+            dayOfMonth: dayOfMonth,
+            daysInMonth: daysInMonth,
             currentMeterM3: currentMeterValue,
             currentRateLitersPerMinute: flowRateLiters,
             status: status,

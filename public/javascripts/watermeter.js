@@ -87,13 +87,53 @@ var watermeterData = function () {
             levelFill.style.height = '0%';
         }
 
+        // Update horizontal monthly progress bar
+        // Monthly limit: 460L/day * days in month
+        const monthlyFill = document.getElementById("water-monthly-fill");
+        const monthlyLabel = document.getElementById("water-monthly-label");
+        if (monthlyFill && data.monthlyTotalLiters !== null && data.daysInMonth) {
+            const MONTHLY_LIMIT = DAILY_LIMIT_LITERS * data.daysInMonth;
+            const monthlyPercent = Math.min(100, (data.monthlyTotalLiters / MONTHLY_LIMIT) * 100);
+            monthlyFill.style.width = monthlyPercent + '%';
+
+            // Calculate expected usage at this point in month
+            const expectedPercent = (data.dayOfMonth / data.daysInMonth) * 100;
+            
+            // Set color: amber if over expected pace, yellow if close, blue if under
+            if (monthlyPercent >= expectedPercent * 1.1) {
+                monthlyFill.style.backgroundColor = '#FFA500'; // Amber - over pace
+            } else if (monthlyPercent >= expectedPercent * 0.9) {
+                monthlyFill.style.backgroundColor = '#FFD700'; // Yellow - on pace
+            } else {
+                monthlyFill.style.backgroundColor = '#87CEFA'; // Blue - under pace
+            }
+
+            // Label: show liters and percentage
+            if (monthlyLabel) {
+                monthlyLabel.innerHTML = Math.round(data.monthlyTotalLiters) + 'L / ' + MONTHLY_LIMIT + 'L (' + Math.round(monthlyPercent) + '%)';
+            }
+        } else if (monthlyFill) {
+            monthlyFill.style.width = '0%';
+            if (monthlyLabel) {
+                monthlyLabel.innerHTML = '-';
+            }
+        }
+
     }).fail(function () {
         $("#liters_today").html('<i class="fa-solid fa-faucet-drip" aria-hidden="true" style="color:white"></i> <span style="color:#ff0000">-</span>');
         $("#liters_current, #liters_yesterday, #liters_weekly_avg, #liters_monthly_avg").html("-");
-        // Reset level bar on error
+        // Reset level bars on error
         const levelFill = document.getElementById("water-level-fill");
         if (levelFill) {
             levelFill.style.height = '0%';
+        }
+        const monthlyFill = document.getElementById("water-monthly-fill");
+        if (monthlyFill) {
+            monthlyFill.style.width = '0%';
+        }
+        const monthlyLabel = document.getElementById("water-monthly-label");
+        if (monthlyLabel) {
+            monthlyLabel.innerHTML = '-';
         }
     });
 };

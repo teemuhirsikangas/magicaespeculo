@@ -38,6 +38,50 @@
     font-weight: bold;
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
+}
+
+#water-monthly-section {
+    width: 100%;
+    margin-top: 8px;
+}
+
+#water-monthly-title {
+    font-size: 12px;
+    color: white;
+    margin-bottom: 4px;
+}
+
+#water-monthly-bar-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+#water-monthly-bar {
+    flex: 1;
+    height: 8px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+}
+
+#water-monthly-fill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    border-radius: 4px;
+    background-color: #87CEFA;
+    transition: width 0.5s ease, background-color 0.5s ease;
+    width: 0%;
+}
+
+#water-monthly-label {
+    font-size: 12px;
+    color: white;
+    white-space: nowrap;
 }
 
 #water-level-bar {
