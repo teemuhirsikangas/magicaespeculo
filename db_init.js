@@ -270,6 +270,15 @@ module.exports.init = function () {
         }
     });
 
+    // Index to speed up timestamp-based aggregation on the temperature table
+    db.run('CREATE INDEX IF NOT EXISTS idx_temperature_timestamp ON temperature (timestamp)', function (err) {
+        if (err !== null) {
+            console.log(err);
+        } else {
+            console.log("SQL Index 'idx_temperature_timestamp' ensured.");
+        }
+    });
+
 
 db.close();
 

@@ -1,11 +1,20 @@
 {
   "name": "magicaspeculo",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "description": "magic mirror to show homeautomation",
   "repository": "git://github.com/teemuhirsikangas/magicaespeculo",
   "private": true,
   "scripts": {
-    "start": "node ./index.js"
+    "start": "node ./index.js",
+    "dev": "nodemon ./index.js",
+    "prod": "NODE_ENV=production node ./index.js",
+    "pm2:start": "NODE_ENV=production pm2 start index.js --name speculo --update-env",
+    "pm2:restart": "NODE_ENV=production pm2 restart speculo --update-env",
+    "pm2:stop": "pm2 stop speculo",
+    "pm2:logs": "pm2 logs speculo",
+    "pm2:save": "pm2 save",
+    "ncu": "ncu",
+    "ncu -u": "ncu -u && npm install"
   },
   "main": "index.js",
   "engines": {
@@ -15,6 +24,7 @@
     "axios": "1.20.0",
     "body-parser": "2.3.0",
     "bootstrap": "5.3.8",
+    "compression": "^1.8.1",
     "cookie-parser": "1.4.7",
     "debug": "4.4.3",
     "express": "5.2.1",
@@ -28,5 +38,9 @@
   },
   "allowScripts": {
     "sqlite3@6.0.1": true
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14",
+    "npm-check-updates": "^23.1.0"
   }
 }
