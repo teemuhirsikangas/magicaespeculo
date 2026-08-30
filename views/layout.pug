@@ -13,7 +13,8 @@ html
     link(rel='stylesheet', href='/stylesheets/amschart.css')
     link(rel='stylesheet', href='/stylesheets/envoy.css')
     link(rel='stylesheet', href='/stylesheets/watermeter.css')
-    link(rel='stylesheet', href='/highcharts/css/highcharts.css')
+    //- Highcharts only used by the disabled envoy feature - re-enable together with envoy
+    //- link(rel='stylesheet', href='/highcharts/css/highcharts.css')
     link(rel='stylesheet', href='/stylesheets/highchartsOverwrite.css')
     link(rel='stylesheet', href='/stylesheets/realtimenotifications.css')
     link(rel='stylesheet', href='/stylesheets/spotprice.css')
@@ -44,8 +45,9 @@ html
     //from node_modules
     script(src='/socket.io/socket.io.js')
     script(src='/bootstrap/dist/js/bootstrap.min.js')
-    script(src='/highcharts/highcharts.js')
-    script(src='/highcharts/highcharts-more.js')
+    //- Highcharts only used by the disabled envoy feature - re-enable together with envoy
+    //- script(src='/highcharts/highcharts.js')
+    //- script(src='/highcharts/highcharts-more.js')
 
     //own
     script(src='/javascripts/config.js')
