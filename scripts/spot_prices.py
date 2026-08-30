@@ -117,8 +117,8 @@ resp, success = make_api_request_with_retry(urlNow60min, headers)
 if success:
 	json_data = resp.json()
 	print (json_data)
-	print("to allow heating, conditions must match;")
-	print("RANK must be", json_data["Rank"],"<=", CHEAPESTHOURS)
+	print("to allow heating, either condition must be true:")
+	print("RANK must be", json_data["Rank"],"<=", CHEAPESTHOURS, "OR")
 	print("PRICE must be",json_data["PriceWithTax"],"<=", ALLOWPRICE)
 
 	if (json_data["Rank"] <= CHEAPESTHOURS):
