@@ -20,7 +20,8 @@ async function fetchHA(endpoint) {
 // Get sensor state from Home Assistant
 async function getSensorState(entityId) {
     const data = await fetchHA(`/api/states/${entityId}`);
-    return parseFloat(data.state) || 0;
+    const value = parseFloat(data.state);
+    return Number.isFinite(value) ? value : null;
 }
 
 // Get full sensor data including attributes
@@ -44,17 +45,18 @@ async function getMeterValueAtStart(entityId, startTime, endTime) {
 
     if (!history || history.length === 0) return null;
 
-    // First entry in history represents state at or just after startTime
-    return parseFloat(history[0].state) || null;
+    const firstValidEntry = history.find(entry => Number.isFinite(parseFloat(entry.state)));
+    return firstValidEntry ? parseFloat(firstValidEntry.state) : null;
 }
 
 // Calculate consumption between two times
 async function getConsumption(entityId, startTime, endTime) {
     const history = await getHistory(entityId, startTime, endTime);
-    if (!history || history.length < 2) return null;
+    const values = history.map(entry => parseFloat(entry.state)).filter(Number.isFinite);
+    if (values.length < 2) return null;
 
-    const firstValue = parseFloat(history[0].state) || 0;
-    const lastValue = parseFloat(history[history.length - 1].state) || 0;
+    const firstValue = values[0];
+    const lastValue = values[values.length - 1];
 
     return Math.max(0, lastValue - firstValue);
 }
@@ -79,12 +81,14 @@ router.get('/summary', async function (req, res) {
         monthAgo.setDate(monthAgo.getDate() - 30);
 
         // Fetch current meter value and flow rate (with full data for last_updated)
-        const [meterData, flowRate] = await Promise.all([
+        const [meterData, flowRate, dailyConsumption] = await Promise.all([
             getSensorData('sensor.watermeter_value').catch(() => null),
-            getSensorState('sensor.watermeter_rate_per_time_unit').catch(() => null)
+            getSensorState('sensor.watermeter_rate_per_time_unit').catch(() => null),
+            getSensorState('sensor.water_daily').catch(() => null)
         ]);
 
-        const currentMeterValue = meterData ? parseFloat(meterData.state) || null : null;
+        const meterValue = meterData ? parseFloat(meterData.state) : NaN;
+        const currentMeterValue = Number.isFinite(meterValue) ? meterValue : null;
 
         // Check for stale data (no update in 6 hours)
         let staleMinutes = null;
@@ -98,11 +102,13 @@ router.get('/summary', async function (req, res) {
 
         // Get meter value at midnight today (for today's consumption)
         // Query from midnight to now - first entry gives us the midnight baseline
-        const midnightValue = await getMeterValueAtStart('sensor.watermeter_value', todayMidnight, now).catch(() => null);
+        const midnightValue = dailyConsumption === null
+            ? await getMeterValueAtStart('sensor.watermeter_value', todayMidnight, now).catch(() => null)
+            : null;
 
         // Calculate today's consumption
-        let todayLiters = null;
-        if (currentMeterValue !== null && midnightValue !== null) {
+        let todayLiters = dailyConsumption !== null ? Math.max(0, dailyConsumption * 1000) : null;
+        if (todayLiters === null && currentMeterValue !== null && midnightValue !== null) {
             todayLiters = Math.max(0, (currentMeterValue - midnightValue) * 1000);
         }
 
