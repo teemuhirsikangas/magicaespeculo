@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - "Ei tietoja" badge on the Solis widget when no data has been received for 5 minutes
 - Solis PV output bar on the left side of the widget, showing output as % of panel peak power (6370 W), same style as the EV charging phase bars
 - Solis PV power chart with today's history persisted in SQLite and live-updated from MQTT, scaled to the 6370 W panel peak; shows 03:00-22:00 and extends to whole hours only for production outside that range
+- Solis power and inverter temperature stay on one line at high output values
 
 ### Changed
 - `scripts/solis_modbus_mqtt.py` now runs once per cron call (every minute) instead of an endless loop; Modbus and MQTT connections are closed on exit and a lock file prevents overlapping runs
