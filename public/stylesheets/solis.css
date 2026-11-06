@@ -1,0 +1,62 @@
+/* Solis inverter, data from MQTT home/solar/solis/status (scripts/solis_modbus_mqtt.py) */
+#solis {
+    position: absolute;
+    left: 290px;
+    bottom: 25px;
+    width: 290px; /* house widget #out starts at ~left 584px */
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    color: white;
+    display: flex;
+    flex-direction: row;
+}
+
+/* PV output vs. peak power bar, same style as the EV phase bars */
+#solis-bar-wrapper {
+    position: relative;
+    display: flex;
+    margin-right: 10px;
+}
+
+#solis-pct {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    font-size: 11px;
+    color: #FFD700;
+    transition: bottom 0.5s ease;
+}
+
+.solis-bar {
+    position: relative;
+    width: 8px;
+    margin-left: 32px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+}
+
+#solis-fill {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 0;
+    border-radius: 3px;
+    background-color: #FFD700;
+    transition: height 0.5s ease;
+}
+
+#solistitle {
+    font-size: 1.2em;
+}
+
+#solis_pv_power {
+    font-size: 2em;
+    line-height: 1.2;
+}
+
+#solis_details {
+    display: flex;
+    gap: 15px;
+    color: #aaa;
+}
