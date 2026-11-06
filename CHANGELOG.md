@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 - `scripts/solis_modbus_mqtt.py` MQTT connection failed (code 5, not authorized): use username/password from `scripts/config.py`; moved to paho-mqtt callback API v2
+- Browsers kept stale CSS/JS for up to 7 days after a deploy: own stylesheets and scripts now get a cache-busting `?v=` query that changes on every server restart
 
 ## [1.6.1] - 2026-10-02
 ### Fixed
