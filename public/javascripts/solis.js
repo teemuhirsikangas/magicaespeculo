@@ -68,6 +68,16 @@ function renderSolisChart() {
     const zeroRadius = dotRadius(zeroPoints);
     const radius = dotRadius(points).map((r, index) => (points[index].y === 0 ? 0 : r));
 
+    // Always mark the latest sample, a short or low-power line is otherwise barely visible
+    const last = points.length - 1;
+    if (last >= 0) {
+        if (points[last].y === 0) {
+            zeroRadius[last] = 3;
+        } else {
+            radius[last] = 3;
+        }
+    }
+
     solisChart.data.datasets[SOLIS_POWER_DATASET].data = points;
     solisChart.data.datasets[SOLIS_POWER_DATASET].pointRadius = radius;
     solisChart.data.datasets[SOLIS_ZERO_DATASET].data = zeroPoints;
