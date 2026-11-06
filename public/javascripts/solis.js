@@ -19,6 +19,32 @@ function localDayEnd() {
     return end.getTime();
 }
 
+function solisChartTimeRange(samples) {
+    const start = new Date(localDayStart());
+    const end = new Date(start);
+    start.setHours(3);
+    end.setHours(22);
+
+    samples.forEach(sample => {
+        if (sample.y <= 0) {
+            return;
+        }
+        if (sample.x < start.getTime()) {
+            start.setTime(sample.x);
+            start.setMinutes(0, 0, 0);
+        }
+        if (sample.x > end.getTime()) {
+            end.setTime(sample.x);
+            end.setMinutes(0, 0, 0);
+            if (end.getTime() < sample.x) {
+                end.setHours(end.getHours() + 1);
+            }
+        }
+    });
+
+    return { min: start.getTime(), max: end.getTime() };
+}
+
 // Show next midnight as "24" instead of "00"
 function formatSolisHourTick(label, index, ticks) {
     const tick = ticks && ticks[index];
@@ -36,7 +62,7 @@ function recordSolisSample(timestamp, pvPower) {
         return;
     }
 
-    if (sampleTime >= localDayStart()) {
+    if (sampleTime >= localDayStart() && sampleTime < localDayEnd()) {
         solisChartSamples.set(sampleTime, power);
         renderSolisChart();
     }
@@ -48,7 +74,9 @@ function renderSolisChart() {
     }
 
     const samples = Array.from(solisChartSamples, ([x, y]) => ({ x, y }))
+        .filter(sample => sample.x >= localDayStart() && sample.x < localDayEnd())
         .sort((a, b) => a.x - b.x);
+    const timeRange = solisChartTimeRange(samples);
     const points = [];
 
     samples.forEach((sample, index) => {
@@ -82,8 +110,8 @@ function renderSolisChart() {
     solisChart.data.datasets[SOLIS_POWER_DATASET].pointRadius = radius;
     solisChart.data.datasets[SOLIS_ZERO_DATASET].data = zeroPoints;
     solisChart.data.datasets[SOLIS_ZERO_DATASET].pointRadius = zeroRadius;
-    solisChart.options.scales.xAxes[0].time.min = localDayStart();
-    solisChart.options.scales.xAxes[0].time.max = localDayEnd();
+    solisChart.options.scales.xAxes[0].time.min = timeRange.min;
+    solisChart.options.scales.xAxes[0].time.max = timeRange.max;
     solisChart.update(0);
 }
 
@@ -98,6 +126,7 @@ function loadSolisChart() {
         return;
     }
 
+    const timeRange = solisChartTimeRange([]);
     solisChart = new Chart(canvas.getContext('2d'), {
         type: 'line',
         data: {
@@ -146,8 +175,8 @@ function loadSolisChart() {
                     type: 'time',
                     time: {
                         unit: 'hour',
-                        min: localDayStart(),
-                        max: localDayEnd(),
+                        min: timeRange.min,
+                        max: timeRange.max,
                         stepSize: 6,
                         displayFormats: { hour: 'HH' },
                         tooltipFormat: 'HH.mm'
