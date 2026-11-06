@@ -34,11 +34,17 @@ function updateSolisBar(pvPowerW) {
     }
 }
 
-// Show "Ei tietoja" if Solis data has not been received recently
+function formatSolisLastSeen(time) {
+    const last = moment(time);
+    return last.isSame(moment(), 'day') ? last.format('HH.mm') : last.format('D.M. HH.mm');
+}
+
+// Show "Ei tietoja" with the last data time if Solis data has not been received recently
 function checkSolisStale() {
     const stale = !solisLastUpdate || (Date.now() - solisLastUpdate) > SOLIS_STALE_MINUTES * 60 * 1000;
     if (stale) {
-        $("#solis_status").html(`<span class="badge bg-danger"><i class="fa-solid fa-triangle-exclamation"></i> Ei tietoja</span>`);
+        const lastSeen = solisLastUpdate ? ` (${formatSolisLastSeen(solisLastUpdate)})` : '';
+        $("#solis_status").html(`<span class="badge bg-danger"><i class="fa-solid fa-triangle-exclamation"></i> Ei tietoja${lastSeen}</span>`);
     } else {
         $("#solis_status").html('');
     }
@@ -748,6 +754,7 @@ function updateEvPhaseMaxIndicator() {
               const fmt = (value, decimals) => (value === null || value === undefined) ? '-' : Number(value).toFixed(decimals);
               $("#solis_pv_power").html(`${fmt(solis.pv_power, 0)} W`);
               updateSolisBar(solis.pv_power);
+              recordSolisSample(solis.timestamp, solis.pv_power);
               $("#solis_daily_energy").html(`<i class="fa-solid fa-calendar-day"></i> ${fmt(solis.daily_energy, 1)} kWh`);
               $("#solis_total_energy").html(`<i class="fa-solid fa-chart-line"></i> ${fmt(solis.total_energy, 0)} kWh`);
               $("#solis_inverter_temp").html(`<i class="fa-solid fa-temperature-half"></i> ${fmt(solis.inverter_temp, 1)}&deg;C`);

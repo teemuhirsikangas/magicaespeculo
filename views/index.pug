@@ -319,21 +319,28 @@ block content
         #watts
 
 
-    #solis
-        #solis-bar-wrapper
-            span#solis-pct 0%
-            .solis-bar
-                #solis-fill
-        #solis-content
-            #solistitle
-                i.fa-solid.fa-solar-panel
-                |  Aurinkopaneelit
-            #solis_pv_power
-            #solis_details
-                #solis_daily_energy
-                #solis_total_energy
-                #solis_inverter_temp
-            #solis_status
+    #solis-display
+        #solis
+            #solis-bar-wrapper
+                span#solis-pct 0%
+                .solis-bar
+                    #solis-fill
+            #solis-content
+                #solistitle
+                    i.fa-solid.fa-solar-panel
+                    |  Aurinkopaneelit
+                #solis_power_row
+                    #solis_pv_power
+                    #solis_inverter_temp
+                #solis_details
+                    #solis_daily_energy
+                    #solis_total_energy
+                #solis_status
+        #solis-chart-panel
+            #solis-chart-title Tuotanto tänään (kW)
+            #solis-chart-status Odotetaan tuotantotietoja
+            #solis-chart-container
+                canvas#solis-chart
 
     #envoy
         #whLifetime
