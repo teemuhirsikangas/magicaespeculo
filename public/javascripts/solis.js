@@ -1,7 +1,10 @@
 'use strict';
 
 const solisChartSamples = new Map();
-const SOLIS_CHART_GAP_MS = 90 * 1000;
+// Cron publishes every 60 s, tolerate a few missed runs before breaking the line
+const SOLIS_CHART_GAP_MS = 5 * 60 * 1000;
+const SOLIS_ZERO_DATASET = 0;
+const SOLIS_POWER_DATASET = 1;
 let solisChart;
 
 function localDayStart() {
@@ -55,7 +58,20 @@ function renderSolisChart() {
         points.push(sample);
     });
 
-    solisChart.data.datasets[0].data = points;
+    // A sample with gaps on both sides has no line segment, so draw it as a dot
+    const isGap = point => !point || point.y === null;
+    const dotRadius = series => series.map((point, index) =>
+        (!isGap(point) && isGap(series[index - 1]) && isGap(series[index + 1]) ? 2 : 0));
+
+    // Zero production is drawn as a red overlay series on top of the gold line
+    const zeroPoints = points.map(point => ({ x: point.x, y: point.y === 0 ? 0 : null }));
+    const zeroRadius = dotRadius(zeroPoints);
+    const radius = dotRadius(points).map((r, index) => (points[index].y === 0 ? 0 : r));
+
+    solisChart.data.datasets[SOLIS_POWER_DATASET].data = points;
+    solisChart.data.datasets[SOLIS_POWER_DATASET].pointRadius = radius;
+    solisChart.data.datasets[SOLIS_ZERO_DATASET].data = zeroPoints;
+    solisChart.data.datasets[SOLIS_ZERO_DATASET].pointRadius = zeroRadius;
     solisChart.options.scales.xAxes[0].time.min = localDayStart();
     solisChart.options.scales.xAxes[0].time.max = localDayEnd();
     solisChart.update(0);
@@ -75,13 +91,27 @@ function loadSolisChart() {
     solisChart = new Chart(canvas.getContext('2d'), {
         type: 'line',
         data: {
+            // Chart.js 2 draws dataset 0 last, so the red zero overlay is first to stay on top
             datasets: [{
+                label: 'Ei tuotantoa',
+                data: [],
+                borderColor: '#FF4136',
+                borderWidth: 2,
+                pointRadius: 0,
+                pointBackgroundColor: '#FF4136',
+                pointBorderColor: '#FF4136',
+                pointHitRadius: 0,
+                lineTension: 0,
+                fill: false,
+                spanGaps: false
+            }, {
                 label: 'PV-teho',
                 data: [],
                 borderColor: '#FFD700',
                 backgroundColor: 'rgba(255, 215, 0, 0.12)',
                 borderWidth: 2,
                 pointRadius: 0,
+                pointBackgroundColor: '#FFD700',
                 pointHitRadius: 8,
                 lineTension: 0.15,
                 fill: true,
@@ -96,6 +126,7 @@ function loadSolisChart() {
             tooltips: {
                 mode: 'nearest',
                 intersect: false,
+                filter: item => item.datasetIndex === SOLIS_POWER_DATASET,
                 callbacks: {
                     label: item => `${(item.yLabel / 1000).toFixed(2)} kW`
                 }
