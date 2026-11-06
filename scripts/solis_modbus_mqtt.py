@@ -15,7 +15,7 @@ Run this script in cronjob once a minute (polling more often causes SolisCloud i
 # * * * * * python3 /home/atnu/magicaespeculo/scripts/solis_modbus_mqtt.py > /dev/null 2>&1
 
 Requirements:
-    pip install pymodbus paho-mqtt
+    apt install python3-pymodbus python3-paho-mqtt
 """
 
 import fcntl
