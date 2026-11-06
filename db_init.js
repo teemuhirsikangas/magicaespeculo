@@ -279,8 +279,17 @@ module.exports.init = function () {
         }
     });
 
+    db.run('CREATE TABLE IF NOT EXISTS "SOLIS_PRODUCTION" (' +
+           '"timestamp" INTEGER PRIMARY KEY, ' +
+           '"pv_power" REAL NOT NULL);', function (err) {
+        if (err !== null) {
+            console.log("Could not initialize SOLIS_PRODUCTION table:", err);
+        } else {
+            console.log("SQL Table 'SOLIS_PRODUCTION' ensured.");
+        }
+    });
+
 
 db.close();
 
 };
-

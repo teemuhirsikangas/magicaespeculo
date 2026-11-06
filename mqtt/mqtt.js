@@ -116,6 +116,9 @@ const init = function () {
             case 'home/greenhouse/temp':
                 handleGreenHouse(message);
                 break;
+            case 'home/solar/solis/status':
+                handleSolisProduction(message);
+                break;
             case 'home/alarm':
 
                 ALARM = parseInt(message);
@@ -181,6 +184,48 @@ function handleWaterMeter (message) {
     });
 
   }
+
+function handleSolisProduction(message) {
+    let data;
+    try {
+        data = JSON.parse(message.toString());
+    } catch (error) {
+        console.error('Could not parse Solis MQTT status:', error);
+        return;
+    }
+
+    if (data.online !== true || data.pv_power === null || data.pv_power === undefined) {
+        return;
+    }
+
+    const timestamp = moment(data.timestamp).valueOf();
+    const pvPower = Number(data.pv_power);
+    if (!Number.isFinite(timestamp) || !Number.isFinite(pvPower) || pvPower < 0) {
+        console.error('Ignoring invalid Solis production sample:', data);
+        return;
+    }
+
+    db.run(
+        'INSERT OR IGNORE INTO SOLIS_PRODUCTION (timestamp, pv_power) VALUES (?, ?)',
+        [timestamp, pvPower],
+        function (err) {
+            if (err) {
+                console.error('Could not store Solis production sample:', err);
+                return;
+            }
+
+            db.run(
+                'DELETE FROM SOLIS_PRODUCTION WHERE timestamp < ?',
+                [Date.now() - 30 * 24 * 60 * 60 * 1000],
+                function (deleteErr) {
+                    if (deleteErr) {
+                        console.error('Could not prune old Solis production samples:', deleteErr);
+                    }
+                }
+            );
+        }
+    );
+}
 
   function handleGreenHouse (message) {
 
