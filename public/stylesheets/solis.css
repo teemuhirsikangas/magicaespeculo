@@ -42,8 +42,8 @@
     position: relative;
     left: auto;
     bottom: auto;
-    width: 205px; /* fixed so the chart width stays stable when values change */
-    flex: 0 0 205px;
+    width: 220px; /* fixed so the chart width stays stable when values change */
+    flex: 0 0 220px;
     font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
     font-weight: bold;
     color: white;
@@ -93,16 +93,20 @@
 #solis_pv_power {
     font-size: 2em;
     line-height: 1.2;
+    flex-shrink: 0;
+    white-space: nowrap;
 }
 
 #solis_power_row {
     display: flex;
     align-items: baseline;
-    gap: 10px;
+    gap: 5px;
 }
 
 #solis_inverter_temp {
     color: #aaa;
+    font-size: 12px;
+    white-space: nowrap;
 }
 
 #solis_details {
