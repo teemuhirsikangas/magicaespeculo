@@ -1,6 +1,6 @@
 {
   "name": "magicaspeculo",
-  "version": "1.6.1",
+  "version": "1.7.0",
   "description": "magic mirror to show homeautomation",
   "repository": "git://github.com/teemuhirsikangas/magicaespeculo",
   "private": true,
@@ -21,17 +21,17 @@
     "node": ">=24.0.0"
   },
   "dependencies": {
-    "axios": "1.20.0",
-    "body-parser": "2.3.0",
+    "axios": "1.21.0",
+    "body-parser": "2.4.0",
     "bootstrap": "5.3.8",
     "compression": "^1.8.2",
     "cookie-parser": "1.4.7",
     "debug": "4.4.3",
-    "express": "5.2.1",
-    "googleapis": "182.0.0",
+    "express": "5.3.0",
+    "googleapis": "189.0.0",
     "highcharts": "13.1.1",
     "moment": "2.31.0",
-    "mqtt": "5.16.0",
+    "mqtt": "5.16.1",
     "pug": "3.0.4",
     "socket.io": "4.8.4",
     "sqlite3": "6.0.1"
@@ -41,6 +41,6 @@
   },
   "devDependencies": {
     "nodemon": "^3.1.14",
-    "npm-check-updates": "^23.1.0"
+    "npm-check-updates": "^23.1.1"
   }
 }

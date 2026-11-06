@@ -14,6 +14,35 @@ var goeChargingStartTime = null;
 var goeChargingTimerInterval = null;
 var goeCurrentSpotPrice = null;
 var goeSpotPriceLimit = null;
+var solisLastUpdate = null;
+var SOLIS_STALE_MINUTES = 5; // cron publishes every minute
+var SOLIS_PEAK_POWER_W = 6370; // solar panels kWp
+
+// Update PV output bar, percentage of panel peak power
+function updateSolisBar(pvPowerW) {
+    const percent = Math.max(0, Math.min(100, ((Number(pvPowerW) || 0) / SOLIS_PEAK_POWER_W) * 100));
+    const fillEl = document.getElementById('solis-fill');
+    const pctEl = document.getElementById('solis-pct');
+    const barEl = fillEl ? fillEl.parentElement : null;
+
+    if (fillEl && pctEl && barEl) {
+        fillEl.style.height = percent + '%';
+        pctEl.textContent = Math.round(percent) + '%';
+        // Keep the label inside the bar's height
+        const maxBottom = Math.max(0, barEl.offsetHeight - pctEl.offsetHeight);
+        pctEl.style.bottom = Math.min(maxBottom, (percent / 100) * barEl.offsetHeight) + 'px';
+    }
+}
+
+// Show "Ei tietoja" if Solis data has not been received recently
+function checkSolisStale() {
+    const stale = !solisLastUpdate || (Date.now() - solisLastUpdate) > SOLIS_STALE_MINUTES * 60 * 1000;
+    if (stale) {
+        $("#solis_status").html(`<span class="badge bg-danger"><i class="fa-solid fa-triangle-exclamation"></i> Ei tietoja</span>`);
+    } else {
+        $("#solis_status").html('');
+    }
+}
 
 // Phase power tracking for EV charging bars (in kW)
 var phasePower = { L1: 0, L2: 0, L3: 0 };
@@ -710,6 +739,26 @@ function updateEvPhaseMaxIndicator() {
                 }
                 break;
 
+            // Solis inverter from scripts/solis_modbus_mqtt.py
+            // {"timestamp": "2026-11-06T15:12:44.843000", "online": true, "pv_power": 144, "daily_energy": 2.5, ...}
+            case 'home/solar/solis/status': {
+              const solis = msg.payload;
+              if (typeof solis !== 'object' || solis === null) break;
+
+              const fmt = (value, decimals) => (value === null || value === undefined) ? '-' : Number(value).toFixed(decimals);
+              $("#solis_pv_power").html(`${fmt(solis.pv_power, 0)} W`);
+              updateSolisBar(solis.pv_power);
+              $("#solis_daily_energy").html(`<i class="fa-solid fa-calendar-day"></i> ${fmt(solis.daily_energy, 1)} kWh`);
+              $("#solis_total_energy").html(`<i class="fa-solid fa-chart-line"></i> ${fmt(solis.total_energy, 0)} kWh`);
+              $("#solis_inverter_temp").html(`<i class="fa-solid fa-temperature-half"></i> ${fmt(solis.inverter_temp, 1)}&deg;C`);
+
+              // Python isoformat has microseconds, trim to milliseconds for Date parsing
+              const solisTime = new Date(String(solis.timestamp).replace(/(\.\d{3})\d+/, '$1')).getTime();
+              solisLastUpdate = isNaN(solisTime) ? Date.now() : solisTime;
+              checkSolisStale();
+              break;
+            }
+
             default: 
               // console.log(`Error:no such MQTT topic handler in frontend UI. ${JSON.stringify(msg)}`);
               break;
@@ -836,6 +885,9 @@ $(function () {
     //every hour
     checkWaterLeakLastReportTime();
     setInterval(checkWaterLeakLastReportTime, 3600000);
+
+    checkSolisStale();
+    setInterval(checkSolisStale, 60000);
 
     //initialized ventilation config modal
     insertModal();

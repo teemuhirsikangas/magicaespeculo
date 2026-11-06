@@ -6,6 +6,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 - Remove/refactor ifttt lib, as it's using deprecated punycode dep
 
+## [1.7.0] - 2026-11-06
+### Added
+- Solis inverter widget (bottom left, in place of the disabled Envoy widget): PV power, today's and total energy and inverter temperature, live updated from MQTT `home/solar/solis/status`
+- "Ei tietoja" badge on the Solis widget when no data has been received for 5 minutes
+- Solis PV output bar on the left side of the widget, showing output as % of panel peak power (6370 W), same style as the EV charging phase bars
+
+### Changed
+- `scripts/solis_modbus_mqtt.py` now runs once per cron call (every minute) instead of an endless loop; Modbus and MQTT connections are closed on exit and a lock file prevents overlapping runs
+- `scripts/solis_modbus_mqtt.py` reads and publishes only PV power, daily energy, total energy and inverter temperature
+- Update deps
+
+### Fixed
+- `scripts/solis_modbus_mqtt.py` MQTT connection failed (code 5, not authorized): use username/password from `scripts/config.py`; moved to paho-mqtt callback API v2
+
 ## [1.6.1] - 2026-10-02
 ### Fixed
 - Watermeter: prefer Home Assistant's daily usage sensor for today's consumption and ignore invalid history states while preserving zero readings
