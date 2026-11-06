@@ -72,9 +72,9 @@ function renderSolisChart() {
     const last = points.length - 1;
     if (last >= 0) {
         if (points[last].y === 0) {
-            zeroRadius[last] = 3;
+            zeroRadius[last] = 2;
         } else {
-            radius[last] = 3;
+            radius[last] = 2;
         }
     }
 
