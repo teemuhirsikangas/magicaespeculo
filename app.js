@@ -29,6 +29,8 @@ if (config.mqtt.enabled === true) {
 }
 
 app.locals.moment = require('moment');
+// cache-busting query for own static assets, changes on every restart (deploy)
+app.locals.assetVersion = Date.now().toString(36);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
