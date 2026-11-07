@@ -51,7 +51,7 @@ function formatSolisHourTick(label, index, ticks) {
     return tick && tick.value >= localDayEnd() ? '24' : label;
 }
 
-function recordSolisSample(timestamp, pvPower) {
+function recordSolisSample(timestamp, pvPower, redraw = true) {
     const sampleTime = new Date(timestamp).getTime();
     if (!Number.isFinite(sampleTime) || pvPower === null || pvPower === undefined) {
         return;
@@ -64,7 +64,9 @@ function recordSolisSample(timestamp, pvPower) {
 
     if (sampleTime >= localDayStart() && sampleTime < localDayEnd()) {
         solisChartSamples.set(sampleTime, power);
-        renderSolisChart();
+        if (redraw) {
+            renderSolisChart();
+        }
     }
 }
 
@@ -211,7 +213,7 @@ function loadSolisChart() {
                 status.textContent = 'Kaaviota ei saatavilla';
                 return;
             }
-            samples.forEach(sample => recordSolisSample(sample.timestamp, sample.pv_power));
+            samples.forEach(sample => recordSolisSample(sample.timestamp, sample.pv_power, false));
             status.textContent = solisChartSamples.size ? '' : 'Odotetaan tuotantotietoja';
             renderSolisChart();
         })
